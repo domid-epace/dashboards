@@ -1557,8 +1557,19 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
    Change DMT_API_URL to your deployed backend.
    For local dev: http://localhost:5050/api/assess
 ═══════════════════════════════════════════ */
-const DMT_API_URL = 'http://localhost:5050/api/assess';
+/* ═══════════════════════════════════════════
+   DMT EXPRESS — fully client-side
+   Calls Anthropic API directly from browser.
+   Set ANTHROPIC_API_KEY below (or it will prompt).
+═══════════════════════════════════════════ */
 
+// ── Config ────────────────────────────────────────────────────
+const DMT_DASHBOARD_URL = 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html';
+const ANTHROPIC_API_KEY = ''; // Set your key here, or leave blank to prompt
+const ANTHROPIC_MODEL   = 'claude-sonnet-4-6';
+const CORS_PROXY        = 'https://corsproxy.io/?';
+
+// ── Tier config ───────────────────────────────────────────────
 const TOTAL_STEPS = 7;
 const TIER_RANGES = {
   'I':  { name: 'Digital Infant',  range: 'Úroveň 1 z 4', desc: '0–25' },
@@ -1568,15 +1579,25 @@ const TIER_RANGES = {
 };
 
 let currentStep = 0;
+let _apiKey = ANTHROPIC_API_KEY;
 
+function getApiKey() {
+  if (_apiKey) return _apiKey;
+  _apiKey = localStorage.getItem('dmt_key') || '';
+  if (!_apiKey) {
+    _apiKey = prompt('Zadejte Anthropic API klíč pro spuštění DMT:') || '';
+    if (_apiKey) localStorage.setItem('dmt_key', _apiKey);
+  }
+  return _apiKey;
+}
+
+// ── Step navigation ───────────────────────────────────────────
 function dmtGoto(step) {
   const prev = document.getElementById('dmt-step-' + currentStep);
-  if (prev) { prev.classList.remove('active'); }
+  if (prev) prev.classList.remove('active');
   currentStep = step;
   const next = document.getElementById('dmt-step-' + step);
-  if (next) { next.classList.add('active'); }
-
-  // Update progress (steps 1-7 = 0–100%)
+  if (next) next.classList.add('active');
   const pct = step === 0 ? 0 : Math.round((step / TOTAL_STEPS) * 100);
   document.getElementById('dmt-progress-fill').style.width = pct + '%';
 }
@@ -1584,29 +1605,160 @@ function dmtGoto(step) {
 function dmtNext1() {
   const urlInput = document.getElementById('dmt-url').value.trim();
   const errEl = document.getElementById('dmt-url-err');
-  if (!urlInput) {
-    errEl.style.display = 'block';
-    return;
-  }
+  if (!urlInput) { errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
   dmtGoto(2);
 }
 
+// ── Tech stack detection (client-side) ───────────────────────
+const TECH_PATTERNS = [
+  ['Google Tag Manager',   /GTM-[A-Z0-9]+|googletagmanager\.com/],
+  ['Google Analytics 4',   /G-[A-Z0-9]{6,}|gtag\(/],
+  ['Meta Pixel',           /fbq\(|connect\.facebook\.net\/signals/],
+  ['TikTok Pixel',         /analytics\.tiktok\.com/],
+  ['Google Ads',           /AW-[0-9]{7,}|googleadservices\.com/],
+  ['Bloomreach',           /bloomreach|brx\.pixel|exponea\.com/i],
+  ['Klaviyo',              /klaviyo|static\.klaviyo/i],
+  ['Emarsys',              /emarsys|scarab\.it/i],
+  ['Salesforce MC',        /exacttarget|marketingcloud/i],
+  ['Mailchimp',            /mailchimp|list-manage\.com/i],
+  ["Luigi's Box",          /luigisbox|lb\.live\//i],
+  ['Klevu',                /klevu/i],
+  ['Nosto',                /nosto\.com/i],
+  ['Hotjar',               /hotjar|static\.hotjar/i],
+  ['Microsoft Clarity',    /clarity\.ms/i],
+  ['Cookiebot',            /cookiebot|cookielaw\.org/i],
+  ['OneTrust',             /onetrust/i],
+  ['Intercom',             /intercom\.io|widget\.intercom/i],
+  ['Zendesk',              /zendesk\.com|zd-widget/i],
+  ['Segment',              /segment\.io|segment\.com\/analytics/i],
+];
+
+async function scanUrl(url) {
+  try {
+    const proxyUrl = CORS_PROXY + encodeURIComponent(url);
+    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+    const html = await resp.text();
+
+    const detected = [];
+    for (const [label, pattern] of TECH_PATTERNS) {
+      if (pattern.test(html)) detected.push(label);
+    }
+
+    const signals = {
+      has_newsletter_form: /newsletter|odběr|subscribe/i.test(html),
+      has_cookie_banner:   /cookiebot|onetrust|cookieconsent|cookie-banner/i.test(html),
+      has_mobile_apps:     /play\.google\.com\/store|apps\.apple\.com/i.test(html),
+      has_loyalty:         /věrnostní|loyalty|bodový program/i.test(html),
+      has_cart:            /košík|cart|basket|addtocart/i.test(html),
+    };
+
+    return { detected_tools: detected, signals, reachable: true };
+  } catch(e) {
+    return { detected_tools: [], signals: {}, reachable: false, error: e.message };
+  }
+}
+
+// ── Claude API call ───────────────────────────────────────────
+function buildPrompt(url, tech, answers) {
+  const tools = tech.detected_tools.length
+    ? tech.detected_tools.join(', ')
+    : 'žádné detekovány';
+
+  const sigs = Object.entries(tech.signals || {})
+    .filter(([,v]) => v)
+    .map(([k]) => k)
+    .join(', ') || 'none';
+
+  const qs = [
+    'Marketingová databáze',
+    'Email marketing a automatizace',
+    'Personalizace',
+    'Marketingové nástroje (interní pohled)',
+    'Hlavní cíl a výzva',
+  ];
+
+  const answersBlock = answers.map((a, i) =>
+    `Q${i+1} — ${qs[i]}:\n${a || '(nezodpovězeno)'}`
+  ).join('\n\n');
+
+  return `You are a senior data-driven marketing consultant at ePACE.
+Evaluate the digital marketing maturity. Assign Tier I–IV:
+
+Tier I  (0–25):  Digital Infant  — minimal tech, no data collection, manual comms
+Tier II  (26–50): Digital Aware   — tools exist but disconnected; email works, no automation
+Tier III (51–75): Digital Active  — connected stack, basic automation, systematic data
+Tier IV (76–100): Digital Mature  — personalization at scale, omnichannel, data-driven
+
+URL: ${url}
+
+TECH STACK SCAN:
+Detected tools: ${tools}
+Other signals: ${sigs}
+
+USER ANSWERS:
+${answersBlock}
+
+Return ONLY valid JSON (no prose, no fences):
+{
+  "tier": "II",
+  "tier_label": "Digital Aware",
+  "tier_number": 2,
+  "score_estimate": 38,
+  "headline_cs": "One Czech sentence summarizing the situation",
+  "strengths_cs": ["strength 1", "strength 2"],
+  "gaps_cs": ["gap 1", "gap 2"],
+  "next_step_cs": "Czech next step recommendation (1-2 sentences)",
+  "reasoning_en": "Brief internal reasoning"
+}
+
+Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers.`;
+}
+
+async function callAnthropic(prompt, apiKey) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 1024,
+      system: 'You are a senior MarTech consultant. Respond ONLY with valid JSON.',
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error?.message || `API error ${resp.status}`);
+  }
+
+  const data = await resp.json();
+  let raw = data.content[0].text.trim();
+  raw = raw.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+  return JSON.parse(raw);
+}
+
+// ── Submit ────────────────────────────────────────────────────
 async function dmtSubmit() {
   const email = document.getElementById('dmt-email').value.trim();
   const errEl = document.getElementById('dmt-email-err');
-  if (!email || !email.includes('@')) {
-    errEl.style.display = 'block';
-    return;
-  }
+  if (!email || !email.includes('@')) { errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
 
-  // Collect data
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    document.getElementById('dmt-api-error').style.display = 'block';
+    document.getElementById('dmt-api-error').querySelector('p').textContent = 'Chybí API klíč.';
+    return;
+  }
+
   let url = document.getElementById('dmt-url').value.trim();
   if (url && !url.startsWith('http')) url = 'https://' + url;
-  const comp1 = document.getElementById('dmt-comp1').value.trim();
-  const comp2 = document.getElementById('dmt-comp2').value.trim();
-  const competitors = [comp1, comp2].filter(Boolean);
 
   const answers = [
     document.getElementById('dmt-q1').value.trim(),
@@ -1615,73 +1767,34 @@ async function dmtSubmit() {
     document.getElementById('dmt-q4').value.trim(),
     document.getElementById('dmt-q5').value.trim(),
   ];
-  // Pad empty answers to exactly 5
-  while (answers.length < 5) answers.push('');
-
-  const name = document.getElementById('dmt-name').value.trim();
 
   // Show loading
   document.getElementById('dmt-step-7').classList.remove('active');
   document.getElementById('dmt-loading').style.display = 'block';
 
   try {
-    const resp = await fetch(DMT_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, competitors, answers, email, name }),
-    });
+    // 1. Scan URL
+    const tech = await scanUrl(url);
 
-    if (!resp.ok) {
-      throw new Error('Server returned ' + resp.status);
-    }
+    // 2. Call Claude
+    const prompt = buildPrompt(url, tech, answers);
+    const result = await callAnthropic(prompt, apiKey);
 
-    const data = await resp.json();
-    document.getElementById('dmt-loading').style.display = 'none';
-    dmtShowResult(data);
+    // 3. Enrich result
+    result.tech_detected = tech.detected_tools;
+    result.url_scanned = url;
 
-  } catch (err) {
+    // 4. Encode + redirect to dashboard
+    const encoded = btoa(JSON.stringify(result));
+    window.location.href = DMT_DASHBOARD_URL + '?r=' + encoded;
+
+  } catch(err) {
     document.getElementById('dmt-loading').style.display = 'none';
     document.getElementById('dmt-api-error').style.display = 'block';
-    console.error('DMT API error:', err);
+    const pEl = document.getElementById('dmt-api-error').querySelector('p');
+    if (pEl) pEl.textContent = 'Nastala chyba: ' + err.message;
+    console.error('DMT error:', err);
   }
-}
-
-function dmtShowResult(data) {
-  const tier = data.tier || 'II';
-  const tierInfo = TIER_RANGES[tier] || TIER_RANGES['II'];
-
-  document.getElementById('dmt-tier-roman').textContent = tier;
-  document.getElementById('dmt-tier-name').textContent = tierInfo.name;
-  document.getElementById('dmt-tier-range').textContent = tierInfo.range + ' · skóre ' + (data.score_estimate || '?') + '/100';
-  document.getElementById('dmt-result-headline').textContent = data.headline_cs || '';
-
-  // Tech detected
-  const tools = data.tech_detected || [];
-  const techEl = document.getElementById('dmt-tech-found');
-  if (tools.length > 0) {
-    techEl.innerHTML = '<strong style="color:var(--text-muted-dark); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;">Detekované nástroje</strong><br/>'
-      + tools.map(t => '<span class="dmt-tech-badge">' + t + '</span>').join('');
-  } else {
-    techEl.innerHTML = '';
-  }
-
-  // Strengths & gaps
-  const strengths = data.strengths_cs || [];
-  const gaps = data.gaps_cs || [];
-  document.getElementById('dmt-strengths').innerHTML = strengths.map(s => '<li>' + s + '</li>').join('');
-  document.getElementById('dmt-gaps').innerHTML = gaps.map(g => '<li>' + g + '</li>').join('');
-
-  document.getElementById('dmt-next-step').textContent = data.next_step_cs || '';
-
-  // Tier badge color
-  const colors = { 'I': '#f87171', 'II': '#fbbf24', 'III': '#4ade80', 'IV': '#60a5fa' };
-  const badge = document.getElementById('dmt-tier-badge');
-  badge.style.borderColor = colors[tier] || 'var(--accent)';
-  document.getElementById('dmt-tier-roman').style.color = colors[tier] || 'var(--accent)';
-
-  document.getElementById('dmt-result').style.display = 'block';
-  document.getElementById('dmt-progress-fill').style.width = '100%';
-  document.getElementById('dmt-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function dmtReset() {
@@ -1692,7 +1805,6 @@ function dmtReset() {
   document.getElementById('dmt-result').style.display = 'none';
   document.getElementById('dmt-api-error').style.display = 'none';
   document.getElementById('dmt-progress-fill').style.width = '0%';
-  // Clear inputs
   ['dmt-url','dmt-comp1','dmt-comp2','dmt-q1','dmt-q2','dmt-q3','dmt-q4','dmt-q5','dmt-name','dmt-email']
     .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
 }
