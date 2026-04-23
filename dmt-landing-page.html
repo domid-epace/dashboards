@@ -1452,24 +1452,24 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
           </div>
         </div>
 
-        <!-- ─ Step 5: Q4 — Nástroje ─ -->
+        <!-- ─ Step 5: Q4 — Zákaznická data ─ -->
         <div id="dmt-step-5" class="dmt-step">
           <div class="dmt-step-counter">Krok 5 z 7 — Otázka 4/5</div>
-          <div class="dmt-q-label">Marketingové nástroje</div>
-          <div class="dmt-q-hint">Jaké nástroje pro marketing a data aktivně využíváte? (CRM, ESP, analytika, reklamní platformy, automatizace…) Zahrňte i interní systémy, které nemusejí být vidět na webu.</div>
-          <textarea id="dmt-q4" class="dmt-input" placeholder="Např.: Mailchimp na email, GA4 na analytiku, Pipedrive jako CRM. Reklamujeme na Meta a Google."></textarea>
+          <div class="dmt-q-label">Zákaznická data — jsou pohromadě?</div>
+          <div class="dmt-q-hint">Máte zákaznická data v jednom systému, nebo jsou rozptýlená — e-shop zvlášť, emaily jinde, věrnostní program někde třetím místě? Víte, kolik máte aktivních zákazníků?</div>
+          <textarea id="dmt-q4" class="dmt-input" placeholder="Např.: Data máme rozptýlená — Shoptet má objednávky, Mailchimp má emailové kontakty, ale nejsou propojené. Aktivních zákazníků je cca 8 000 za posledních 12 měsíců."></textarea>
           <div class="dmt-nav">
             <button class="dmt-btn-back" onclick="dmtGoto(4)">← Zpět</button>
             <button class="dmt-btn-next" onclick="dmtGoto(6)">Dál →</button>
           </div>
         </div>
 
-        <!-- ─ Step 6: Q5 — Cíl ─ -->
+        <!-- ─ Step 6: Q5 — Email automatizace ─ -->
         <div id="dmt-step-6" class="dmt-step">
           <div class="dmt-step-counter">Krok 6 z 7 — Otázka 5/5</div>
-          <div class="dmt-q-label">Hlavní cíl a výzva</div>
-          <div class="dmt-q-hint">Co je vaším hlavním marketingovým cílem nebo problémem v příštích 12 měsících? Co chcete zlepšit nebo vyřešit?</div>
-          <textarea id="dmt-q5" class="dmt-input" placeholder="Např.: Chceme snížit závislost na placené reklamě, zlepšit retenci zákazníků a spustit automatizované emaily."></textarea>
+          <div class="dmt-q-label">Emailová automatizace a metriky</div>
+          <div class="dmt-q-hint">Reagujete na chování zákazníků automatizovaně — opuštěný košík, win-back po dlouhé neaktivitě, browse abandonment? Znáte přibližně open rate svých emailů?</div>
+          <textarea id="dmt-q5" class="dmt-input" placeholder="Např.: Máme jen ruční newslettery, open rate cca 20 %. Opuštěný košík nemáme, win-back jsme nikdy nezkoušeli."></textarea>
           <div class="dmt-nav">
             <button class="dmt-btn-back" onclick="dmtGoto(5)">← Zpět</button>
             <button class="dmt-btn-next" onclick="dmtGoto(7)">Dál →</button>
@@ -1565,7 +1565,7 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
 
 // ── Config ────────────────────────────────────────────────────
 const DMT_DASHBOARD_URL = 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html';
-const ANTHROPIC_API_KEY = '__DMT_API_KEY__'; // Set your key here, or leave blank to prompt
+const ANTHROPIC_API_KEY = ''; // Enter key when prompted — stored in localStorage // Set your key here, or leave blank to prompt
 const ANTHROPIC_MODEL   = 'claude-sonnet-4-6';
 const CORS_PROXY        = 'https://corsproxy.io/?';
 
@@ -1674,8 +1674,8 @@ function buildPrompt(url, tech, answers) {
     'Marketingová databáze',
     'Email marketing a automatizace',
     'Personalizace',
-    'Marketingové nástroje (interní pohled)',
-    'Hlavní cíl a výzva',
+    'Zákaznická data — propojení a objem',
+    'Emailová automatizace a metriky',
   ];
 
   const answersBlock = answers.map((a, i) =>
