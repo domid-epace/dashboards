@@ -1785,7 +1785,7 @@ async function dmtSubmit() {
     result.url_scanned = url;
 
     // 4. Encode + redirect to dashboard
-    const encoded = btoa(JSON.stringify(result));
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(result))));
     window.location.href = DMT_DASHBOARD_URL + '?r=' + encoded;
 
   } catch(err) {
