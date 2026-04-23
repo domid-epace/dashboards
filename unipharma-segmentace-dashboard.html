@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNI — Ekonomický dopad segmentačního enginu</title>
+<style>
+  :root {
+    --green: #7CC142;
+    --green-dark: #5FA02B;
+    --green-soft: #E8F5D9;
+    --ink: #1F2937;
+    --ink-mute: #6B7280;
+    --ink-light: #9CA3AF;
+    --line: #E5E7EB;
+    --bg: #F7F8FA;
+    --card: #FFFFFF;
+    --up: #10B981;
+    --warn: #F59E0B;
+    --danger: #EF4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--card);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .brand-logo {
+    width: 40px; height: 40px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 18px;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-weight: 700; font-size: 16px; color: var(--ink); }
+  .brand-sub { font-size: 12px; color: var(--ink-mute); }
+  .header-date {
+    background: var(--ink);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Tiles grid */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .tile {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tile::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green);
+  }
+  .tile-label {
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .tile-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .tile-sub {
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 6px;
+  }
+  .tile-trend {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--up);
+    font-weight: 600;
+  }
+  .tile-trend::before {
+    content: "▲ ";
+    font-size: 10px;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-meta {
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+  .section-body { font-size: 13px; color: var(--ink); }
+  .section-body p { margin-bottom: 10px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* Two-col grid for hero */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+  }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  /* SVG chart containers */
+  .chart { width: 100%; height: auto; display: block; }
+
+  /* Audience tier list */
+  .tier-list { display: flex; flex-direction: column; gap: 12px; }
+  .tier-item {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--green);
+  }
+  .tier-item.trapped { border-left-color: var(--warn); }
+  .tier-item.mass { border-left-color: var(--green-dark); }
+  .tier-label { font-weight: 600; font-size: 13px; color: var(--ink); }
+  .tier-label-sub { font-size: 11px; color: var(--ink-mute); margin-top: 2px; }
+  .tier-stat { display: flex; gap: 16px; align-items: center; }
+  .tier-stat-item { text-align: center; }
+  .tier-stat-val { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .tier-stat-lbl { font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+  .tier-rpm {
+    background: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    text-align: center;
+    min-width: 90px;
+  }
+  .tier-rpm-val { font-size: 18px; font-weight: 700; color: var(--green-dark); }
+  .tier-rpm-lbl { font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* Bundle cards */
+  .bundles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .bundle {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .bundle.active { border-color: var(--green); }
+  .bundle.active::after {
+    content: "KOMPLETNÍ ROZSAH";
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: var(--green);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .bundle-letter {
+    min-width: 32px; height: 32px;
+    padding: 0 12px;
+    background: var(--green-soft);
+    color: var(--green-dark);
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 12px;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  .bundle.active .bundle-letter {
+    background: var(--green);
+    color: white;
+  }
+  .bundle-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .bundle-sub {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+    min-height: 36px;
+  }
+  .bundle-metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-top: 1px dashed var(--line);
+    font-size: 12px;
+  }
+  .bundle-metric-lbl { color: var(--ink-mute); }
+  .bundle-metric-val { font-weight: 700; color: var(--ink); }
+  .bundle-metric-val.highlight { color: var(--green-dark); font-size: 15px; }
+  .bundle-price-block {
+    border-top: 1px dashed var(--line);
+    padding-top: 8px;
+    margin-top: 2px;
+    font-size: 12px;
+  }
+  .bundle-price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    color: var(--ink-mute);
+  }
+  .bundle-price-row span:last-child { color: var(--ink); font-weight: 600; }
+  .bundle-price-row.total {
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .bundle-price-row.total span:last-child { font-weight: 700; }
+
+  /* Table */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  table.data th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  table.data th.num { text-align: right; }
+  table.data td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+  }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.data td.pos { color: var(--green-dark); font-weight: 600; }
+  table.data tr:last-child td { border-bottom: none; }
+  table.data tr.total td {
+    font-weight: 700;
+    background: var(--green-soft);
+    color: var(--ink);
+    border-top: 2px solid var(--green);
+  }
+
+  /* Assumption list */
+  .assumptions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .assumption {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .assumption-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 24px;
+    padding: 14px 24px;
+    color: var(--ink-mute);
+    font-size: 11px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+  }
+  .footer a { color: var(--green-dark); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .tiles { grid-template-columns: repeat(3, 1fr); }
+    .hero-grid { grid-template-columns: 1fr; }
+    .bundles { grid-template-columns: 1fr; }
+    .assumptions { grid-template-columns: 1fr; }
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-logo">e</div>
+      <div class="brand-text">
+        <div class="brand-name">eTabletka — Ekonomický dopad segmentačního enginu</div>
+        <div class="brand-sub">Year 1 projekce · baseline GA4 trailing 12 měsíců</div>
+      </div>
+    </div>
+    <div class="header-date">Duben 2026 · verze 2.0</div>
+  </div>
+
+  <!-- TOP TILES -->
+  <div class="tiles">
+    <div class="tile">
+      <div class="tile-label">Baseline tržeb</div>
+      <div class="tile-value">€900K</div>
+      <div class="tile-sub">GA4 trailing 12m (04/2025 – 04/2026)</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Year 1 přírůstek (A+B+C)</div>
+      <div class="tile-value">+€165–405K</div>
+      <div class="tile-trend">+18–45 %</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Year 1 marže (A+B+C)</div>
+      <div class="tile-value">+€60–145K</div>
+      <div class="tile-sub">20 % e-shop + 100 % vendor</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Segmenty CB/LB</div>
+      <div class="tile-value">48</div>
+      <div class="tile-sub">Condition + Lifestyle bundles s CHS scoringem</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Send volume / rok</div>
+      <div class="tile-value">~21,6M</div>
+      <div class="tile-sub">Zachován napříč rozsahy A / A+B / A+B+C</div>
+    </div>
+  </div>
+
+  <!-- HERO: AUDIENCE TIER BREAKDOWN -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Kde leží RPM potenciál — pásma audience (Q1 2026)</div>
+      <div class="section-meta">179 kampaní · 78 dní · €210,7K revenue</div>
+    </div>
+
+    <div class="hero-grid">
+      <!-- Left: bar chart -->
+      <div>
+        <svg class="chart" viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- Title -->
+          <text x="10" y="22" font-size="13" font-weight="700" fill="#1F2937">RPM podle velikosti audience (€ / 1000 mailů)</text>
+          <text x="10" y="38" font-size="10" fill="#6B7280">Zelená = dnešní RPM · světlá = projekce po segmentaci</text>
+
+          <!-- Y axis grid -->
+          <g stroke="#E5E7EB" stroke-width="1">
+            <line x1="60" y1="60" x2="510" y2="60"/>
+            <line x1="60" y1="110" x2="510" y2="110"/>
+            <line x1="60" y1="160" x2="510" y2="160"/>
+            <line x1="60" y1="210" x2="510" y2="210"/>
+            <line x1="60" y1="260" x2="510" y2="260"/>
+          </g>
+          <g font-size="10" fill="#9CA3AF">
+            <text x="50" y="63" text-anchor="end">€100</text>
+            <text x="50" y="113" text-anchor="end">€80</text>
+            <text x="50" y="163" text-anchor="end">€60</text>
+            <text x="50" y="213" text-anchor="end">€40</text>
+            <text x="50" y="263" text-anchor="end">€20</text>
+            <text x="50" y="263" dy="15" text-anchor="end">€0</text>
+          </g>
+
+          <!-- Bars: <5K -->
+          <!-- RPM 74.47 → y = 260 - (74.47/100 * 200) = 260 - 149 = 111 -->
+          <rect x="90" y="111" width="36" height="149" fill="#7CC142" rx="2"/>
+          <rect x="130" y="111" width="36" height="149" fill="#C8E5A6" rx="2"/>
+          <text x="108" y="103" font-size="11" font-weight="700" fill="#1F2937" text-anchor="middle">€74,47</text>
+          <text x="148" y="103" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">€80+</text>
+          <text x="128" y="280" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="600">&lt; 5K</text>
+          <text x="128" y="295" font-size="10" fill="#6B7280" text-anchor="middle">40 kampaní</text>
+
+          <!-- 5-20K: trapped middle -->
+          <!-- RPM 25.25 → y = 260 - 50.5 = 209.5; projected 45 → y = 260 - 90 = 170 -->
+          <rect x="230" y="210" width="36" height="50" fill="#F59E0B" rx="2"/>
+          <rect x="270" y="170" width="36" height="90" fill="#FBD68E" rx="2"/>
+          <text x="248" y="202" font-size="11" font-weight="700" fill="#1F2937" text-anchor="middle">€25,25</text>
+          <text x="288" y="162" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">€40–50</text>
+          <text x="268" y="280" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="600">5–20K</text>
+          <text x="268" y="295" font-size="10" fill="#B45309" text-anchor="middle">„trapped middle" · 101 k.</text>
+
+          <!-- >100K: mass -->
+          <!-- RPM 40.16 → y = 260 - 80.3 = 179.7; projected 46 → y = 260 - 92 = 168 -->
+          <rect x="370" y="180" width="36" height="80" fill="#5FA02B" rx="2"/>
+          <rect x="410" y="168" width="36" height="92" fill="#A8D478" rx="2"/>
+          <text x="388" y="172" font-size="11" font-weight="700" fill="#1F2937" text-anchor="middle">€40,16</text>
+          <text x="428" y="160" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">€45–47</text>
+          <text x="408" y="280" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="600">&gt; 100K</text>
+          <text x="408" y="295" font-size="10" fill="#6B7280" text-anchor="middle">masové · 18 kampaní</text>
+        </svg>
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#7CC142"></span>Dnes (Q1 2026)</span>
+          <span><span class="legend-dot" style="background:#C8E5A6"></span>Projekce po segmentaci</span>
+          <span><span class="legend-dot" style="background:#F59E0B"></span>Trapped middle (hlavní cíl)</span>
+        </div>
+      </div>
+
+      <!-- Right: band breakdown list -->
+      <div class="tier-list">
+        <div class="tier-item">
+          <div>
+            <div class="tier-label">&lt; 5 000 kontaktů</div>
+            <div class="tier-label-sub">mikro, přesně cílené · 40 kampaní · 1,69 obj. / 1000</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-item">
+              <div class="tier-stat-val">22 %</div>
+              <div class="tier-stat-lbl">Kampaní</div>
+            </div>
+          </div>
+          <div class="tier-rpm">
+            <div class="tier-rpm-val">€74</div>
+            <div class="tier-rpm-lbl">RPM</div>
+          </div>
+        </div>
+
+        <div class="tier-item trapped">
+          <div>
+            <div class="tier-label">5 000 – 20 000</div>
+            <div class="tier-label-sub">„trapped middle" · 101 kampaní · 0,61 obj. / 1000</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-item">
+              <div class="tier-stat-val">56 %</div>
+              <div class="tier-stat-lbl">Kampaní</div>
+            </div>
+          </div>
+          <div class="tier-rpm">
+            <div class="tier-rpm-val">€25</div>
+            <div class="tier-rpm-lbl">RPM</div>
+          </div>
+        </div>
+
+        <div class="tier-item mass">
+          <div>
+            <div class="tier-label">&gt; 100 000 kontaktů</div>
+            <div class="tier-label-sub">masové · 18 kampaní · 0,86 obj. / 1000</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-item">
+              <div class="tier-stat-val">10 %</div>
+              <div class="tier-stat-lbl">Kampaní</div>
+            </div>
+          </div>
+          <div class="tier-rpm">
+            <div class="tier-rpm-val">€40</div>
+            <div class="tier-rpm-lbl">RPM</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 8px; padding: 12px 16px; background: var(--green-soft); border-radius: 8px; font-size: 12px; color: var(--ink); line-height: 1.6;">
+          <strong>Klíčový insight:</strong> 56 % kampaní v pásmu 5–20K generuje <strong>2,9× nižší RPM</strong> než mikro-pásmo a 1,6× nižší než masové. Tam leží největší RPM headroom při zachování objemu — 1× kampaň na 20K se rozpadne na 2–3× paralelní kampaně na 6–8K se stejným total send volume.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROZSAH IMPLEMENTACE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Rozsah implementace — co který rozsah odemkne</div>
+      <div class="section-meta">Year 1 přírůstek tržeb · včetně růstu báze +5K až +20K kontaktů / měs.</div>
+    </div>
+
+    <div class="bundles">
+      <div class="bundle">
+        <div class="bundle-letter">A</div>
+        <div class="bundle-title">Segmentační engine</div>
+        <div class="bundle-sub">48 CB/LB segmentů + CHS scoring. Existující newslettery přestanou být naklikávány ručně — vybírá se pre-buildnutý segment.</div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Přírůstek tržeb</span>
+          <span class="bundle-metric-val highlight">+€85–215K</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">% vs. baseline</span>
+          <span class="bundle-metric-val">+9–24 %</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Marže (20 %)</span>
+          <span class="bundle-metric-val">+€17–43K</span>
+        </div>
+        <div class="bundle-price-block">
+          <div class="bundle-price-row"><span>Nasazení segmentace</span><span>€6 883</span></div>
+          <div class="bundle-price-row"><span>A/B test dopadu</span><span>€9 400</span></div>
+          <div class="bundle-price-row total"><span>Cena celkem</span><span>€16 283</span></div>
+        </div>
+      </div>
+
+      <div class="bundle">
+        <div class="bundle-letter">A + B</div>
+        <div class="bundle-title">+ Automatizace newsletterů</div>
+        <div class="bundle-sub">Level II content strings — 3–5 emailů spuštěných automaticky, když CHS v daném CB/LB překročí práh.</div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Přírůstek tržeb</span>
+          <span class="bundle-metric-val highlight">+€130–325K</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">% vs. baseline</span>
+          <span class="bundle-metric-val">+14–36 %</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Marže (20 %)</span>
+          <span class="bundle-metric-val">+€26–65K</span>
+        </div>
+        <div class="bundle-price-block">
+          <div class="bundle-price-row"><span>Nasazení segmentace</span><span>€6 883</span></div>
+          <div class="bundle-price-row"><span>A/B test dopadu</span><span>€9 400</span></div>
+          <div class="bundle-price-row"><span>Automatizace rozesílek</span><span>€12 800</span></div>
+          <div class="bundle-price-row total"><span>Cena celkem</span><span>€29 083</span></div>
+        </div>
+      </div>
+
+      <div class="bundle active">
+        <div class="bundle-letter">A + B + C</div>
+        <div class="bundle-title">+ Vendor marketing (CPM)</div>
+        <div class="bundle-sub">Tiered segment pricing nahrazuje flat-fee. CPM × audience × sezóna × exkluzivita. Vendor kupuje přístup k segmentu, ne k celé bázi.</div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Přírůstek tržeb</span>
+          <span class="bundle-metric-val highlight">+€165–405K</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">% vs. baseline</span>
+          <span class="bundle-metric-val">+18–45 %</span>
+        </div>
+        <div class="bundle-metric">
+          <span class="bundle-metric-lbl">Marže (A+B 20 % + C 100 %)</span>
+          <span class="bundle-metric-val">+€60–145K</span>
+        </div>
+        <div class="bundle-price-block">
+          <div class="bundle-price-row"><span>Nasazení segmentace</span><span>€6 883</span></div>
+          <div class="bundle-price-row"><span>A/B test dopadu</span><span>€9 400</span></div>
+          <div class="bundle-price-row"><span>Automatizace rozesílek</span><span>€12 800</span></div>
+          <div class="bundle-price-row"><span>Vendor marketing (CPM)</span><span>TBD</span></div>
+          <div class="bundle-price-row total"><span>Cena celkem</span><span>€29 083 + C</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; font-size: 12px; color: var(--ink-mute); line-height: 1.6;">
+      Rozsah A je předpoklad pro B i C. Bez aktivního segmentačního enginu nejdou Level II stringy ani tiered vendor model spustit. B i C lze přidat kdykoli později — staví na metadatech z A.
+    </div>
+  </div>
+
+  <!-- BASELINE VALIDATION -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Validace baseline — co ukazují různé zdroje</div>
+      <div class="section-meta">Bloomreach migrace 10/2025 → uplift již zahrnut</div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Zdroj</th>
+          <th>Období</th>
+          <th class="num">Revenue</th>
+          <th class="num">Anualizováno</th>
+          <th>Poznámka</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GA4 18-month dashboard</td>
+          <td>10/2024 – 04/2026</td>
+          <td class="num">€1 329K</td>
+          <td class="num">€857K</td>
+          <td>Obsahuje 12m pre-migration období</td>
+        </tr>
+        <tr style="background: var(--green-soft);">
+          <td><strong>GA4 trailing 12m</strong></td>
+          <td>04/2025 – 04/2026</td>
+          <td class="num">—</td>
+          <td class="num"><strong>€900K</strong></td>
+          <td><strong>Anchor odhadu</strong> — po-migrační uplift zahrnut</td>
+        </tr>
+        <tr>
+          <td>Q1 2026 newsletter report (anualizovaný)</td>
+          <td>30.12.2025 – 16.3.2026</td>
+          <td class="num">€210,7K</td>
+          <td class="num">€986K</td>
+          <td>Peak sezóna (chřipka) — horní mez</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DOPAD RŮSTU BÁZE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Dopad růstu báze</div>
+      <div class="section-meta">Organický růst cca +20K kontaktů / měs. v posledních měsících (audit Q1 2026)</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+      <div style="padding: 18px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--warn);">
+        <div style="font-size: 11px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px;">Konzervativní růst</div>
+        <div style="font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px;">+5K kontaktů / měsíc</div>
+        <div style="font-size: 12px; color: var(--ink); line-height: 1.5;">Konec Y1: 400K · průměr Y1: 370K · multiplikátor uplift: <strong>×1,09</strong></div>
+      </div>
+      <div style="padding: 18px; background: var(--green-soft); border-radius: 8px; border-left: 4px solid var(--green);">
+        <div style="font-size: 11px; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px;">Optimistický růst (reálný trend)</div>
+        <div style="font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px;">+20K kontaktů / měsíc</div>
+        <div style="font-size: 12px; color: var(--ink); line-height: 1.5;">Konec Y1: 580K · průměr Y1: 460K · multiplikátor uplift: <strong>×1,35</strong></div>
+      </div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Rozsah</th>
+          <th class="num">Bez růstu</th>
+          <th class="num">Konzervativní růst (×1,09)</th>
+          <th class="num">Optimistický růst (×1,35)</th>
+          <th class="num">Range ve Shrnutí</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A</strong></td>
+          <td class="num">€80–160K</td>
+          <td class="num">€87–174K</td>
+          <td class="num">€108–216K</td>
+          <td class="num pos"><strong>€85–215K</strong></td>
+        </tr>
+        <tr>
+          <td><strong>A + B</strong></td>
+          <td class="num">€120–240K</td>
+          <td class="num">€131–261K</td>
+          <td class="num">€162–325K</td>
+          <td class="num pos"><strong>€130–325K</strong></td>
+        </tr>
+        <tr>
+          <td><strong>A + B + C</strong></td>
+          <td class="num">€150–300K</td>
+          <td class="num">€163–327K</td>
+          <td class="num">€203–406K</td>
+          <td class="num pos"><strong>€165–405K</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 10px; font-size: 11px; color: var(--ink-mute); line-height: 1.5;">
+      Výchozí báze ~340K (audit Q1 2026). Lineární akumulace přes 12 měsíců. Předpoklad: revenue škáluje lineárně s velikostí báze při zachované cadenci a engagementu per kontakt.
+    </div>
+  </div>
+
+  <!-- ARCHETYPE TABLE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Segmentační engine jen v newsletterech (A)</div>
+      <div class="section-meta">Zdroj: Martin Kodrik / Q1 2026 analýza · RPM mapováno na €900K baseline</div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Archetyp</th>
+          <th class="num">Kampaní</th>
+          <th class="num">Aktuální RPM</th>
+          <th class="num">Anualizováno</th>
+          <th>RPM uplift · zdůvodnění</th>
+          <th class="num">Uplift</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mass discount</strong></td>
+          <td class="num">17</td>
+          <td class="num">€41,52</td>
+          <td class="num">€650K</td>
+          <td>+10–15 % (LB99 fallback, lepší suppression)</td>
+          <td class="num pos">+€65–97K</td>
+        </tr>
+        <tr>
+          <td>Health need-state</td>
+          <td class="num">71</td>
+          <td class="num">€33,99</td>
+          <td class="num">€79K</td>
+          <td>+40–50 % (rozpad na specifické CB)</td>
+          <td class="num pos">+€32–40K</td>
+        </tr>
+        <tr>
+          <td>Vitamíny / doplňky</td>
+          <td class="num">18</td>
+          <td class="num">€27,85</td>
+          <td class="num">€41K</td>
+          <td>+30 % (LB01–03 přesněji aktuální zájem)</td>
+          <td class="num pos">+€12K</td>
+        </tr>
+        <tr>
+          <td>Pet / antiparazitika</td>
+          <td class="num">8</td>
+          <td class="num">€133,26</td>
+          <td class="num">€29K</td>
+          <td>+10 % (LB18/19 refinement)</td>
+          <td class="num pos">+€3K</td>
+        </tr>
+        <tr>
+          <td>Deti / rodina</td>
+          <td class="num">7</td>
+          <td class="num">€31,74</td>
+          <td class="num">€13K</td>
+          <td>+25 % (LB13/14)</td>
+          <td class="num pos">+€3,3K</td>
+        </tr>
+        <tr>
+          <td>Ostatní (brand dermo, niche, sezónna, výpredaje)</td>
+          <td class="num">56</td>
+          <td class="num">—</td>
+          <td class="num">€43K</td>
+          <td>+10–15 %</td>
+          <td class="num pos">+€5K</td>
+        </tr>
+        <tr class="total">
+          <td>Celkem</td>
+          <td class="num">177</td>
+          <td class="num">—</td>
+          <td class="num">~€855K*</td>
+          <td>— </td>
+          <td class="num pos">+€120–160K</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 10px; font-size: 11px; color: var(--ink-mute); line-height: 1.5;">
+      *Zbývajících ~€45K tvoří jednorázové a testing kampaně, které mohou ve variantách těžit ze segmentů.
+    </div>
+  </div>
+
+  <!-- ROZSAH B EXPLANATION -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">+ Automatizace newsletterů (A+B)</div>
+      <div class="section-meta">Content journey se spustí, když CHS v CB/LB segmentu překročí práh 30 bodů</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px;">
+      <div style="padding: 18px; background: var(--bg); border-radius: 8px; border-top: 3px solid var(--green);">
+        <div style="font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px;">E-mail 1 · Produkt</div>
+        <div style="font-size: 13px; color: var(--ink); line-height: 1.5;">Produktové doporučení k aktuálnímu zájmu — např. léky na chřipku, jakmile CHS v CB03 překročí práh.</div>
+      </div>
+      <div style="padding: 18px; background: var(--bg); border-radius: 8px; border-top: 3px solid var(--green);">
+        <div style="font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px;">E-mail 2 · Obsahový rádce</div>
+        <div style="font-size: 13px; color: var(--ink); line-height: 1.5;">Edukace, tipy jak problém řešit. Value nad produkt — stimuluje engagement bez přímého prodejního tlaku.</div>
+      </div>
+      <div style="padding: 18px; background: var(--bg); border-radius: 8px; border-top: 3px solid var(--green);">
+        <div style="font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px;">E-mail 3+ · Cross-sell</div>
+        <div style="font-size: 13px; color: var(--ink); line-height: 1.5;">Doplňkové produkty — např. vitamín C + zinek k chřipkovému setu. Série 3–5 emailů za ~3 týdny, pak cooldown.</div>
+      </div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Parametr</th>
+          <th>Hodnota</th>
+          <th>Poznámka</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Zahrnuté segmenty v prvním roce</td>
+          <td>10 segmentů</td>
+          <td>Top populované CB/LB</td>
+        </tr>
+        <tr>
+          <td>Audience per segment</td>
+          <td>10–30K kontaktů</td>
+          <td>Po překročení CHS threshold (30 bodů)</td>
+        </tr>
+        <tr>
+          <td>Série per segment</td>
+          <td>3 emaily × 2–3 stringy/rok</td>
+          <td>Max 2 aktivní segmenty paralelně na uživatele</td>
+        </tr>
+        <tr>
+          <td>Incremental sends / rok</td>
+          <td>~1,8M</td>
+          <td>+8 % k současným ~21,6M (navíc, nenahrazuje)</td>
+        </tr>
+        <tr>
+          <td>Očekávané RPM</td>
+          <td>€50–60</td>
+          <td>Mezi mikro (€74) a průměrem (€36), blíže mikro díky relevanci a timing matchingu</td>
+        </tr>
+        <tr class="total">
+          <td>Výpočet</td>
+          <td class="pos">1,8M × €55 / 1000 ≈ €99K</td>
+          <td class="pos"><strong>Impact: +€40–80K navíc oproti rozsahu A</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ROZSAH C EXPLANATION -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">+ CPM Vendor marketing (A+B+C)</div>
+      <div class="section-meta">Přechod z flat-fee na tiered CPM per segment</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+      <div style="padding: 16px 18px; background: var(--bg); border-radius: 8px;">
+        <div style="font-size: 11px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 8px;">Dnes (flat-fee)</div>
+        <div style="font-size: 13px; line-height: 1.6; color: var(--ink);">
+          ~180 vendor newsletterů / rok × průměr €460 = <strong>€86K vendor revenue 2025</strong>. Vendor dostane celou bázi, ROI neměřitelné.
+        </div>
+      </div>
+      <div style="padding: 16px 18px; background: var(--green-soft); border-radius: 8px; border-left: 4px solid var(--green);">
+        <div style="font-size: 11px; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 8px;">Nový model (CPM per segment)</div>
+        <div style="font-size: 13px; line-height: 1.6; color: var(--ink); font-family: ui-monospace, monospace;">
+          Cena = CPM × (audience / 1000) × sezóna × exkluzivita
+        </div>
+      </div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Příklad segmentů</th>
+          <th class="num">RPC</th>
+          <th class="num">CPM rozsah</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Tier S</strong></td>
+          <td>CB03 / CB09 / CB13 (vysoká konverze, akutní)</td>
+          <td class="num">&gt;€8</td>
+          <td class="num pos">€25–40</td>
+        </tr>
+        <tr>
+          <td>Tier A</td>
+          <td>CB01 / CB14 / CB17, LB01</td>
+          <td class="num">€5–8</td>
+          <td class="num pos">€15–25</td>
+        </tr>
+        <tr>
+          <td>Tier B/C</td>
+          <td>Ostatní</td>
+          <td class="num">&lt;€5</td>
+          <td class="num pos">€4–15</td>
+        </tr>
+        <tr class="total">
+          <td colspan="3">Multiplikátory: sezónnost 1,0–1,5× · exkluzivita 1,0–1,5× · paralelně 2–3 vendor sloty / týden</td>
+          <td class="num pos"><strong>+€30–60K</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 10px; font-size: 11px; color: var(--ink-mute); line-height: 1.5;">
+      Celkový vendor objem může růst o 1,5–2×. Impact uveden jako přírůstek oproti rozsahu A+B; vendor marketing počítán jako 100 % marže.
+    </div>
+  </div>
+
+  <!-- CENY -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Ceny</div>
+      <div class="section-meta">Odvozeno z MD sazeb</div>
+    </div>
+
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Rozsah</th>
+          <th>Položka</th>
+          <th>Rozpis</th>
+          <th class="num">Cena</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A</strong></td>
+          <td>Dokončení vývoje segmentace</td>
+          <td><em>fixní, dohodnuto</em></td>
+          <td class="num"><strong>€6 883</strong></td>
+        </tr>
+        <tr>
+          <td><strong>A</strong></td>
+          <td>A/B test dopadu segmentace</td>
+          <td>1 MD BUS + 1 MD SA + 8 MD PIM + PM</td>
+          <td class="num"><strong>€9 400</strong></td>
+        </tr>
+        <tr class="total">
+          <td colspan="3"><strong>A celkem</strong></td>
+          <td class="num pos"><strong>€16 283</strong></td>
+        </tr>
+        <tr>
+          <td><strong>B</strong></td>
+          <td>Automatizace rozesílek</td>
+          <td>10 MD Implementátor / PIM + 1 MD BUS + 3 MD DEV + PM</td>
+          <td class="num"><strong>€12 800</strong></td>
+        </tr>
+        <tr class="total">
+          <td colspan="3"><strong>A + B celkem</strong></td>
+          <td class="num pos"><strong>€29 083</strong></td>
+        </tr>
+        <tr>
+          <td><strong>C</strong></td>
+          <td>Vendor marketing</td>
+          <td>Na základě dat ze segmentace po A/B testu</td>
+          <td class="num"><strong>TBD</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 14px; font-size: 11px; color: var(--ink-mute); line-height: 1.5;">
+      MD sazby: PIM €640 · SA €960 · DEV €800 · BUS €1 440.
+    </div>
+  </div>
+
+  <!-- ROADMAPA -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Roadmapa</div>
+      <div class="section-meta">Duben 2026 → srpen 2026 · CPM Vendor koncept pro sezónu 2027</div>
+    </div>
+
+    <svg class="chart" viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg">
+      <!-- Month header -->
+      <g font-size="12" font-weight="600" fill="#1F2937">
+        <text x="200" y="20" text-anchor="middle">Duben</text>
+        <text x="360" y="20" text-anchor="middle">Květen</text>
+        <text x="520" y="20" text-anchor="middle">Červen</text>
+        <text x="680" y="20" text-anchor="middle">Červenec</text>
+        <text x="840" y="20" text-anchor="middle">Srpen</text>
+      </g>
+      <!-- Week ticks -->
+      <g stroke="#E5E7EB" stroke-width="1">
+        <line x1="120" y1="30" x2="120" y2="260"/>
+        <line x1="280" y1="30" x2="280" y2="260"/>
+        <line x1="440" y1="30" x2="440" y2="260"/>
+        <line x1="600" y1="30" x2="600" y2="260"/>
+        <line x1="760" y1="30" x2="760" y2="260"/>
+        <line x1="920" y1="30" x2="920" y2="260"/>
+      </g>
+
+      <!-- Phase 1: Vývoj segmentace (duben - 8.5., ~5 weeks) -->
+      <rect x="120" y="50" width="200" height="32" rx="6" fill="#7CC142"/>
+      <text x="130" y="70" font-size="12" font-weight="600" fill="white">Vývoj segmentace · do 8.5.</text>
+      <text x="0" y="70" font-size="11" font-weight="600" fill="#1F2937">Rozsah A</text>
+
+      <!-- Phase 2: A/B test + vyhodnocení (od 2. týdne května - červen, ~6 weeks) -->
+      <rect x="320" y="98" width="240" height="32" rx="6" fill="#5FA02B"/>
+      <text x="330" y="118" font-size="12" font-weight="600" fill="white">A/B test + vyhodnocení</text>
+      <text x="0" y="118" font-size="11" font-weight="600" fill="#1F2937">A/B test</text>
+
+      <!-- Bonus lane under A/B test -->
+      <rect x="320" y="135" width="240" height="24" rx="6" fill="#FBD68E" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4 2"/>
+      <text x="330" y="152" font-size="11" font-weight="600" fill="#B45309">ZDARMA: test rekomendací pro zvolené segmenty</text>
+
+      <!-- Phase 3: Vývoj automatizací (červen - mírný overlap do července, ~5 weeks) -->
+      <rect x="520" y="175" width="180" height="32" rx="6" fill="#7CC142"/>
+      <text x="530" y="195" font-size="12" font-weight="600" fill="white">Vývoj automatizací NL</text>
+      <text x="0" y="195" font-size="11" font-weight="600" fill="#1F2937">Rozsah B</text>
+
+      <!-- Phase 4: CPM Vendor marketing concept (červenec + srpen, ~8 weeks) -->
+      <rect x="680" y="223" width="300" height="32" rx="6" fill="#5FA02B"/>
+      <text x="690" y="243" font-size="12" font-weight="600" fill="white">CPM Vendor koncept (prodej na 2027)</text>
+      <text x="0" y="243" font-size="11" font-weight="600" fill="#1F2937">Rozsah C</text>
+    </svg>
+
+    <table class="data" style="margin-top: 16px;">
+      <thead>
+        <tr>
+          <th>Fáze</th>
+          <th>Termín</th>
+          <th>Poznámka</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Dokončení vývoje segmentace</strong></td>
+          <td>duben – <strong>8.5.2026</strong></td>
+          <td>konec 1. týdne května</td>
+        </tr>
+        <tr>
+          <td><strong>A/B test segmentace + vyhodnocení</strong></td>
+          <td>od 2. týdne května – červen</td>
+          <td>4 týdny test + vyhodnocení</td>
+        </tr>
+        <tr style="background: #FEF3C7;">
+          <td><em>ZDARMA</em>: test rekomendací pro zvolené segmenty</td>
+          <td>během A/B testu</td>
+          <td>bonus k A/B testu</td>
+        </tr>
+        <tr>
+          <td><strong>Vývoj automatizací newsletterových rozesílek</strong></td>
+          <td>červen (možný malý overlap do července)</td>
+          <td>navazuje na A</td>
+        </tr>
+        <tr>
+          <td><strong>Příprava detailního konceptu CPM Vendor marketingu</strong></td>
+          <td>červenec + srpen 2026</td>
+          <td>cíl: prodej na <strong>sezónu 2027</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- YEAR 2+ -->
+  <div class="section" style="background: linear-gradient(90deg, var(--green-soft) 0%, white 70%); border-left: 4px solid var(--green);">
+    <div style="display: flex; gap: 16px; align-items: center;">
+      <div style="font-size: 26px; font-weight: 700; color: var(--green-dark); line-height: 1;">+10–15 %</div>
+      <div style="flex: 1;">
+        <div style="font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px;">Dopad v dalších letech</div>
+        <div style="font-size: 12px; color: var(--ink); line-height: 1.5;">
+          Při plném nasazení a systémových optimalizacích (ladění segmentového scoringu na reálných datech, expanze o síť lékáren, omnichannel propojení s push/SMS) očekáváme ve druhém a dalším roce cca +10–15 % oproti prvnímu roku běhu. Další rozvoj vyžaduje samostatný iterační cyklus.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSUMPTIONS -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Klíčové předpoklady a citlivosti</div>
+      <div class="section-meta">Co odhad stojí a padá</div>
+    </div>
+
+    <div class="assumptions">
+      <div class="assumption">
+        <div class="assumption-num">1</div>
+        <div><strong>Baseline €900K / rok</strong> — GA4 trailing 12m; migrační uplift (10/2025 Bloomreach) zahrnut.</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">2</div>
+        <div><strong>Objem rozesílek zachován</strong> (~21,6M mailů / rok). Neřešíme omezení frekvence emailů.</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">3</div>
+        <div><strong>Překryv segmentů 30–40 %</strong> — čísla v tabulkách zahrnují odpočet za překryv; rozsah A + B se nesčítají beze ztráty.</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">4</div>
+        <div><strong>Rozsah A je předpoklad</strong> pro B i C. Bez aktivního segmentačního enginu nejdou Level II stringy ani tiered vendor model spustit.</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">5</div>
+        <div><strong>Marže:</strong> 20 % blended na e-shop tržbách; vendor marketing = 100 % marže (agenturní model).</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">6</div>
+        <div><strong>Data lékáren</strong> (600 lékáren, 80K+ kontaktů) <strong>nejsou</strong> v odhadu zahrnuta.</div>
+      </div>
+      <div class="assumption">
+        <div class="assumption-num">7</div>
+        <div><strong>Růst báze:</strong> Horní hranice ranges předpokládá organický růst báze (konzervativně +5K / optimisticky +20K kontaktů měsíčně). Lineární akumulace přes 12 měsíců = průměrný multiplikátor ×1,09 (konz.) až ×1,35 (opt.).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Zdroje: GA4 eTabletka dashboard (10/2024–04/2026) · <a href="https://epace.atlassian.net/wiki/spaces/Unipharma/pages/2622259201">Analýza e-mailových kampaní (Martin Kodrik, 1.4.2026)</a> · <a href="https://epace.atlassian.net/wiki/spaces/Unipharma/pages/2160197658">Segmentace zákaznické báze BSoW</a> · <a href="https://epace.atlassian.net/wiki/spaces/Unipharma/pages/2167406620">Automatizace Newsletterů BSoW/TSoW</a>
+    <br>ePACE · duben 2026 · verze 2.0
+  </div>
+
+</div>
+</body>
+</html>
