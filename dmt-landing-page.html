@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ePace – Vyplatí se CDP ve Vaší firmě?</title>
+<title>ePace – Jste připraveni na datově řízený marketing?</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
@@ -715,6 +715,200 @@
   }
   .marquee-track::before { left: 0; background: linear-gradient(to right, var(--grey-light), transparent); }
   .marquee-track::after { right: 0; background: linear-gradient(to left, var(--grey-light), transparent); }
+
+  /* ═══════════════════════════════════════════
+     DMT EXPRESS FORM
+  ═══════════════════════════════════════════ */
+  #dmt-express {
+    background:
+      radial-gradient(ellipse 50% 60% at 100% 20%, rgba(250,210,50,0.07) 0%, transparent 60%),
+      var(--grey-dark);
+    color: var(--text-on-dark);
+  }
+  #dmt-express .section-label { color: var(--accent); }
+  #dmt-express .section-title { color: var(--text-on-dark); }
+  #dmt-express .section-sub   { color: var(--text-muted-dark); }
+
+  /* Progress bar */
+  .dmt-progress-track {
+    height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;
+    margin-bottom: 2rem; overflow: hidden;
+  }
+  .dmt-progress-fill {
+    height: 100%; background: var(--accent);
+    border-radius: 2px; transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* Step counter */
+  .dmt-step-counter {
+    font-size: 0.78rem; color: var(--text-muted-dark);
+    margin-bottom: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Step wrapper */
+  .dmt-step {
+    display: none;
+    animation: dmt-fadein 0.3s ease;
+  }
+  .dmt-step.active { display: block; }
+  @keyframes dmt-fadein {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Question heading */
+  .dmt-q-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--text-on-dark);
+    margin-bottom: 0.4rem; line-height: 1.4;
+  }
+  .dmt-q-hint {
+    font-size: 0.88rem; color: var(--text-muted-dark);
+    margin-bottom: 1.25rem; line-height: 1.6;
+  }
+
+  /* Inputs */
+  .dmt-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: var(--text-on-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 0.75rem;
+  }
+  .dmt-input::placeholder { color: rgba(255,255,255,0.3); }
+  .dmt-input:focus {
+    border-color: var(--accent);
+    background: rgba(250,210,50,0.05);
+  }
+  textarea.dmt-input { resize: vertical; min-height: 100px; }
+
+  .dmt-input-label {
+    display: block; font-size: 0.8rem; font-weight: 600;
+    color: var(--text-muted-dark); margin-bottom: 0.35rem;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  /* Nav buttons */
+  .dmt-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1.5rem; gap: 1rem;
+  }
+  .dmt-btn-back {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    color: var(--text-muted-dark);
+    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.88rem;
+    padding: 0.6rem 1.4rem; border-radius: 6px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dmt-btn-back:hover { border-color: var(--accent); color: var(--accent); }
+  .dmt-btn-next {
+    background: var(--accent); color: #1E2433;
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem;
+    padding: 0.7rem 2rem; border-radius: 6px; border: none; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dmt-btn-next:hover { background: #ffe066; box-shadow: 0 0 20px var(--accent-glow); }
+  .dmt-btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Optional badge */
+  .dmt-optional {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted-dark);
+    background: rgba(255,255,255,0.08); border-radius: 4px;
+    padding: 0.15rem 0.5rem; margin-left: 0.5rem;
+  }
+
+  /* Loading */
+  .dmt-loading-wrap {
+    text-align: center; padding: 3rem 1rem;
+  }
+  .dmt-spinner {
+    width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: dmt-spin 0.8s linear infinite; margin: 0 auto 1.5rem;
+  }
+  @keyframes dmt-spin { to { transform: rotate(360deg); } }
+  .dmt-loading-text {
+    font-size: 0.95rem; color: var(--text-muted-dark); line-height: 1.6;
+  }
+
+  /* Tier result card */
+  .dmt-result-wrap { animation: dmt-fadein 0.4s ease; }
+  .dmt-tier-badge {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: rgba(250,210,50,0.1);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 1rem 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .dmt-tier-roman {
+    font-family: 'Poppins', sans-serif; font-size: 2.5rem; font-weight: 800;
+    color: var(--accent); line-height: 1;
+  }
+  .dmt-tier-info { text-align: left; }
+  .dmt-tier-name {
+    font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700;
+    color: var(--text-on-dark);
+  }
+  .dmt-tier-range { font-size: 0.82rem; color: var(--text-muted-dark); }
+  .dmt-result-headline {
+    font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700;
+    color: var(--text-on-dark); margin-bottom: 1.5rem; line-height: 1.4;
+  }
+  .dmt-result-cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;
+  }
+  .dmt-result-block {
+    background: rgba(255,255,255,0.05); border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1); padding: 1.1rem 1.25rem;
+  }
+  .dmt-result-block-title {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .dmt-result-block-title.green { color: #4ade80; }
+  .dmt-result-block-title.red   { color: #f87171; }
+  .dmt-result-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .dmt-result-block li { font-size: 0.88rem; color: var(--text-muted-dark); line-height: 1.5; }
+  .dmt-result-block li::before { content: "→ "; color: var(--accent); }
+  .dmt-result-next {
+    background: rgba(250,210,50,0.08); border: 1px solid rgba(250,210,50,0.25);
+    border-radius: 10px; padding: 1.1rem 1.25rem; margin-bottom: 1.5rem;
+  }
+  .dmt-result-next-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem;
+  }
+  .dmt-result-next p { font-size: 0.92rem; color: var(--text-on-dark); line-height: 1.6; }
+  .dmt-tech-found {
+    font-size: 0.8rem; color: var(--text-muted-dark); margin-bottom: 1.25rem;
+  }
+  .dmt-tech-badge {
+    display: inline-block; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 4px;
+    padding: 0.2rem 0.55rem; font-size: 0.75rem; margin: 0.2rem 0.2rem 0 0;
+    color: var(--text-muted-dark);
+  }
+
+  .dmt-error-msg {
+    color: #f87171; font-size: 0.88rem; margin-top: 0.5rem; display: none;
+  }
+
+  @media (max-width: 640px) {
+    .dmt-result-cols { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -725,7 +919,7 @@
     <div class="logo">e<span>Pace</span></div>
     <nav class="nav-right">
       <a href="#footer" class="nav-link btn-ghost-nav">Kontakt</a>
-      <a href="#cta-final" class="btn-primary">Spustit Readiness Check</a>
+      <a href="#dmt-express" class="btn-primary">Spustit DMT Express</a>
     </nav>
   </div>
 </header>
@@ -736,16 +930,16 @@
     <div class="hero-grid">
       <div>
         <h1 class="hero-h1 fade-up fade-delay-1">
-          Vyplatí se <em>Customer Data Platform</em><br />ve Vaší firmě?
+          Jste připraveni na<br/><em>datově řízený marketing</em>?
         </h1>
         <p class="hero-h2 fade-up fade-delay-2">
-          Zjistěte během pár dní, jestli vam CDP přinese reálnou hodnotu.
+          Zjistěte svou úroveň digitální zralosti — zdarma, za pár minut.
         </p>
         <p class="hero-support fade-up fade-delay-3">
-          Na základě Vašich dat, systémů a business cílů.
+          Váš web, pár otázek, okamžitý výsledek ve formě Tieru I–IV.
         </p>
         <div class="hero-ctas fade-up fade-delay-4">
-          <a href="#cta-final" class="btn-primary">Spustit Readiness Check</a>
+          <a href="#dmt-express" class="btn-primary">Spustit DMT Express</a>
           <a href="#footer" class="btn-ghost">Kontaktovat nás</a>
         </div>
       </div>
@@ -867,35 +1061,35 @@
 </div>
 
 <!-- PROBLEM SECTION -->
-<section id="problem" style="display:none;">
+<section id="problem">
   <div class="container">
     <div style="text-align:center; max-width:640px; margin:0 auto;">
-      <h2 class="section-title fade-up fade-delay-1">CDP zní dobře. Ale dává smysl právě Vám?</h2>
+      <h2 class="section-title fade-up fade-delay-1">Datově řízený marketing zní dobře. Kde ale skutečně stojíte?</h2>
       <p class="section-sub fade-up fade-delay-2" style="margin:0.75rem auto 0;">
       Většina firem řeší výběr nástroje dřív, než si odpoví na zásadní otázku:
-        <strong style="color:#0075c4;">Jsme na CDP připraveni?</strong>
+        <strong style="color:#0075c4;">Jste připraveni na datově řízený marketing?</strong>
 <br/>
-<div class="section-label fade-up" text-align: left;">Rizika předčasného nasazení</div>
+<div class="section-label fade-up" style="text-align:left;">Nejčastější bariéry</div>
 
       </p>
     </div>
     <div class="problem-cards">
       <div class="problem-card fade-up fade-delay-1">
 
-        <h4>Zbytečné investice</h4>
-        <p>CDP dává smysl jen tehdy, když víte, kde vám vydělá peníze. Licence a implementace bez jasného business case jsou promarněné investice.</p>
+        <h4>Nástroje bez strategie</h4>
+        <p>Platformy a technologie existují, ale bez jasné strategie a business case jsou jen náklady bez dopadu.</p>
       </div>
       <div class="problem-card fade-up fade-delay-2">
         <h4>Nevyužití dat naplno</h4>
-        <p>Data existují, ale jsou rozptýlená, nekvalitní nebo nepropojitelná. Bez jasného plánu implementace a práce s daty ale CDP samo o sobě hodnotu nepřinese.</p>
+        <p>Data existují, ale jsou rozptýlená nebo nevyužitá. Bez propojení nástrojů a kvalitní databáze nelze komunikaci personalizovat ani automatizovat.</p>
       </div>
       <div class="problem-card fade-up fade-delay-3">
         <h4>Složitá implementace bez výsledků</h4>
-        <p>Bez připravenosti a jasné architektury se implementace rychle komplikuje. Úspěch CDP stojí na správném návrhu ještě před implementací. </p>
+        <p>Bez připravenosti organizace a jasné architektury se každá implementace komplikuje. Správný návrh ještě před startem ušetří měsíce práce.</p>
       </div>
       <div class="problem-card fade-up fade-delay-4">
-        <h4>Nejasný business přínos</h4>
-        <p>Bez definovaných use cases a KPI navázaných na business cíle zůstává CDP jen technickým řešením bez dopadu.</p>
+        <h4>Chybí měřitelné výsledky</h4>
+        <p>Bez definovaných use cases a KPI navázaných na business cíle zůstávají marketingové nástroje bez měřitelného dopadu.</p>
       </div>
     </div>
   </div>
@@ -907,9 +1101,9 @@
     <div class="solution-grid">
       <div>
         
-        <h2 class="section-title fade-up fade-delay-1">CDP Readiness Check</h2>
+        <h2 class="section-title fade-up fade-delay-1">Digital Maturity Test</h2>
         <p class="section-sub fade-up fade-delay-2">
-          Rychlý a strukturovaný způsob, jak se rozhodnout správně. Bez dohadů, na zakladě Vašich reálných dat a cílů.
+          Strukturovaný způsob, jak pochopit, kde stojíte a co je skutečný next step. Bez dohadů — na základě Vašeho webu a reálné situace.
         </p>
       </div>
       <div>
@@ -918,25 +1112,25 @@
             <span class="check-icon">
               <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FAD232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span>Dává CDP smysl pro Váš business a datové prostředí?</span>
+            <span>Jaká je vaše aktuální úroveň digitální vyspělosti?</span>
           </li>
           <li class="fade-up fade-delay-2">
             <span class="check-icon">
               <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FAD232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span>Jaké řešení zvolit — vystačíte si s jednodušším nástrojem, nebo potřebujete enterprise CDP?</span>
+            <span>Kde jsou největší příležitosti pro automatizaci a personalizaci?</span>
           </li>
           <li class="fade-up fade-delay-3">
             <span class="check-icon">
               <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FAD232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span>Kde máte největší mezery v datech, procesech a organizaci?</span>
+            <span>Kde jsou mezery v datech, nástrojích a procesech?</span>
           </li>
           <li class="fade-up fade-delay-4">
             <span class="check-icon">
               <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FAD232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span>Jaký je realistický next step bez zbytečných rizik?</span>
+            <span>Jaký je realistický next step s největším dopadem?</span>
           </li>
         </ul>
       </div>
@@ -948,11 +1142,11 @@
 <section id="product">
   <div class="container">
      <div class="section-label fade-up">Řešení</div>
-    <h2 class="section-title fade-up fade-delay-1" style="margin-bottom:2.5rem;">Řekneme Vám, jestli investovat do CDP.</h2>
+    <h2 class="section-title fade-up fade-delay-1" style="margin-bottom:2.5rem;">Kde stojíte a co je váš next step.</h2>
 	<h3 style="font-size:1.5rem; font-weight:800; letter-spacing:-0.02em;">Kde se právě nacházíte?</h3>
     <div class="tab-switcher fade-up fade-delay-2">
-      <button class="tab-btn active" onclick="switchTab('light', this)">Chci vědět, jestli je CDP pro nás</button>
-      <button class="tab-btn" onclick="switchTab('full', this)">Chci plán, jak CDP zavést</button>
+      <button class="tab-btn active" onclick="switchTab('light', this)">Chci znát svou úroveň</button>
+      <button class="tab-btn" onclick="switchTab('full', this)">Chci komplexní analýzu</button>
     </div>
 
  
@@ -960,10 +1154,10 @@
     <div id="tab-light" class="tab-content active">
       <div class="product-grid">
         <div>
-          <h3 style="font-size:1.75rem; font-weight:800; letter-spacing:-0.02em;">CDP Readiness Assessment </h3>
+          <h3 style="font-size:1.75rem; font-weight:800; letter-spacing:-0.02em;">Digital Maturity Assessment</h3>
           <div class="product-price">1 499 €</div>
-CDP Readiness Assessment je expertní posouzení založené na strukturovaném dotazníku, jehož odpovědi následně vyhodnocuje náš CDP Business Consultant.
-Výstupem je doporučení, zda pořídit CDP, založené na vašem aktuálním datovém setupu a business cílích.</br>
+Digital Maturity Assessment je expertní posouzení digitální vyspělosti vašeho marketingu — od datové infrastruktury přes automatizaci až po personalizaci.
+Výstupem je jasné zhodnocení stavu, prioritní doporučení a next steps.</br>
 </br>
           <div class="section-label" style="margin-bottom:0.75rem;">Jak to funguje</div>
           <div class="steps-row">
@@ -983,8 +1177,8 @@ Výstupem je doporučení, zda pořídit CDP, založené na vašem aktuálním d
 
           <div class="section-label" style="margin-bottom:0.75rem; margin-top:2rem;">Co získáte</div>
           <ul class="gains-list">
-            <li><span class="gains-dot"></span>Jasné rozhodnutí: CDP ano / ne</li>
-            <li><span class="gains-dot"></span>Doporučení konkrétního směru</li>
+            <li><span class="gains-dot"></span>Tier I–IV: vaše úroveň digitální zralosti</li>
+            <li><span class="gains-dot"></span>Prioritní doporučení pro váš kontext</li>
             <li><span class="gains-dot"></span>Přehled největších rizik</li>
           </ul>
 
@@ -992,15 +1186,15 @@ Výstupem je doporučení, zda pořídit CDP, založené na vašem aktuálním d
 
         <div>
           <div class="sidebar-card">
-            <h4>Rychlé rozhodnutí během pár dní</h4>
-            <p>Ideální pro firmy, které chtějí ziskat rychlý pohled před velkým rozhodnutím. Low-cost vstup bez závazků.</p>
+            <h4>Jasný pohled během pár dní</h4>
+            <p>Ideální pro firmy, které chtějí strukturovaný pohled na svůj marketing před dalším investičním rozhodnutím.</p>
             <ul class="sidebar-perks">
               <li><span class="perk-check">+</span> Výsledky do 5 pracovních dní</li>
               <li><span class="perk-check">+</span> Bez dlouhého onboardingu</li>
               <li><span class="perk-check">+</span> Jasná doporučení hned</li>
               <li><span class="perk-check">+</span> Fixní cena, žádná překvapení</li>
             </ul>
-            <a href="#cta-final" class="btn-primary" style="display:block; text-align:center; width:100%;">Spustit Readiness Check</a>
+            <a href="#dmt-express" class="btn-primary" style="display:block; text-align:center; width:100%;">Spustit DMT Express</a>
           </div>
         </div>
       </div>
@@ -1131,36 +1325,389 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
 <section id="process">
   <div class="container">
     <div class="section-label fade-up">Jak to probíhá</div>
-    <h2 class="section-title fade-up fade-delay-1">Tři kroky k jasnému rozhodnutí</h2>
+    <h2 class="section-title fade-up fade-delay-1">Jak to funguje</h2>
     <div class="timeline">
       <div class="timeline-item fade-up fade-delay-1">
         <div class="timeline-num">1</div>
-        <h4>Vyberete variantu</h4>
-        <p>CDP Readiness Check nebo celou Business Analýzu podle Vaší potřeby a časového horizontu rozhodnutí.</p>
+        <h4>Spustíte DMT Express</h4>
+        <p>Zadáte URL svého webu a odpovíte na 5 otázek. Trvá to asi 5 minut.</p>
       </div>
       <div class="timeline-item fade-up fade-delay-2">
         <div class="timeline-num">2</div>
-        <h4>Ozveme se Vám do 24 h</h4>
-        <p>Ať už zvolíte rychlý Check nebo Business analýzu, ozveme se Vám a upřesníme očekávání.</p>
+        <h4>Okamžitě vidíte výsledek</h4>
+        <p>Tier I–IV + co to znamená pro váš konkrétní případ a jaký je doporučený next step.</p>
       </div>
       <div class="timeline-item fade-up fade-delay-3">
         <div class="timeline-num">3</div>
-        <h4>Pustíme se do toho</h4>
-        <p>Strukturované hodnocení, výsledky a jasná doporučení. Máte podklady pro rozhodnutí.</p>
+        <h4>Ozveme se a posuneme se dál</h4>
+        <p>Máte-li zájem o hlubší analýzu nebo konzultaci, ozveme se do 24 hodin.</p>
       </div>
     </div>
   </div>
 </section>
+
+
+<!-- ════════════════════════════════════════════
+     DMT EXPRESS — embedded multi-step form
+     API endpoint: change DMT_API_URL to your backend
+════════════════════════════════════════════ -->
+<section id="dmt-express">
+  <div class="container">
+    <div style="max-width:700px; margin:0 auto;">
+      <div class="section-label fade-up" style="text-align:center;">Digital Maturity Test — Express</div>
+      <h2 class="section-title fade-up fade-delay-1" style="text-align:center; color:var(--text-on-dark);">
+        Otestujte svou digitální zralost —<br/><em style="color:var(--accent); font-style:normal;">zdarma, hned teď</em>
+      </h2>
+      <p class="fade-up fade-delay-2" style="text-align:center; color:var(--text-muted-dark); margin:0.75rem auto 2.5rem; max-width:480px; font-size:0.97rem; line-height:1.7;">
+        Analyzujeme váš web a vyhodnotíme 5 otázek.<br/>Výsledek: Tier I–IV + co udělat dál.
+      </p>
+
+      <!-- Progress bar -->
+      <div class="dmt-progress-track">
+        <div class="dmt-progress-fill" id="dmt-progress-fill"></div>
+      </div>
+
+      <!-- Form container -->
+      <div id="dmt-form-container">
+
+        <!-- ─ Step 0: Start ─ -->
+        <div id="dmt-step-0" class="dmt-step active">
+          <p class="dmt-q-hint" style="font-size:1rem; margin-bottom:2rem;">
+            Náš nástroj zkombinuje automatický scan vašeho webu (tech stack, nástroje)
+            s vašimi odpověďmi na 5 otázek. Výsledek dostanete okamžitě na email.
+          </p>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin-bottom:2rem;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:1.1rem 1.25rem;">
+              <div style="font-size:1.25rem; margin-bottom:0.4rem;">🔍</div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--text-on-dark); margin-bottom:0.25rem;">Scan webu</div>
+              <div style="font-size:0.8rem; color:var(--text-muted-dark);">Tech stack detekován automaticky ze zdrojového kódu</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:1.1rem 1.25rem;">
+              <div style="font-size:1.25rem; margin-bottom:0.4rem;">💬</div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--text-on-dark); margin-bottom:0.25rem;">5 otázek</div>
+              <div style="font-size:0.8rem; color:var(--text-muted-dark);">Napište volně — AI vyhodnotí kontext</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:1.1rem 1.25rem;">
+              <div style="font-size:1.25rem; margin-bottom:0.4rem;">📊</div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--text-on-dark); margin-bottom:0.25rem;">Tier I–IV</div>
+              <div style="font-size:0.8rem; color:var(--text-muted-dark);">Okamžitý výsledek + doporučení</div>
+            </div>
+          </div>
+          <div class="dmt-nav" style="justify-content:flex-end;">
+            <button class="dmt-btn-next" onclick="dmtGoto(1)">Začít →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 1: URLs ─ -->
+        <div id="dmt-step-1" class="dmt-step">
+          <div class="dmt-step-counter" id="dmt-counter-1">Krok 1 z 7</div>
+          <div class="dmt-q-label">Váš web</div>
+          <div class="dmt-q-hint">Zadejte URL vašeho webu. Volitelně přidejte až dva konkurenty — jejich stack také analyzujeme.</div>
+          <label class="dmt-input-label">Váš web *</label>
+          <input id="dmt-url" type="url" class="dmt-input" placeholder="https://vasefirma.cz" />
+          <label class="dmt-input-label">Konkurent 1 <span class="dmt-optional">volitelné</span></label>
+          <input id="dmt-comp1" type="url" class="dmt-input" placeholder="https://konkurent.cz" />
+          <label class="dmt-input-label">Konkurent 2 <span class="dmt-optional">volitelné</span></label>
+          <input id="dmt-comp2" type="url" class="dmt-input" placeholder="https://dalsi-konkurent.cz" />
+          <div id="dmt-url-err" class="dmt-error-msg">Zadejte prosím platnou URL (začínající https://).</div>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(0)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtNext1()">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 2: Q1 — Databáze ─ -->
+        <div id="dmt-step-2" class="dmt-step">
+          <div class="dmt-step-counter">Krok 2 z 7 — Otázka 1/5</div>
+          <div class="dmt-q-label">Marketingová databáze</div>
+          <div class="dmt-q-hint">Kolik máte kontaktů ve vaší marketingové databázi? Jak je sbíráte — newsletter, registrace, věrnostní program?</div>
+          <textarea id="dmt-q1" class="dmt-input" placeholder="Např.: Máme ~50 000 emailů sbíraných přes newsletter na webu a registrace v eshopu. Přibývá nám cca 500 kontaktů měsíčně."></textarea>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(1)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtGoto(3)">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 3: Q2 — Email automatizace ─ -->
+        <div id="dmt-step-3" class="dmt-step">
+          <div class="dmt-step-counter">Krok 3 z 7 — Otázka 2/5</div>
+          <div class="dmt-q-label">Email marketing a automatizace</div>
+          <div class="dmt-q-hint">Posíláte zákazníkům automatizované emaily? Popište, jaké scénáře máte — welcome email, opuštěný košík, reaktivace, série…</div>
+          <textarea id="dmt-q2" class="dmt-input" placeholder="Např.: Máme welcome email, ale jinak posíláme jen manuální newslettery 1× týdně. Košík nemáme."></textarea>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(2)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtGoto(4)">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 4: Q3 — Personalizace ─ -->
+        <div id="dmt-step-4" class="dmt-step">
+          <div class="dmt-step-counter">Krok 4 z 7 — Otázka 3/5</div>
+          <div class="dmt-q-label">Personalizace</div>
+          <div class="dmt-q-hint">Přizpůsobujete obsah, nabídky nebo komunikaci různým skupinám zákazníků? Jak — segmenty, dynamický obsah, doporučování?</div>
+          <textarea id="dmt-q3" class="dmt-input" placeholder="Např.: Segmentujeme podle pohlaví a posíláme jiné produktové nabídky. Na webu nemáme personalizaci."></textarea>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(3)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtGoto(5)">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 5: Q4 — Nástroje ─ -->
+        <div id="dmt-step-5" class="dmt-step">
+          <div class="dmt-step-counter">Krok 5 z 7 — Otázka 4/5</div>
+          <div class="dmt-q-label">Marketingové nástroje</div>
+          <div class="dmt-q-hint">Jaké nástroje pro marketing a data aktivně využíváte? (CRM, ESP, analytika, reklamní platformy, automatizace…) Zahrňte i interní systémy, které nemusejí být vidět na webu.</div>
+          <textarea id="dmt-q4" class="dmt-input" placeholder="Např.: Mailchimp na email, GA4 na analytiku, Pipedrive jako CRM. Reklamujeme na Meta a Google."></textarea>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(4)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtGoto(6)">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 6: Q5 — Cíl ─ -->
+        <div id="dmt-step-6" class="dmt-step">
+          <div class="dmt-step-counter">Krok 6 z 7 — Otázka 5/5</div>
+          <div class="dmt-q-label">Hlavní cíl a výzva</div>
+          <div class="dmt-q-hint">Co je vaším hlavním marketingovým cílem nebo problémem v příštích 12 měsících? Co chcete zlepšit nebo vyřešit?</div>
+          <textarea id="dmt-q5" class="dmt-input" placeholder="Např.: Chceme snížit závislost na placené reklamě, zlepšit retenci zákazníků a spustit automatizované emaily."></textarea>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(5)">← Zpět</button>
+            <button class="dmt-btn-next" onclick="dmtGoto(7)">Dál →</button>
+          </div>
+        </div>
+
+        <!-- ─ Step 7: Kontakt ─ -->
+        <div id="dmt-step-7" class="dmt-step">
+          <div class="dmt-step-counter">Krok 7 z 7 — Váš e-mail</div>
+          <div class="dmt-q-label">Kam poslat výsledek?</div>
+          <div class="dmt-q-hint">Výsledek zobrazíme okamžitě a pošleme i na email. Žádný spam — jen váš Tier + krátký komentář.</div>
+          <label class="dmt-input-label">Jméno <span class="dmt-optional">volitelné</span></label>
+          <input id="dmt-name" type="text" class="dmt-input" placeholder="Jana Nováková" />
+          <label class="dmt-input-label">Pracovní e-mail *</label>
+          <input id="dmt-email" type="email" class="dmt-input" placeholder="jana@vasefirma.cz" />
+          <div id="dmt-email-err" class="dmt-error-msg">Zadejte prosím platný e-mail.</div>
+          <p style="font-size:0.78rem; color:var(--text-muted-dark); margin-top:-0.25rem; margin-bottom:1.5rem; line-height:1.6;">
+            Odesláním souhlasíte se zpracováním e-mailu dle <a href="#" style="color:var(--accent); text-decoration:none;">Ochrany osobních údajů ePACE</a>.
+          </p>
+          <div class="dmt-nav">
+            <button class="dmt-btn-back" onclick="dmtGoto(6)">← Zpět</button>
+            <button class="dmt-btn-next" id="dmt-submit-btn" onclick="dmtSubmit()">Zobrazit výsledek →</button>
+          </div>
+        </div>
+
+        <!-- ─ Loading ─ -->
+        <div id="dmt-loading" style="display:none;">
+          <div class="dmt-loading-wrap">
+            <div class="dmt-spinner"></div>
+            <div class="dmt-loading-text">
+              Analyzujeme váš web a vyhodnocujeme odpovědi…<br/>
+              <span style="font-size:0.8rem; opacity:0.6;">Obvykle trvá 10–20 sekund</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Result ─ -->
+        <div id="dmt-result" style="display:none;">
+          <div class="dmt-result-wrap">
+            <div class="section-label" style="margin-bottom:1rem;">Váš výsledek</div>
+            <div class="dmt-tier-badge" id="dmt-tier-badge">
+              <div class="dmt-tier-roman" id="dmt-tier-roman">III</div>
+              <div class="dmt-tier-info">
+                <div class="dmt-tier-name" id="dmt-tier-name">Digital Active</div>
+                <div class="dmt-tier-range" id="dmt-tier-range">Úroveň 3 z 4</div>
+              </div>
+            </div>
+            <div class="dmt-result-headline" id="dmt-result-headline"></div>
+            <div class="dmt-tech-found" id="dmt-tech-found"></div>
+            <div class="dmt-result-cols">
+              <div class="dmt-result-block">
+                <div class="dmt-result-block-title green">Silné stránky</div>
+                <ul id="dmt-strengths"></ul>
+              </div>
+              <div class="dmt-result-block">
+                <div class="dmt-result-block-title red">Mezery</div>
+                <ul id="dmt-gaps"></ul>
+              </div>
+            </div>
+            <div class="dmt-result-next">
+              <div class="dmt-result-next-label">Doporučený next step</div>
+              <p id="dmt-next-step"></p>
+            </div>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+              <a href="#footer" class="btn-primary">Mluvit s konzultantem →</a>
+              <button class="dmt-btn-back" onclick="dmtReset()" style="color:var(--text-muted-dark);">Spustit znovu</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Error ─ -->
+        <div id="dmt-api-error" style="display:none; text-align:center; padding:2rem;">
+          <p style="color:#f87171; margin-bottom:1rem;">Nastala chyba při zpracování. Zkuste to prosím znovu.</p>
+          <button class="dmt-btn-back" onclick="dmtReset()">← Začít znovu</button>
+        </div>
+
+      </div><!-- /dmt-form-container -->
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════════════════════════════
+   DMT EXPRESS — frontend controller
+   Change DMT_API_URL to your deployed backend.
+   For local dev: http://localhost:5050/api/assess
+═══════════════════════════════════════════ */
+const DMT_API_URL = 'http://localhost:5050/api/assess';
+
+const TOTAL_STEPS = 7;
+const TIER_RANGES = {
+  'I':  { name: 'Digital Infant',  range: 'Úroveň 1 z 4', desc: '0–25' },
+  'II': { name: 'Digital Aware',   range: 'Úroveň 2 z 4', desc: '26–50' },
+  'III':{ name: 'Digital Active',  range: 'Úroveň 3 z 4', desc: '51–75' },
+  'IV': { name: 'Digital Mature',  range: 'Úroveň 4 z 4', desc: '76–100' },
+};
+
+let currentStep = 0;
+
+function dmtGoto(step) {
+  const prev = document.getElementById('dmt-step-' + currentStep);
+  if (prev) { prev.classList.remove('active'); }
+  currentStep = step;
+  const next = document.getElementById('dmt-step-' + step);
+  if (next) { next.classList.add('active'); }
+
+  // Update progress (steps 1-7 = 0–100%)
+  const pct = step === 0 ? 0 : Math.round((step / TOTAL_STEPS) * 100);
+  document.getElementById('dmt-progress-fill').style.width = pct + '%';
+}
+
+function dmtNext1() {
+  const urlInput = document.getElementById('dmt-url').value.trim();
+  const errEl = document.getElementById('dmt-url-err');
+  if (!urlInput) {
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+  dmtGoto(2);
+}
+
+async function dmtSubmit() {
+  const email = document.getElementById('dmt-email').value.trim();
+  const errEl = document.getElementById('dmt-email-err');
+  if (!email || !email.includes('@')) {
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  // Collect data
+  let url = document.getElementById('dmt-url').value.trim();
+  if (url && !url.startsWith('http')) url = 'https://' + url;
+  const comp1 = document.getElementById('dmt-comp1').value.trim();
+  const comp2 = document.getElementById('dmt-comp2').value.trim();
+  const competitors = [comp1, comp2].filter(Boolean);
+
+  const answers = [
+    document.getElementById('dmt-q1').value.trim(),
+    document.getElementById('dmt-q2').value.trim(),
+    document.getElementById('dmt-q3').value.trim(),
+    document.getElementById('dmt-q4').value.trim(),
+    document.getElementById('dmt-q5').value.trim(),
+  ];
+  // Pad empty answers to exactly 5
+  while (answers.length < 5) answers.push('');
+
+  const name = document.getElementById('dmt-name').value.trim();
+
+  // Show loading
+  document.getElementById('dmt-step-7').classList.remove('active');
+  document.getElementById('dmt-loading').style.display = 'block';
+
+  try {
+    const resp = await fetch(DMT_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, competitors, answers, email, name }),
+    });
+
+    if (!resp.ok) {
+      throw new Error('Server returned ' + resp.status);
+    }
+
+    const data = await resp.json();
+    document.getElementById('dmt-loading').style.display = 'none';
+    dmtShowResult(data);
+
+  } catch (err) {
+    document.getElementById('dmt-loading').style.display = 'none';
+    document.getElementById('dmt-api-error').style.display = 'block';
+    console.error('DMT API error:', err);
+  }
+}
+
+function dmtShowResult(data) {
+  const tier = data.tier || 'II';
+  const tierInfo = TIER_RANGES[tier] || TIER_RANGES['II'];
+
+  document.getElementById('dmt-tier-roman').textContent = tier;
+  document.getElementById('dmt-tier-name').textContent = tierInfo.name;
+  document.getElementById('dmt-tier-range').textContent = tierInfo.range + ' · skóre ' + (data.score_estimate || '?') + '/100';
+  document.getElementById('dmt-result-headline').textContent = data.headline_cs || '';
+
+  // Tech detected
+  const tools = data.tech_detected || [];
+  const techEl = document.getElementById('dmt-tech-found');
+  if (tools.length > 0) {
+    techEl.innerHTML = '<strong style="color:var(--text-muted-dark); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;">Detekované nástroje</strong><br/>'
+      + tools.map(t => '<span class="dmt-tech-badge">' + t + '</span>').join('');
+  } else {
+    techEl.innerHTML = '';
+  }
+
+  // Strengths & gaps
+  const strengths = data.strengths_cs || [];
+  const gaps = data.gaps_cs || [];
+  document.getElementById('dmt-strengths').innerHTML = strengths.map(s => '<li>' + s + '</li>').join('');
+  document.getElementById('dmt-gaps').innerHTML = gaps.map(g => '<li>' + g + '</li>').join('');
+
+  document.getElementById('dmt-next-step').textContent = data.next_step_cs || '';
+
+  // Tier badge color
+  const colors = { 'I': '#f87171', 'II': '#fbbf24', 'III': '#4ade80', 'IV': '#60a5fa' };
+  const badge = document.getElementById('dmt-tier-badge');
+  badge.style.borderColor = colors[tier] || 'var(--accent)';
+  document.getElementById('dmt-tier-roman').style.color = colors[tier] || 'var(--accent)';
+
+  document.getElementById('dmt-result').style.display = 'block';
+  document.getElementById('dmt-progress-fill').style.width = '100%';
+  document.getElementById('dmt-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function dmtReset() {
+  currentStep = 0;
+  document.querySelectorAll('.dmt-step').forEach(el => el.classList.remove('active'));
+  document.getElementById('dmt-step-0').classList.add('active');
+  document.getElementById('dmt-loading').style.display = 'none';
+  document.getElementById('dmt-result').style.display = 'none';
+  document.getElementById('dmt-api-error').style.display = 'none';
+  document.getElementById('dmt-progress-fill').style.width = '0%';
+  // Clear inputs
+  ['dmt-url','dmt-comp1','dmt-comp2','dmt-q1','dmt-q2','dmt-q3','dmt-q4','dmt-q5','dmt-name','dmt-email']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+}
+</script>
+
 
 <!-- FINAL CTA -->
 <section id="cta-final">
   <div class="container">
     <div style="max-width:640px; margin:0 auto;">
       <h2 class="section-title fade-up" style="text-align:center;">
-        Zjistěte, jestli CDP dává smysl právě Vám
+        Máte zájem o hlubší analýzu nebo konzultaci?
       </h2>
       <p style="color:#9AA3B5; text-align:center; margin-top:0.75rem; font-size:0.95rem; margin-bottom:2.5rem;" class="fade-up fade-delay-1">
-        Vyplňte kontaktní formulář — ozveme se do 24 hodin a domluvíme se na dalším postupu.
+        Napište nám — ozveme se do 24 hodin a domluvíme se na dalším postupu.
       </p>
 
       <!-- FORM -->
@@ -1207,7 +1754,7 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
 
         <div>
           <label style="display:block; font-size:0.8rem; font-weight:600; color:var(--text-body); margin-bottom:0.4rem; letter-spacing:0.03em;">Co chcete zjistit nebo vyřešit?</label>
-          <textarea rows="3" placeholder="Pár vět o Vaší situaci — co Vás přivedlo k CDP, jaký problém řešíte…"
+          <textarea rows="3" placeholder="Pár vět o Vaší situaci — co chcete zlepšit nebo vyřešit v marketingu…"
             style="width:100%; padding:0.7rem 1rem; border:1.5px solid var(--border-light); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.92rem; color:var(--text-dark); background:var(--white); outline:none; resize:vertical; transition:border-color 0.2s;"
             onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-light)'"></textarea>
         </div>
@@ -1216,10 +1763,10 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
           <label style="display:block; font-size:0.8rem; font-weight:600; color:var(--text-body); margin-bottom:0.6rem; letter-spacing:0.03em;">Zájem o *</label>
           <div style="display:flex; gap:1rem; flex-wrap:wrap;">
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.92rem; color:var(--text-dark);">
-              <input type="radio" name="service" value="readiness" checked style="accent-color:var(--accent);"> CDP Readiness Check — 1 499 €
+              <input type="radio" name="service" value="readiness" checked style="accent-color:var(--accent);"> Digital Maturity Assessment — 1 499 €
             </label>
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.92rem; color:var(--text-dark);">
-              <input type="radio" name="service" value="full" style="accent-color:var(--accent);"> CDP Business analýza — 10 000 – 15 000 €
+              <input type="radio" name="service" value="full" style="accent-color:var(--accent);"> Business analýza & roadmapa — 10 000 – 15 000 €
             </label>
           </div>
         </div>
