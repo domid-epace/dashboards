@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASKO SmartSegments — výsledky A/B testu, duben 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#FAD232;
+  --slate:#282D3C;
+  --slate-2:#1F2330;
+  --grey:#E3E3E3;
+  --grey-2:#F5F5F7;
+  --ink:#1A1A2E;
+  --muted:#6E7280;
+  --good:#1FA971;
+  --warn:#D17B00;
+  --bad:#C0392B;
+  --link:#0075C4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Poppins',system-ui,-apple-system,Segoe UI,sans-serif;
+  background:#FBFBFC;
+  color:var(--ink);
+  line-height:1.45;
+  font-weight:400;
+}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+
+/* HERO */
+.hero{
+  background:var(--slate);
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;right:-180px;top:-180px;
+  width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(250,210,50,.18) 0%,rgba(250,210,50,0) 70%);
+  pointer-events:none;
+}
+.hero .topbar{background:var(--yellow);height:9px;width:100%}
+.hero-inner{padding:54px 0 64px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-size:14px;color:rgba(255,255,255,.7)}
+.brand .dot{width:14px;height:14px;border-radius:50%;background:var(--yellow);display:inline-block}
+.brand span.x{color:rgba(255,255,255,.4);margin:0 4px}
+.hero h1{font-size:46px;line-height:1.1;margin:18px 0 10px;font-weight:700;letter-spacing:-.02em}
+.hero h1 em{color:var(--yellow);font-style:normal}
+.hero .lede{font-size:17px;color:rgba(255,255,255,.78);max-width:920px;font-weight:300}
+.hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:24px;font-size:13px;color:rgba(255,255,255,.6);font-weight:500}
+.hero .meta b{color:#fff;font-weight:600}
+.tagline{position:absolute;right:32px;bottom:18px;font-weight:900;font-size:13px;letter-spacing:3px;color:var(--yellow);text-transform:uppercase}
+
+/* SECTIONS */
+section{padding:48px 0}
+section.dark{background:var(--slate);color:#fff}
+section h2{font-size:26px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;color:var(--ink)}
+section.dark h2{color:#fff}
+section .deck{font-size:15px;color:var(--muted);max-width:960px;margin-bottom:28px;font-weight:400;line-height:1.55}
+section.dark .deck{color:rgba(255,255,255,.7)}
+
+/* HERO STAT GRID */
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px}
+.hero-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden}
+.hero-stat::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--yellow)}
+.hero-stat .num{font-size:34px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+.hero-stat .num small{font-size:16px;font-weight:600;color:var(--yellow);margin-left:4px}
+.hero-stat .label{font-size:13px;color:rgba(255,255,255,.7);margin-top:8px;font-weight:400;line-height:1.4}
+.hero-stat .pos{color:var(--yellow)}
+
+/* STAT CARDS GENERIC */
+.cards{display:grid;gap:18px}
+.cards.c2{grid-template-columns:repeat(2,1fr)}
+.cards.c3{grid-template-columns:repeat(3,1fr)}
+.cards.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--grey);border-radius:12px;padding:22px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--yellow)}
+.card .num{font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.05}
+.card .num.pos{color:var(--good)}
+.card .num.neg{color:var(--bad)}
+.card .label{font-size:13px;color:var(--muted);margin-top:6px;font-weight:500}
+.card .help{font-size:12px;color:var(--muted);margin-top:10px;font-weight:300;line-height:1.5}
+.card.dark{background:var(--slate);color:#fff;border:none}
+.card.dark .num{color:#fff}
+.card.dark .label,.card.dark .help{color:rgba(255,255,255,.7)}
+.card.dark::before{background:var(--yellow)}
+
+/* COMPARISON BAR */
+.compare{margin:14px 0}
+.compare .row{display:grid;grid-template-columns:200px 1fr 110px;align-items:center;gap:14px;margin-bottom:8px}
+.compare .label{font-size:13px;font-weight:500;color:var(--muted)}
+.compare .bar-wrap{height:30px;background:var(--grey-2);border-radius:6px;overflow:hidden;position:relative}
+.compare .bar{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 12px;color:#fff;font-weight:600;font-size:13px;white-space:nowrap}
+.compare .bar.dark{background:#5C6373}
+.compare .bar.yellow{background:var(--yellow);color:var(--ink)}
+.compare .delta{text-align:right;font-weight:700;color:var(--good);font-size:14px}
+.compare .delta.neg{color:var(--bad)}
+.compare .delta.neutral{color:var(--muted)}
+
+/* CHANNEL SPLIT */
+.channels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+.channel{background:#fff;border:1px solid var(--grey);border-radius:12px;padding:24px;position:relative;overflow:hidden}
+.channel.win{border-color:var(--yellow);box-shadow:0 8px 28px rgba(250,210,50,.18)}
+.channel.win::after{content:"HLAVNÍ ZDROJ NÁRŮSTU";position:absolute;top:14px;right:14px;font-size:10px;letter-spacing:1.5px;font-weight:800;background:var(--yellow);color:var(--ink);padding:4px 8px;border-radius:4px}
+.channel h3{margin:0 0 4px;font-size:18px;color:var(--muted);font-weight:500}
+.channel .big{font-size:42px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.05;margin-top:4px}
+.channel .big small{font-size:16px;margin-left:4px;font-weight:700}
+.channel .big.pos small{color:var(--good)}
+.channel .big.neutral{color:var(--muted)}
+.channel .big.neutral small{color:var(--muted)}
+.channel .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.channel .pair div{background:var(--grey-2);padding:12px 14px;border-radius:8px}
+.channel .pair .v{font-size:17px;font-weight:700;color:var(--ink)}
+.channel .pair .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:4px}
+
+/* SEGMENT TABLE */
+.segments{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
+.seg-row{display:grid;grid-template-columns:200px 1fr 110px 80px 90px;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--grey);border-radius:10px;position:relative;overflow:hidden}
+.seg-row.scale{border-color:var(--yellow);background:#FFFCEB}
+.seg-row .name{font-weight:700;color:var(--ink);font-size:14px}
+.seg-row .name .tag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:1.2px;background:var(--yellow);color:var(--ink);padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.seg-row .name .tag.iter{background:#3A4154;color:#fff}
+.seg-bar{height:18px;background:var(--grey-2);border-radius:4px;overflow:hidden}
+.seg-bar > span{display:block;height:100%;background:var(--yellow)}
+.seg-row .rev{text-align:right;font-weight:800;font-size:14px;color:var(--ink)}
+.seg-row .rpcd{text-align:right;font-weight:600;font-size:13px;color:var(--muted)}
+.seg-row .or{text-align:right;font-weight:600;font-size:13px;color:var(--muted)}
+.seg-head{display:grid;grid-template-columns:200px 1fr 110px 80px 90px;gap:14px;padding:0 16px 6px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.seg-head div:nth-child(3),.seg-head div:nth-child(4),.seg-head div:nth-child(5){text-align:right}
+
+/* MISSING / LIMITATIONS — INFO PANEL */
+.gap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
+.gap-item{background:#fff;border:1px solid var(--grey);border-left:3px solid var(--warn);border-radius:8px;padding:18px}
+.gap-item h4{margin:0 0 6px;font-size:15px;color:var(--ink);font-weight:700}
+.gap-item p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.gap-item .meta{font-size:11px;color:var(--warn);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:6px}
+
+/* CALLOUT */
+.callout{background:var(--slate);color:#fff;border-radius:12px;padding:30px 32px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;border-left:4px solid var(--yellow)}
+.callout .big{font-size:24px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.callout p{margin:10px 0 0;font-size:14px;line-height:1.55;font-weight:400;color:rgba(255,255,255,.78)}
+.callout .right .num{font-size:54px;font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--yellow)}
+.callout .right .label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-top:6px;color:rgba(255,255,255,.7)}
+
+/* DILUTION */
+.dilution{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;align-items:stretch;margin-top:14px;background:var(--slate-2);border-radius:12px;overflow:hidden}
+.dil-step{padding:24px 24px;color:#fff;position:relative}
+.dil-step + .dil-step{border-left:1px solid rgba(255,255,255,.08)}
+.dil-step .v{font-size:28px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.dil-step .v .y{color:var(--yellow)}
+.dil-step .l{font-size:13px;color:rgba(255,255,255,.65);margin-top:4px;font-weight:400;line-height:1.45}
+.dil-step.final{background:var(--yellow);color:var(--ink)}
+.dil-step.final .v{color:var(--ink)}
+.dil-step.final .l{color:rgba(40,45,60,.75);font-weight:500}
+.dil-arrow{position:absolute;right:-13px;top:50%;transform:translateY(-50%);z-index:2;width:26px;height:26px;background:var(--slate-2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:14px;font-weight:700}
+.dil-step.final .dil-arrow{display:none}
+
+/* NEXT STEPS */
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.next .item{background:#fff;border:1px solid var(--grey);border-radius:10px;padding:20px;position:relative}
+.next .item .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:3px 8px;border-radius:3px;margin-bottom:10px}
+.next .item .tag.scale{background:var(--yellow);color:var(--ink)}
+.next .item .tag.iter{background:var(--slate);color:#fff}
+.next .item .tag.measure{background:#E3E3E3;color:var(--ink)}
+.next .item h3{margin:0 0 6px;font-size:16px;color:var(--ink);font-weight:700}
+.next .item p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--slate-2);color:rgba(255,255,255,.6);padding:30px 0;font-size:13px}
+footer .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:flex-end}
+footer a{color:var(--yellow);text-decoration:none}
+footer .keep{font-weight:900;color:var(--yellow);letter-spacing:3px;text-transform:uppercase;font-size:14px}
+footer .updated{font-size:12px;color:rgba(255,255,255,.45)}
+footer .updated b{color:#fff}
+
+/* MICRO */
+h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);border-radius:50%;margin-right:12px;vertical-align:middle;transform:translateY(-3px)}
+.note{font-size:12px;color:var(--muted);font-style:italic;margin-top:18px;line-height:1.5}
+
+@media (max-width: 980px){
+  .hero h1{font-size:32px}
+  .hero-stats,.cards.c4,.cards.c3,.next,.dilution,.gap-grid{grid-template-columns:1fr 1fr}
+  .channels{grid-template-columns:1fr}
+  .callout{grid-template-columns:1fr}
+  .seg-row,.seg-head{grid-template-columns:1fr 90px}
+  .seg-head div:nth-child(2),.seg-row .seg-bar,.seg-row .or,.seg-row .rpcd{display:none}
+}
+</style>
+</head>
+<body>
+
+<!--
+  =====================================================
+  ASKO SmartSegments — Manažerský přehled A/B testu
+  Source: dashboard widgets v Bloomreach + Confluence ASK
+  Aktualizovat při příštím běhu — viz "DATA:" markery a
+  pokyny v komentáři na konci souboru.
+  =====================================================
+-->
+
+<div class="hero">
+  <div class="topbar"></div>
+  <div class="container hero-inner">
+    <div class="brand">
+      <span class="dot"></span> ePACE <span class="x">×</span> ASKO
+    </div>
+    <h1>SmartSegments: výsledky A/B testu<br><em>za duben 2026</em></h1>
+    <p class="lede">
+      Shrnutí výsledků pilotního testu segmentované rozesílky newsletterů na 6 produktových rodinách. Test spočíval v náhodném rozdělení celé báze (~1.5M kontaktů) v poměru 50:50 (včetně segmentované části báze). Reálně jsme segmentovaným sdělením jsme zasáhli <b>~3 %</b> z báze, zbytek varianty i kontrolky dostával standardní rozesílku. Do segmentů jsme schopni přiřadit ~9.2% báze.
+    </p>
+    <div class="meta">
+      <span><b>Období testu</b> · duben 2026 (~30 dní)</span>
+      <span><b>Treatment</b> · ~46 tis. ze ~140 tis. segmentovatelných</span>
+      <span><b>Aktivní segmenty</b> · 6 produktových rodin z 11 nastavených</span>
+    </div>
+
+    <!-- DATA: hero-stats (whole-cohort variant vs control) -->
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">+28 423 <small>€</small></div>
+        <div class="label"><b class="pos">+2,49 %</b> tržby — variantní polovina vs. kontrolní</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">+576</div>
+        <div class="label"><b class="pos">+13,7 %</b> nákupy navíc na variantní polovině</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">+33,0 <small>%</small></div>
+        <div class="label">Offline nákupy ve variantě<br>(+612 nákupů, +31 086 €)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">7,46 <small>%</small></div>
+        <div class="label">CTR segmentovaných emailů<br>vs. ~0,9 % u běžných NL</div>
+      </div>
+    </div>
+  </div>
+  <div class="tagline">Keep the pace</div>
+</div>
+
+<!-- =================== ZÁKLADNÍ ČÍSLA / KONTEXT =================== -->
+<section>
+  <div class="container">
+    <h2><span class="accent"></span>Měřítko testu</h2>
+    <p class="deck">
+      Segmentované emaily se týkaly pouze výřezu báze. Většina pozorovaného „upliftu“ pochází z menšiny uživatelů,
+      kteří skutečně dostávali segmentované sdělení. Do budoucna bude klíčové maximalizovat % uživatelů, kteří mají přiřazený relevantní segment + zajistit, že všechny dokážeme obsahově obsloužit.
+    </p>
+
+    <!-- DATA: cohort-funnel base / variant-half / treated -->
+    <div class="dilution">
+      <div class="dil-step">
+        <div class="v">1 521 072</div>
+        <div class="l">Celá adresovatelná báze ASKO</div>
+        <div class="dil-arrow">›</div>
+      </div>
+      <div class="dil-step">
+        <div class="v">~760 536</div>
+        <div class="l">50 % variantní polovina (random split)</div>
+        <div class="dil-arrow">›</div>
+      </div>
+      <div class="dil-step final">
+        <div class="v">~46 000</div>
+        <div class="l">Skutečně dostali segmentované speciály<br><b>= 6 % varianty, ~3 % celé báze</b></div>
+      </div>
+    </div>
+
+    <div class="cards c3" style="margin-top:22px">
+      <div class="card">
+        <div class="num pos">+0,62 €</div>
+        <div class="label">na uživatele v segmentu / měsíc</div>
+        <div class="help">Pokud celý uplift +28 423 € atribujeme ~46 tis. zasaženým uživatelům, vychází ~0,62 €/uživatel/měsíc navíc. Přepočteno na rok ~7,4 €/uživatel.</div>
+      </div>
+      <div class="card">
+        <div class="num pos">~690 000 €</div>
+        <div class="label">Roční run-rate ze segmentovaných sendů</div>
+        <div class="help">Lineární extrapolace tržeb 56 767 € atribuovaných segmentovaným kampaním (kampaňová atribuce, dashboard. Pouze základní využití segmentů bez automatizací a plného rozsahu rozesílky.</div>
+      </div>
+      <div class="card dark">
+        <div class="num">1 000 000 €</div>
+        <div class="label">Konzervativní cíl BSoW / rok</div>
+        <div class="help">Zahrnuje růst báze, uplift existujících UC a příspěvek nových UC vystavěných na segmentaci — nejen přímou atribuci na newslettery.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ENGAGEMENT =================== -->
+<section style="background:#FFFCEB">
+  <div class="container">
+    <h2><span class="accent"></span>Engagement na segmentovaných emailech</h2>
+    <p class="deck">
+      Open rate a CTR na samotných segmentovaných speciálech pohodlně překračují benchmarky, o které se opíral BSoW.
+      To je pozitivní indikátor, že nám relevance sdělení pomáhá. Nyní jde jen o krátkodobý efekt.
+    </p>
+
+    <!-- DATA: engagement / regular vs segmented -->
+    <div class="compare">
+      <div class="row">
+        <div class="label">Open rate — běžné NL</div>
+        <div class="bar-wrap"><div class="bar dark" style="width:75%">27,0 %</div></div>
+        <div class="delta neutral">baseline</div>
+      </div>
+      <div class="row">
+        <div class="label">Open rate — segmentované</div>
+        <div class="bar-wrap"><div class="bar yellow" style="width:100%">35,99 %</div></div>
+        <div class="delta">+33 % rel.</div>
+      </div>
+      <div class="row">
+        <div class="label">CTR (klik / odeslán) — běžné</div>
+        <div class="bar-wrap"><div class="bar dark" style="width:13%">0,81–1,06 %</div></div>
+        <div class="delta neutral">baseline</div>
+      </div>
+      <div class="row">
+        <div class="label">CTR — segmentované</div>
+        <div class="bar-wrap"><div class="bar yellow" style="width:100%">7,46 %</div></div>
+        <div class="delta">+600–820 % rel.</div>
+      </div>
+      <div class="row">
+        <div class="label">Unsubscribe — běžné NL</div>
+        <div class="bar-wrap"><div class="bar dark" style="width:50%">0,27 %</div></div>
+        <div class="delta neutral">baseline</div>
+      </div>
+      <div class="row">
+        <div class="label">Unsubscribe — varianta</div>
+        <div class="bar-wrap"><div class="bar yellow" style="width:46%">0,25 %</div></div>
+        <div class="delta">−7 % rel.</div>
+      </div>
+    </div>
+
+    <div class="cards c3" style="margin-top:22px">
+      <div class="card">
+        <div class="num pos">+33 %</div>
+        <div class="label">Open rate vs. běžné NL</div>
+        <div class="help">Benchmark pro segmentaci (od Mailchimpu): <b>+14,3 %</b>. Reálný výsledek máme 2,3× nad benchmarkem.</div>
+      </div>
+      <div class="card">
+        <div class="num pos">+600–820 %</div>
+        <div class="label">CTR per email sent</div>
+        <div class="help">Mailchimp benchmark: <b>+101 %</b>. Měřeno per odeslaný email. Segmentované obsahové ladění výrazně zvyšuje proklikovost.</div>
+      </div>
+      <div class="card">
+        <div class="num pos">−7 %</div>
+        <div class="label">Unsubscribe vs. kontrola</div>
+        <div class="help">Variantní polovina odhlašuje méně. Dlouhodobě bychom očekávali ještě lepší výsledky.</div>
+      </div>
+    </div>
+
+    <p class="note">
+      Srovnání CTR vs. CTR (klik / odeslaný), nikoli CTR vs. CTOR. Běžné rozesílky: 12 418 / 1 540 046 (varianta) a 16 246 / 1 539 523 (kontrola).
+    </p>
+  </div>
+</section>
+
+<!-- =================== OFFLINE LIFT =================== -->
+<section>
+  <div class="container">
+    <h2><span class="accent"></span>Tržby — kde se zvedly</h2>
+    <p class="deck">
+      Hlavní uplift proběhl u nákupů provedených offline. To není nutně překvapení - primární obsloužené segmenty (sedací nábytek, ložnice, úložné prostory) jsou plné zboží, které uživatelé tradičně nakupují právě na pobočce, často v modelu ROPO, tj. Research Online, Purchase Offline.
+    </p>
+
+    <!-- DATA: offline-vs-online -->
+    <div class="channels">
+      <div class="channel win">
+        <h3>Offline</h3>
+        <div class="big pos">+33,03 %<small>+612 nákupů</small></div>
+        <div class="pair">
+          <div><div class="l">Varianta — tržby</div><div class="v">729 907 €</div></div>
+          <div><div class="l">Kontrola — tržby</div><div class="v">698 821 €</div></div>
+          <div><div class="l">Varianta — AOV</div><div class="v">294,79 €</div></div>
+          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--good)">+31 086 €</div></div>
+        </div>
+      </div>
+      <div class="channel">
+        <h3>Online</h3>
+        <div class="big neutral">−1,53 %<small>−36 nákupů</small></div>
+        <div class="pair">
+          <div><div class="l">Varianta — tržby</div><div class="v">441 766 €</div></div>
+          <div><div class="l">Kontrola — tržby</div><div class="v">444 429 €</div></div>
+          <div><div class="l">Varianta — AOV</div><div class="v">190,75 €</div></div>
+          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--muted)">−2 663 €</div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">
+      AOV variantní poloviny je nižší (244,51 € vs. 271,43 € celkově) → uživatelé nakupují častěji menší položky.
+    </p>
+  </div>
+</section>
+
+<!-- =================== PER-SEGMENT =================== -->
+<section style="background:#F7F7FA">
+  <div class="container">
+    <h2><span class="accent"></span>Výkon jednotlivých segmentů</h2>
+    <p class="deck">
+      Výkon se napříč segmenty liší. V rámci vyhodnocení a dalšího plánu analyzujeme, jestli a jak obsahově posílit segmenty Kuchyně & jídelna a Kancelář. 
+    </p>
+
+    <div class="seg-head">
+      <div>Segment</div>
+      <div>Tržby (segmentované sendy)</div>
+      <div>Tržby €</div>
+      <div>RPCD €</div>
+      <div>Open rate</div>
+    </div>
+
+    <!-- DATA: per-segment values -->
+    <div class="segments">
+      <div class="seg-row scale">
+        <div class="name">Úložný nábytek <span class="tag">ŠKÁLOVAT</span></div>
+        <div class="seg-bar"><span style="width:100%"></span></div>
+        <div class="rev">24 002 €</div>
+        <div class="rpcd">1,58</div>
+        <div class="or">31,5 %</div>
+      </div>
+      <div class="seg-row">
+        <div class="name">Sedací nábytek</div>
+        <div class="seg-bar"><span style="width:58.7%"></span></div>
+        <div class="rev">14 085 €</div>
+        <div class="rpcd">1,18</div>
+        <div class="or">42,8 %</div>
+      </div>
+      <div class="seg-row">
+        <div class="name">Ložnice</div>
+        <div class="seg-bar"><span style="width:36.8%"></span></div>
+        <div class="rev">8 837 €</div>
+        <div class="rpcd">1,00</div>
+        <div class="or">37,0 %</div>
+      </div>
+      <div class="seg-row">
+        <div class="name">Kuchyně &amp; jídelna <span class="tag iter">ITERACE</span></div>
+        <div class="seg-bar"><span style="width:18.8%"></span></div>
+        <div class="rev">4 520 €</div>
+        <div class="rpcd">0,94</div>
+        <div class="or">32,8 %</div>
+      </div>
+      <div class="seg-row scale">
+        <div class="name">Předsíň &amp; chodba <span class="tag">ROZŠÍŘIT</span></div>
+        <div class="seg-bar"><span style="width:16.6%"></span></div>
+        <div class="rev">3 974 €</div>
+        <div class="rpcd">1,73</div>
+        <div class="or">30,9 %</div>
+      </div>
+      <div class="seg-row">
+        <div class="name">Kancelář <span class="tag iter">ITERACE</span></div>
+        <div class="seg-bar"><span style="width:5.6%"></span></div>
+        <div class="rev">1 350 €</div>
+        <div class="rpcd">0,64</div>
+        <div class="or">25,9 %</div>
+      </div>
+    </div>
+
+    <div class="cards c3" style="margin-top:24px">
+      <div class="card">
+        <div class="num pos">24 002 €</div>
+        <div class="label">Úložný nábytek — největší cohort i tržby</div>
+        <div class="help">Segment 15,2 tis., konverze interakce → nákup 1,38 % (nejvyšší ze všech).</div>
+      </div>
+      <div class="card">
+        <div class="num pos">5,59 €</div>
+        <div class="label">Předsíň &amp; chodba — nejvyšší RPCI</div>
+        <div class="help">Malý segment (2,3 tis.), ale každá interakce má vysokou hodnotu.</div>
+      </div>
+      <div class="card dark">
+        <div class="num">42,8 %</div>
+        <div class="label">Sedací nábytek — pozornost ano, konverze ne</div>
+        <div class="help">Nejvyšší OR, nejnižší interakce → nákup (0,59 %). Řešíme next steps, jak segmentu zvýšit CVR.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CO TEST NEMĚŘÍ — LIMITACE =================== -->
+<section style="background:#FFF8F0">
+  <div class="container">
+    <h2><span class="accent"></span>Co tento test ještě <em style="color:var(--warn);font-style:normal">nezachycuje</em></h2>
+    <p class="deck">
+      Pilotní A/B test izoloval segmentaci obsahu newsletterů. Segmentační systém, který je prerekvizitou pro predikovaný výtlak segmentačního enginu, obsahuje ještě několik dalších prvků (frequency management, content strings, web personalizace, doménová reputace), které v testu zatím nebyly. Reálný potenciál segmentace je tak pravděpodobně ještě větší.
+    </p>
+
+    <div class="gap-grid">
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Frequency management (Master Frequency Policy)</h4>
+        <p>85+ % aktivní báze (ATEP) dnes dostává příliš emailů. Počítáme s omezením na ~5 prioritních emailů/uživatel/měsíc. V současném testu cap neexistuje — relevance segmentu se ztrácí v šumu plošných sendů.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Nová odesílací doména</h4>
+        <p>Test běží ze stávající domény, která má za sebou roky plošných rozesílek — předpokládáme degradovanou reputaci u ISP. Nová doména s čistou reputací by měla zlepšit deliverability i open rate. Stav reputace stávající domény je třeba měřitelně ověřit.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Automatizované newsletter strings</h4>
+        <p>Plná architektura počítá s obsahovými šňůrami (4 emaily / segment, 6 měsíců, alternace primárního a sekundárního segmentu, 12 měsíců cooldown). V testu jsou pouze ad-hoc segmentované speciály, ne víceúrovňové journeys s contentem (Level II).</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Segment orchestrace na webu</h4>
+        <p>Segmentace dnes řídí pouze emailovou rozesílku. Web (homepage hero, recommendation rails, banners) na segment uživatele nereaguje. Konzistence sdělení napříč kanály — a tím konverzní pravděpodobnost — zůstává nevyužitá.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Karanténa po nákupu / cross-channel quarantine</h4>
+        <p>BSoW počítá s tím, že po nákupu kategorie se uživatel přesune do cross-sell logiky a nedostává marketing na tu samou kategorii. V testu žádná taková karanténa neběží — i čerstvý nakupující sedačky dál dostává segmentovaný email „Sedací nábytek“.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Napojení na existující UCs (Level III priorita)</h4>
+        <p>UC3 (Abandoned Visit), UC4 (Abandoned Cart), UC9 (Rekomendace), UC12 (Birthday) v testu nereagují na segment uživatele. Vyšší relevance v těchto behaviorálních flow je hlavním zdrojem +9 % BSoW upliftu na existující UCs.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Dynamické bloky v běžných newsletterech</h4>
+        <p>Plán je nahradit většinu těla ad-hoc emailu dynamickým obsahem (doporučené produkty, nejbližší pobočka, hlavička/patička). Aktuální Level I emaily ve variantě i kontrolce zůstávají statické — segmentační data se zde neuplatňují.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Měřítko CLV / loyalty</h4>
+        <p>Test má pouze 30denní okno. Hypotézy BSoW o loajalitě (CLV +15 %, růst aktivní báze +15 %) se v tomto okně neprojeví. Sledování dlouhodobého dopadu na loajalitu je teprve před námi.</p>
+      </div>
+      <div class="gap-item">
+        <div class="meta">CHYBÍ</div>
+        <h4>Personalizovaný discount layer</h4>
+        <p>BSoW „next level“ počítá se segmentovanými slevami uvnitř content stringů místo plošných % off. V testu běží stejné slevové mechaniky pro variantu i kontrolu — efekt segmentace se zde nemůže projevit.</p>
+      </div>
+    </div>
+
+    <p class="note">
+      Zdroj seznamu: BSoW „Automatizace rozesílky newsletterů“ + BSoW „Segmentace zákaznické báze“.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="keep">Keep the pace</div>
+      <div class="updated" style="margin-top:6px">
+        Data k: <b>2026-04-28</b> · Období testu: duben 2026 (~30 dní) · K manuální aktualizaci na začátku května.
+      </div>
+    </div>
+    <div style="text-align:right">
+      <a href="https://app.eu1.exponea.com/p/asko-prod/dashboards/69e0ba56ba59966d256d41e3" target="_blank">Dashboard s top-level revenue.</a>
+      &nbsp;·&nbsp;
+      <a href="https://app.eu1.exponea.com/p/asko-prod/dashboards/69d8a2d71fbf66d944ed19eb" target="_blank">Dashboard s kampaňovou atribucí</a>
+      &nbsp;·&nbsp;
+      <a href="https://epace.atlassian.net/wiki/spaces/ASK/pages/2092007425/ASKO+-+Segmentace+z+kaznick+b+ze" target="_blank">BSoW segmentace</a>
+      &nbsp;·&nbsp;
+      <a href="https://epace.atlassian.net/wiki/spaces/ASK/pages/2107408386" target="_blank">BSoW automatizace NL</a>
+    </div>
+  </div>
+</footer>
+
+<!--
+  =====================================================
+  POSTUP AKTUALIZACE PŘI PŘÍŠTÍM BĚHU
+  =====================================================
+  Hledat řetězec "DATA:" v komentářích výše. Každý marker
+  označuje blok čísel ze dvou Bloomreach dashboardů.
+
+  1. Vyexportovat oba dashboardy (postup viz ./guideline.md, sekce 5).
+  2. Aktualizovat čísla pod jednotlivými "DATA:" bloky:
+     - hero-stats        → cohort varianta vs. kontrola + CTR segmentovaných
+     - cohort-funnel     → velikost báze / variantní polovina / treated cohort
+     - engagement        → OR / CTR / Unsub pro běžné vs. segmentované
+     - offline-vs-online → varianta + kontrola offline & online tržby, AOV, delty
+     - per-segment       → tržby, RPCD, OR pro 6 segmentů
+                          (zároveň přepočítat .seg-bar > span widths
+                           proporcionálně k tržbám — největší segment = 100%)
+  3. Aktualizovat datum snapshotu ve footeru.
+  4. Pokud se změní vítězné segmenty, upravit class .seg-row.scale a tag <span class="tag">.
+  5. Sekce „Co test nezachycuje“ se nemění s daty — aktualizovat jen tehdy,
+     pokud projekt frequency / domain / strings reálně rozjedeme.
+  6. Vedle dashboardu obnovit i analysis-YYYY-MM-DD.md.
+
+  Veškerý styling je inline v <style> bloku nahoře.
+  ePACE brand: žlutá #FAD232, slate #282D3C, font Poppins.
+-->
+
+</body>
+</html>
