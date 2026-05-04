@@ -121,7 +121,7 @@ section.dark .deck{color:rgba(255,255,255,.7)}
 
 /* SEGMENT TABLE */
 .segments{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
-.seg-row{display:grid;grid-template-columns:200px 1fr 110px 80px 90px;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--grey);border-radius:10px;position:relative;overflow:hidden}
+.seg-row{display:grid;grid-template-columns:200px 1fr 110px 80px 80px 90px;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--grey);border-radius:10px;position:relative;overflow:hidden}
 .seg-row.scale{border-color:var(--yellow);background:#FFFCEB}
 .seg-row .name{font-weight:700;color:var(--ink);font-size:14px}
 .seg-row .name .tag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:1.2px;background:var(--yellow);color:var(--ink);padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle}
@@ -131,8 +131,8 @@ section.dark .deck{color:rgba(255,255,255,.7)}
 .seg-row .rev{text-align:right;font-weight:800;font-size:14px;color:var(--ink)}
 .seg-row .rpcd{text-align:right;font-weight:600;font-size:13px;color:var(--muted)}
 .seg-row .or{text-align:right;font-weight:600;font-size:13px;color:var(--muted)}
-.seg-head{display:grid;grid-template-columns:200px 1fr 110px 80px 90px;gap:14px;padding:0 16px 6px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
-.seg-head div:nth-child(3),.seg-head div:nth-child(4),.seg-head div:nth-child(5){text-align:right}
+.seg-head{display:grid;grid-template-columns:200px 1fr 110px 80px 80px 90px;gap:14px;padding:0 16px 6px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.seg-head div:nth-child(3),.seg-head div:nth-child(4),.seg-head div:nth-child(5),.seg-head div:nth-child(6){text-align:right}
 
 /* MISSING / LIMITATIONS — INFO PANEL */
 .gap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
@@ -189,7 +189,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
   .channels{grid-template-columns:1fr}
   .callout{grid-template-columns:1fr}
   .seg-row,.seg-head{grid-template-columns:1fr 90px}
-  .seg-head div:nth-child(2),.seg-row .seg-bar,.seg-row .or,.seg-row .rpcd{display:none}
+  .seg-head div:nth-child(2),.seg-row .seg-bar,.seg-row .or,.seg-row .rpcd,.seg-row .rpci{display:none}
 }
 </style>
 </head>
@@ -401,6 +401,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
       <div>Tržby (segmentované sendy)</div>
       <div>Tržby €</div>
       <div>RPCD €</div>
+      <div>RPCI €</div>
       <div>Open rate</div>
     </div>
 
@@ -411,6 +412,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:100%"></span></div>
         <div class="rev">24 002 €</div>
         <div class="rpcd">1,58</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">4,62</div>
         <div class="or">31,5 %</div>
       </div>
       <div class="seg-row">
@@ -418,6 +420,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:58.7%"></span></div>
         <div class="rev">14 085 €</div>
         <div class="rpcd">1,18</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">3,47</div>
         <div class="or">42,8 %</div>
       </div>
       <div class="seg-row">
@@ -425,6 +428,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:36.8%"></span></div>
         <div class="rev">8 837 €</div>
         <div class="rpcd">1,00</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">2,83</div>
         <div class="or">37,0 %</div>
       </div>
       <div class="seg-row">
@@ -432,6 +436,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:18.8%"></span></div>
         <div class="rev">4 520 €</div>
         <div class="rpcd">0,94</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">2,57</div>
         <div class="or">32,8 %</div>
       </div>
       <div class="seg-row scale">
@@ -439,6 +444,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:16.6%"></span></div>
         <div class="rev">3 974 €</div>
         <div class="rpcd">1,73</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">4,73</div>
         <div class="or">30,9 %</div>
       </div>
       <div class="seg-row">
@@ -446,6 +452,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
         <div class="seg-bar"><span style="width:5.6%"></span></div>
         <div class="rev">1 350 €</div>
         <div class="rpcd">0,64</div>
+        <div class="rpci" style="text-align:right;font-weight:600;font-size:13px;color:var(--muted)">2,44</div>
         <div class="or">25,9 %</div>
       </div>
     </div>
