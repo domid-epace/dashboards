@@ -36,6 +36,7 @@
     .nav-link{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none}.nav-link:hover{color:#fff}
 
     /* ─── HERO ─── */
+    .sub-heading{font-size:30px}
     #hero{background:var(--dark2);padding:148px 0 80px;position:relative;overflow:hidden}
     .hero-arc{position:absolute;right:-200px;top:50%;transform:translateY(-50%);opacity:.04;pointer-events:none}
     .hero-arc svg{width:800px;height:800px}
@@ -46,9 +47,9 @@
     .hero-sub{font-size:17px;color:rgba(255,255,255,.6);max-width:500px;margin-bottom:32px;line-height:1.75}
     .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
     .hero-stats{display:flex;gap:24px;margin-top:44px;padding-top:36px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:nowrap;overflow-x:auto}
-    .hstat{flex-shrink:0}
+    .hstat{flex:1;min-width:100px}
     .hstat .n{font-size:26px;font-weight:800;color:var(--y);letter-spacing:-.02em;line-height:1;white-space:nowrap}
-    .hstat .l{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;white-space:nowrap}
+    .hstat .l{font-size:10px;color:rgba(255,255,255,.4);margin-top:5px;line-height:1.4}
     /* Video side */
     .video-wrap{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 64px rgba(0,0,0,.4);position:relative;background:#000}
     .video-wrap iframe{display:block;width:100%;aspect-ratio:16/9;border:none}
@@ -150,13 +151,22 @@
 
     /* ─── SERVICES ─── */
     #services{background:#F6F7FB}
-    .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    /* Cluster slider */
+    .cluster-tabs{display:flex;gap:10px;margin-bottom:36px;flex-wrap:nowrap}
+    .cluster-btn{font-family:var(--font);font-size:12px;font-weight:700;padding:10px 18px;border-radius:30px;border:2px solid var(--lg);background:#fff;color:var(--dark);cursor:pointer;transition:all .2s;letter-spacing:.02em;white-space:nowrap}
+    .cluster-btn:hover{border-color:var(--y);color:var(--dark)}
+    .cluster-btn.active{background:var(--y);border-color:var(--y);color:var(--dark);box-shadow:0 4px 16px rgba(250,210,50,.35)}
+    .cluster-panel{display:none}
+    .cluster-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;animation:fadeIn .25s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
     .svc-c{background:#fff;border-radius:12px;padding:24px;border:1px solid var(--lg);transition:all .2s}
     .svc-c:hover{border-color:var(--y);box-shadow:0 6px 24px rgba(250,210,50,.12);transform:translateY(-2px)}
-    .svc-n{font-size:11px;font-weight:700;color:var(--y);margin-bottom:10px}
+    .svc-n{font-size:11px;font-weight:700;color:#0075c4;margin-bottom:10px}
     .svc-c h3{font-size:15px;font-weight:700;margin-bottom:8px}
     .svc-c p{font-size:13px;color:#777;line-height:1.65}
     .svc-tag{display:inline-block;margin-top:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blr-l);background:rgba(110,45,186,.08);padding:3px 8px;border-radius:20px}
+    @media(max-width:960px){.cluster-panel.active{grid-template-columns:1fr 1fr}}
+    @media(max-width:600px){.cluster-panel.active{grid-template-columns:1fr}.cluster-tabs{gap:8px}.cluster-btn{font-size:12px;padding:9px 20px}}
 
     /* ─── WEBINAR CTA ─── */
     #webinar{background:linear-gradient(135deg,#1D2130 0%,#180D2C 100%);position:relative;overflow:hidden;text-align:center}
@@ -190,11 +200,11 @@
     /* ─── RESPONSIVE ─── */
     @media(max-width:960px){
       .hero-grid,.proof-grid,.creds-grid{grid-template-columns:1fr}
-      .pain-grid,.svc-grid{grid-template-columns:1fr 1fr}
+      .pain-grid{grid-template-columns:1fr 1fr}
       .img-band-inner .img-panel:nth-child(3){display:none}
     }
     @media(max-width:600px){
-      .pain-grid,.svc-grid,.cred-stats{grid-template-columns:1fr}
+      .pain-grid,.cred-stats{grid-template-columns:1fr}
       h1{font-size:34px}.w-inner h2{font-size:32px}
       section{padding:64px 0}
       .form-row{grid-template-columns:1fr}
@@ -212,7 +222,7 @@
   <script>
     function openVideo(id){
       var m=document.getElementById('yt-modal');
-      document.getElementById('yt-frame').src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1';
+      document.getElementById('yt-frame').src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';
       m.classList.add('open');
       document.body.style.overflow='hidden';
     }
@@ -227,7 +237,7 @@
 <div id="yt-modal" onclick="if(event.target===this)closeVideo()">
   <div id="yt-modal-inner">
     <button id="yt-modal-close" onclick="closeVideo()">✕</button>
-    <iframe id="yt-frame" src="" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>
+    <iframe id="yt-frame" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -240,19 +250,14 @@
       </a>
       <div class="nav-sep"></div>
       <a href="https://bloomreach.com" class="logo-blr" target="_blank" rel="noopener">
-        <svg viewBox="0 0 168 40" xmlns="http://www.w3.org/2000/svg" style="height:22px;width:auto">
-          <circle cx="20" cy="20" r="19" fill="#FAD232"/>
-          <path d="M14 10h4.5c3.5 0 5.8 1.8 5.8 5 0 1.6-.7 2.8-1.8 3.5 1.6.7 2.6 2.1 2.6 4 0 3.5-2.5 5.5-6.2 5.5H14V10zm4.2 7.5c1.6 0 2.5-.8 2.5-2.2s-.9-2.1-2.5-2.1H17v4.3h1.2zm.6 7.8c1.8 0 2.8-.9 2.8-2.5s-1-2.4-2.8-2.4H17v5h1.8z" fill="#1B3A5C"/>
-          <text x="48" y="27" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="19" font-weight="600" fill="#1B3A5C" letter-spacing="-0.3">bloomreach</text>
-        </svg>
+        <img src="https://domid-epace.github.io/dashboards/Bloomreach_Logo.png" alt="Bloomreach" style="height:22px;width:auto"/>
       </a>
     </div>
     <div class="nav-right">
       <a href="#webinar" class="nav-link">Webinar</a>
       <a href="#proof" class="nav-link">Case Studies</a>
       <a href="#epace-creds" class="nav-link">About ePACE</a>
-      <a href="#webinar" class="btn btn-o" style="padding:9px 20px;font-size:13px;">Register Now</a>
-      <a href="#webinar" class="btn btn-y" style="padding:9px 20px;font-size:13px;">May 8 — Free</a>
+      <a href="#webinar" class="btn btn-y" style="padding:9px 20px;font-size:13px;">Register now</a>
     </div>
   </div>
 </nav>
@@ -271,23 +276,22 @@
       <div>
         <div class="hero-eyebrow">
           <span class="tag">Home &amp; DIY · Retail</span>
-          <span style="font-size:12px;color:var(--mg)">ePACE × Bloomreach CDP Initiative</span>
         </div>
-        <h1>More revenue.<br/><em>Fewer emails.</em><br/>Proven in Home &amp; Furniture.</h1>
+        <h1>More revenue.<br/><em>Fewer emails.</em></h1><h1 class="sub-heading">Proven in Home & Furniture.</h1>
         <p class="hero-sub">
-          Home &amp; DIY retailers who unified their customer data with Bloomreach CDP — implemented by ePACE — generated <strong style="color:#fff">€5.5M in incremental revenue in 16 months.</strong> We'll show you exactly how.
+          Home & DIY retailers who unified their customer data with Bloomreach CDP implemented by ePace, generated <strong style="color:#fff">€5.5M in incremental revenue in 16 months.</strong> Let´s have a look exactly how.
         </p>
         <div class="hero-actions">
           <a href="#webinar" class="btn btn-y">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-            Join the Webinar — May 8
+            Join the Webinar
           </a>
-          <a href="#webinar" class="btn btn-o">Book 1:1 Appointment</a>
+          <a href="#webinar" class="btn btn-o">Book an Appointment</a>
         </div>
         <div class="hero-stats">
           <div class="hstat"><div class="n">€5.5M</div><div class="l">Revenue in 16 months (ASKO)</div></div>
           <div class="hstat"><div class="n">+200%</div><div class="l">Newsletter revenue</div></div>
-          <div class="hstat"><div class="n">3×</div><div class="l">New contacts collected</div></div>
+          <div class="hstat"><div class="n">550k</div><div class="l">Contacts restored and collected</div></div>
           <div class="hstat"><div class="n">−50%</div><div class="l">Email volume sent</div></div>
         </div>
       </div>
@@ -301,7 +305,7 @@
             </div>
           </a>
           <div class="video-caption">
-            <p><strong>Andrea Štěpánová</strong>, Marketing Director at ASKO NÁBYTEK, on what Bloomreach CDP changed — in 37 seconds. <a href="#" onclick="event.preventDefault();openVideo('pVaa30jfi8A')" style="color:var(--y)">Watch inline →</a></p>
+            <p><strong>Andrea Štěpánová</strong>, Marketing Director at ASKO NÁBYTEK on what Bloomreach has changed. <a href="#" onclick="event.preventDefault();openVideo('pVaa30jfi8A')" style="color:var(--y)">Watch inline →</a></p>
           </div>
         </div>
       </div>
@@ -312,14 +316,23 @@
 <!-- ══ IMAGE BAND ══ -->
 <div id="img-band">
   <div class="img-band-inner">
-    <div class="img-panel" style="background-image:url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80&auto=format')">
-      <div class="img-overlay"><span>Modern Living Room</span></div>
+    <div class="img-panel" style="background-image:url('https://plus.unsplash.com/premium_photo-1661497933846-140f68f4cc2f?w=800&q=80&auto=format')">
+      <div class="img-overlay">
+        <span>Modern Living Room Audience</span>
+        <div style="margin-top:5px;font-size:9px;color:rgba(255,255,255,.7);line-height:1.4">These customers are identifiable based on behaviour</div>
+      </div>
     </div>
-    <div class="img-panel" style="background-image:url('https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80&auto=format')">
-      <div class="img-overlay"><span>Bedroom Comfort</span></div>
+    <div class="img-panel" style="background-image:url('https://images.unsplash.com/photo-1758524941364-069f6ccd85ed?w=800&q=80&auto=format')">
+      <div class="img-overlay">
+        <span>Bedroom Comfort Audience</span>
+        <div style="margin-top:5px;font-size:9px;color:rgba(255,255,255,.7);line-height:1.4">These customers are identifiable based on behaviour</div>
+      </div>
     </div>
-    <div class="img-panel" style="background-image:url('https://www.bloomreach.com/wp-content/uploads/2025/08/1080x600pxlovall-Thumbnail-with-Logo-asko.jpg')">
-      <div class="img-overlay"><span>ASKO – NÁBYTEK × Bloomreach</span></div>
+    <div class="img-panel" style="background-image:url('https://domid-epace.github.io/dashboards/classic_kitchen.jpg')">
+      <div class="img-overlay">
+        <span>Classic Kitchen Audience</span>
+        <div style="margin-top:5px;font-size:9px;color:rgba(255,255,255,.7);line-height:1.4">These customers are identifiable based on behaviour</div>
+      </div>
     </div>
   </div>
 </div>
@@ -329,71 +342,55 @@
   <div class="container">
     <div class="pain-header">
       <div class="section-eyebrow"><span class="tag">The real challenge</span></div>
-      <h2 class="sec-h" style="text-align:center">Your CRM is full of data.<br/>Your results don't show it.</h2>
-      <p class="sec-p" style="text-align:center;margin:0 auto">Home &amp; DIY retail has six structural problems that prevent CRM from delivering results — and most teams don't know which one is bleeding them most.</p>
+      <h2 class="sec-h" style="text-align:center">Your CRM is full of data. <br>Your results don't show it.</h2>
+      <p class="sec-p" style="text-align:center;margin:0 auto">Home & DIY retail has six structural problems that prevent CRM from delivering results — and most teams don't know which one is bleeding them most.</p>
     </div>
     <div class="pain-grid">
 
       <div class="pain-c">
         <div class="pain-stat"><em>70%+</em></div>
-        <h3>Research online. Buy in-store. You see nothing.</h3>
-        <p>The majority of furniture decisions start online but close at POS — with zero attribution. Your best customer walked through your door last week. You have no idea they were browsing your e-shop for three months first.</p>
+        <h3>Customers research items online but complete their purchases in-store—and you have no way to track it.</h3>
+        <p>Most furniture purchase decisions begin online but are completed in-store—with zero attribution. Your best customer walked through your door last week, and you have no idea they had been browsing your e-shop for three months beforehand.</p>
         <div class="pain-webinar-note">
           <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-          We cover this in the webinar
-        </div>
+          </div>
       </div>
 
       <div class="pain-c">
         <div class="pain-stat"><em>3–5 yrs</em></div>
-        <h3>Low frequency. One wrong moment = one lost customer.</h3>
-        <p>The average Home &amp; DIY customer buys major items every 3–5 years. Miss the trigger — a move, a renovation, a new baby — and your competitor wins the lifetime value. Without predictive segmentation, you're always guessing.</p>
-        <div class="pain-webinar-note">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-          AI trigger models — covered May 8
-        </div>
-      </div>
+        <h3>Low frequency of shopping. One wrong moment can cost you a customer.</h3>
+        <p>The average Home & DIY customer buys major items every 3–5 years. If you miss the trigger — a move, a renovation, a new baby — your competitor wins the lifetime value. Without predictive segmentation, you're always guessing.</p>
+     </div>
 
       <div class="pain-c">
         <div class="pain-stat"><em>40–60%</em></div>
-        <h3>Your database is dead weight — and you're paying for it.</h3>
-        <p>Forensic audits consistently show that 40–60% of retail databases contain duplicates, expired consents, POS typos, or unreachable contacts. Every email sent to these burns deliverability — and real revenue.</p>
-        <div class="pain-webinar-note">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-          Forensic audit walkthrough — May 8
-        </div>
-      </div>
+        <h3>of retail databases contain duplicates, expired consents, POS errors, or unreachable contacts.</h3>
+        <p>Data audits consistently reveal a significant share of customer data is flawed—silently undermining campaign performance. Every email sent to these records harms deliverability, reduces engagement, and ultimately erodes real revenue.</p>
+   </div>
 
       <div class="pain-c">
-        <div class="pain-stat"><em>Q1–Q2</em></div>
-        <h3>Move-in season is 60% of your annual CRM opportunity.</h3>
-        <p>Spring brings movers, renovators, and new-home buyers — all hunting for furniture at once. Without automated nurture flows triggered by seasonal signals, you're relying on manual campaigns during the busiest 8 weeks of the year.</p>
-        <div class="pain-webinar-note">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-          Automation architecture — May 8
+        <div class="pain-stat"><em>Q3–Q4</em></div>
+        <h3>is peak renovation season — and most CRM teams are still on autopilot.</h3>
+        <p>Q4 consistently sees the highest per-household home improvement spend of the year, as customers shift indoors — kitchens, bathrooms, furnishings. Without automated nurture flows triggered by seasonal signals, you're running manual campaigns during the most valuable window of the year. (HIRI, 2024)</p>
         </div>
-      </div>
 
       <div class="pain-c">
-        <div class="pain-stat"><em>1 list,<br/><span style="font-size:20px">3 buyers</span></em></div>
+        <div class="pain-stat"><em>1 list, 3 buyers<br/></em></div>
         <h3>You're sending the same newsletter to people who couldn't be more different.</h3>
         <p>The weekend DIY enthusiast. The professional interior designer. The young family furnishing their first apartment. One segment, three completely different journeys, buying motivations, and price points. One newsletter serves none of them well.</p>
-        <div class="pain-webinar-note">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-          AI segmentation engine — May 8
-        </div>
       </div>
 
       <div class="pain-c">
-        <div class="pain-stat"><em>€0</em></div>
+        <div class="pain-stat"><em>€X</em></div>
         <h3>You can't prove CRM ROI — so management won't invest more.</h3>
-        <p>No attribution from email to store visit means you're forever arguing gut feelings with leadership. When you can't show that a newsletter drove €X in-store revenue last quarter, the CRM budget stays flat — or gets cut.</p>
+        <p>"Without attribution from email to in-store visits, decisions default to gut feel. If you can't show that a newsletter drove €X in-store revenue last quarter, the CRM budget stays flat—or gets cut."</p>
         <div class="pain-webinar-note">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2HIVSa2 2 0 01-2-2V8z"/></svg>
-          Attribution dashboards — May 8
         </div>
       </div>
 
+    <div style="grid-column:1/-1;text-align:center;margin-top:8px">
+      <a href="#webinar" class="btn btn-dark">Join the webinar to learn more</a>
+    </div>
     </div>
   </div>
 </section>
@@ -410,18 +407,18 @@
     <div class="proof-grid">
       <!-- Left: numbers + quote -->
       <div>
-        <span class="tag" style="margin-bottom:16px">Case Study — Home &amp; DIY</span>
+        <span class="tag" style="margin-bottom:16px">Case Study — Home & DIY</span>
         <div class="case-badge">
           <div class="c-logo">ASKO – NÁBYTEK</div>
-          <div class="c-ind">Furniture Retail · Czech Republic &amp; Slovakia · 20 stores</div>
+          <div class="c-ind">Furniture Retail · Czech Republic & Slovakia · 20 stores</div>
         </div>
-        <h2 class="proof-h">200% revenue uplift.<br/>16 months. Zero guesswork.</h2>
-        <p class="proof-sub">ASKO transformed its CRM from a basic loyalty program into a data-driven revenue engine — using Bloomreach Engagement and ePACE as the implementation and strategy partner.</p>
+        <h2 class="proof-h">200% revenue uplift in 16 months.</h2>
+        <p class="proof-sub">ASKO transformed its CRM from a basic loyalty program into a data-driven revenue engine — using Bloomreach Engagement and ePace as the implementation and strategy partner.</p>
         <div class="stats-2x2">
           <div class="sc"><div class="n">€5.5M</div><div class="l">Revenue generated in 16 months</div></div>
-          <div class="sc"><div class="n">550K</div><div class="l">Active contacts in database</div></div>
+          <div class="sc"><div class="n">+550K</div><div class="l">Contacts in database</div></div>
           <div class="sc"><div class="n">+200%</div><div class="l">Newsletter revenue uplift</div></div>
-          <div class="sc"><div class="n">3×</div><div class="l">New contacts — same period</div></div>
+          <div class="sc"><div class="n">40×</div><div class="l">HIgher performance of automated scenarios</div></div>
         </div>
         <div class="proof-quote">
           <p class="qt">"We're actually just at the beginning of what we want to accomplish. We've laid the foundation. Now we can build, and grow and grow and grow."</p>
@@ -442,14 +439,14 @@
           <div class="tl">
             <div class="tl-item"><div class="tl-dot"></div><h4>Forensic Data Audit</h4><p>Recovered dormant contacts, rebuilt consent layer, unified POS + e-shop + loyalty</p></div>
             <div class="tl-item"><div class="tl-dot"></div><h4>AI Segmentation Engine (Category Heat Score)</h4><p>91 segments across 13 product families — live, real-time</p></div>
-            <div class="tl-item"><div class="tl-dot"></div><h4>3-Level Newsletter Automation</h4><p>Content journeys replaced volume blasts. −50% emails, +200% revenue.</p></div>
+            <div class="tl-item"><div class="tl-dot"></div><h4>Proven Automated Use Cases</h4><p>Welcome flows, abandoned cart recovery, post-visit re-engagement, win-back sequences. Content journeys replaced volume blasts — −50% emails, +200% revenue.</p></div>
             <div class="tl-item"><div class="tl-dot"></div><h4>Cross-Channel Attribution</h4><p>Email → in-store visit → cash register. Proved ROI to every store manager.</p></div>
             <div class="tl-item"><div class="tl-dot"></div><h4>Direct Mail + Digital Orchestration</h4><p>Physical mail coordinated from CDP. Attribution against online behaviour.</p></div>
           </div>
         </div>
         <!-- Full case study video — click to play -->
         <div>
-          <div style="font-size:11px;color:var(--mg);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Full case study video (10 min)</div>
+          <div style="font-size:11px;color:var(--mg);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Full case study video (15 min)</div>
           <a class="yt-poster" href="#" onclick="event.preventDefault();openVideo('mjFAXCcQkX0')" title="Watch full ASKO case study" style="border-radius:10px">
             <img src="https://i.ytimg.com/vi/mjFAXCcQkX0/maxresdefault.jpg" alt="ASKO NÁBYTEK — Full CDP Case Study"/>
             <div class="yt-play">
@@ -469,7 +466,7 @@
       <div class="creds-left">
         <span class="tag" style="margin-bottom:16px">Who is ePACE</span>
         <h2 class="sec-h">CEE's most experienced<br/>Bloomreach CDP partner.</h2>
-        <p>ePACE is a Prague-based CDP consultancy specialising exclusively in Bloomreach Engagement. We don't implement and move on — we design the business strategy, build the architecture, and drive growth for the long term.</p>
+        <p>ePACE is a Prague-based CDP consultancy specialising in Bloomreach Engagement. We don't implement and move on — we design the business strategy, build the architecture, and drive growth for the long term.</p>
         <div class="cred-stats">
           <div class="cs-item"><div class="n">100K+</div><div class="l">Hours in Bloomreach</div></div>
           <div class="cs-item"><div class="n">10+</div><div class="l">Active clients CEE</div></div>
@@ -482,7 +479,7 @@
           </div>
           <div class="badge" style="font-size:11px;padding:8px 12px;white-space:nowrap">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            CDP-only teams
+            Full CDP focus
           </div>
           <div class="badge" style="font-size:11px;padding:8px 12px;white-space:nowrap">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -493,23 +490,9 @@
       <div>
         <!-- Gold Partner Badge + client logos -->
         <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:20px">
-          <!-- Gold Partner Badge SVG -->
+          <!-- Gold Partner Badge -->
           <div style="flex-shrink:0">
-            <svg width="110" height="128" viewBox="0 0 110 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 18C5 11.373 10.373 6 17 6H93C99.627 6 105 11.373 105 18V82C105 100.778 86.5 115 55 122C23.5 115 5 100.778 5 82V18Z" fill="white" stroke="#C9993A" stroke-width="3"/>
-              <path d="M5 18C5 11.373 10.373 6 17 6H93C99.627 6 105 11.373 105 18V26H5V18Z" fill="#1B3A5C"/>
-              <!-- Bloomreach mini logo in header -->
-              <circle cx="28" cy="16" r="8" fill="#FAD232"/>
-              <text x="28" y="21" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#1B3A5C">b</text>
-              <text x="62" y="21" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="600" fill="white">bloomreach</text>
-              <!-- Gold star -->
-              <text x="55" y="58" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#C9993A">★</text>
-              <!-- Gold text -->
-              <text x="55" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#C9993A">Gold</text>
-              <!-- Certified Partner -->
-              <text x="55" y="96" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="600" fill="#1B3A5C">Certified</text>
-              <text x="55" y="111" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="600" fill="#1B3A5C">Partner</text>
-            </svg>
+            <img src="https://domid-epace.github.io/dashboards/bloomreach-partner-icon.png" alt="Bloomreach Gold Certified Partner" style="width:110px;height:auto"/>
           </div>
           <div style="flex:1">
             <div class="client-logos-wrap" style="padding:20px">
@@ -547,26 +530,103 @@
 <section id="services">
   <div class="container">
     <div style="max-width:800px;margin:0 auto 48px;text-align:center">
-      <span class="tag" style="margin-bottom:16px">The playbook</span>
+      <span class="tag" style="margin-bottom:16px">Solution</span>
       <h2 class="sec-h" style="margin-top:12px">You know the problem.<br/>Here's how we fix it — step by step.</h2>
       <p class="sec-p" style="margin:0 auto">Each of the pain points above has a proven solution. These are the 9 use cases we deploy on Bloomreach — in the order that generates ROI fastest. Start wherever you are.</p>
     </div>
-    <div class="svc-grid">
-      <div class="svc-c"><div class="svc-n">01 · Solves: No ROI proof</div><h3>Business Analysis &amp; Digital Maturity Test</h3><p>Tier I–IV readiness scoring of your data infrastructure, automation maturity, and channel coverage. Quantified ROI model. Clear next steps in 5 working days.</p><span class="svc-tag">Start here</span></div>
-      <div class="svc-c"><div class="svc-n">02 · Solves: Dead database weight</div><h3>Forensic Data Audit</h3><p>Contact gap analysis, consent reconstruction, database deduplication. Typically recovers 50,000–350,000 contacts previously invisible — and finds the revenue that's been leaking with them.</p><span class="svc-tag">Data Quality</span></div>
-      <div class="svc-c"><div class="svc-n">03 · Solves: One list, three buyers</div><h3>AI Segmentation Engine (Category Heat Score)</h3><p>Proprietary interest and intent model across your product families. 91 customer segments, real-time. Proven +760% revenue uplift on Heat Score-driven campaigns.</p><span class="svc-tag">AI / ML</span></div>
-      <div class="svc-c"><div class="svc-n">04 · Solves: Generic messaging</div><h3>AI Content &amp; Product Recommendations</h3><p>Dynamic product recommendations and AI-generated email copy per segment. From subject line to full body — automated, on-brand, and powered by Loomi AI.</p><span class="svc-tag">AI / Content</span></div>
-      <div class="svc-c"><div class="svc-n">05 · Solves: Volume without results</div><h3>3-Level Newsletter Automation</h3><p>Replaces manual blasts with intelligent content journeys: frequency capping, category quarantine, segment-based cadence. −50% emails, +200% revenue — the ASKO result.</p><span class="svc-tag">Automation</span></div>
-      <div class="svc-c"><div class="svc-n">06 · Solves: Online ≠ offline</div><h3>Branch &amp; Location Segmentation</h3><p>Proximity-based customer routing to the nearest store. Connects web sessions to in-store visits. The missing link between your CRM and the cash register.</p><span class="svc-tag">Omnichannel</span></div>
-      <div class="svc-c"><div class="svc-n">07 · Solves: No ROI visibility</div><h3>Campaign &amp; Customer Journey Analytics</h3><p>Bloomreach + Looker dashboards with cross-channel attribution — including in-store footfall. Monthly delta tracking that every store manager actually understands.</p><span class="svc-tag">Analytics</span></div>
-      <div class="svc-c"><div class="svc-n">08 · Solves: Digital-only reach</div><h3>Direct Mail Integration</h3><p>Physical direct mail orchestrated from CDP. Triggered by lifecycle stage and RFM segment. Full attribution against online and in-store behaviour.</p><span class="svc-tag">Omnichannel</span></div>
-      <div class="svc-c"><div class="svc-n">09 · Solves: Long purchase cycle</div><h3>AI Conversational Chat — "Your Project, Your Buddy"</h3><p>AI-powered chat for product selection, renovation project guidance, and personalised recommendations. Keeps the customer warm across the 3–5 year purchase journey.</p><span class="svc-tag">AI / CX</span></div>
+
+    <!-- Cluster tab buttons -->
+    <div class="cluster-tabs">
+      <button class="cluster-btn active" onclick="showCluster(1)">Will CDP actually pay off for us?</button>
+      <button class="cluster-btn" onclick="showCluster(2)">Our segments just don't convert</button>
+      <button class="cluster-btn" onclick="showCluster(3)">We send too much and earn too little</button>
+      <button class="cluster-btn" onclick="showCluster(4)">Online and in-store don't talk to each other</button>
     </div>
-    <div style="text-align:center;margin-top:40px">
-      <a href="#webinar" class="btn btn-dark">Get my custom roadmap</a>
+
+    <!-- CLUSTER 1 -->
+    <div class="cluster-panel active" id="cluster-1">
+      <div class="svc-c">
+		<h3>DMT — A Full Digital Maturity Audit</h3>
+		<div class="svc-n">Run by AI, Delivered in Days Not Months</div>
+		<p>The Digital Maturity Test is an autonomous AI agent that scans your e-commerce ecosystem and evaluates it against key benchmarks: reaction times, personalization,
+		abandoned-cart recovery, reactivation, and the use cases your competitors already run. You get a direct benchmark against competitors — a report that once took months
+		and six figures. <b>Within a week, you'll know where you're losing revenue and what to fix first.</b>
+		</p>
+		<span class="svc-tag">Start here</span>
+	  </div>
+     <div class="svc-c">
+		<h3>Business Analysis</h3>
+		<div class="svc-n">The Readiness Check Paying for Itself Before You Sign</div>
+		<p>Most CDP projects fail because the business case is guessed, not built. We don't guess. Our readiness check audits your processes, IT stack, marketing operations,
+		apps, and data sources — then models your real CDP potential, impact, and timeline. You get a phased plan, realistic expectations, and a license-cost projection 
+		aligned with your growth — not a sales quota. The result: you go to your board with defensible numbers, not a vendor pitch, and <b>know your ROI before you spend an euro.</b>
+		</p>
+		<span class="svc-tag">Business Plan</span>
+	 </div>
+     <div class="svc-c">
+		<h3>Forensic Data Audit</h3>
+		<div class="svc-n">Recovering "Leaky Bucket" = Thousands of contacts</div>
+		<p>Every brand has a leaky bucket — over-suppressed, mis-flagged, or lost contacts trapped in legacy tools. We trace every PII and data entry point, identify the leaks, 
+		and return recovered contacts to circulation — fully GDPR-compliant. The result is a <b>double-digit growth in your active, addressable base.</b> It's like a free acquisition
+		campaign — except these customers already know your brand and are ready to be reactivated from day one. Your CDP starts paying for itself before it's fully deployed.
+		</p>
+		<span class="svc-tag">Data Quality</span>
+	</div>
     </div>
+
+    <!-- CLUSTER 2 -->
+    <div class="cluster-panel" id="cluster-2">
+      <div class="svc-c"><h3>The AI Segmentation Engine</h3><div class="svc-n">Micro-Segments That Convert 5–10× Better Than Mass Sends</div><p>Most segmentation is just demographic slicing. Ours is engineered — combining multiple data layers, behavioral signals, and industry-tuned scoring. It distinguishes real intent: from one-off buyers to repeat customers, from price-sensitive shoppers to planners. The result is high-converting micro-segments for hyper-relevant communication. 
+	  <b>You stop blasting your base and start running hundreds of targeted, high-margin campaigns at once.</b></p><span class="svc-tag">Segmentation</span></div>
+      
+	  <div class="svc-c"><h3>Real-Time AI Recommendations</h3><div class="svc-n">From Segment to Individual, Across Every Channel</div><p>We generate real-time recommendations for content, assortment, and products — for every segment and individual — adapting to each customer's journey. We feed them directly into your omnichannel orchestration, selecting the best channel by cost or engagement. 
+	  The result is <b> higher conversion, lower communication costs, and no wasted emails when a free push will do.</b>
+	  </p><span class="svc-tag">Recommendation</span></div>
+      
+	  <div class="svc-c"><h3>AI Content Generation at Audience Scale</h3><div class="svc-n">No Production Bottleneck</div>
+	  <p>Every segment and individual gets content tailored to their profile — automatically. <br>Optimized feeds, AI-generated creative, and channel-aware copy.</b> You stop producing dozens of variants manually. 
+	  The framework delivers them on-brand and on-time, so your team can run 10× more campaigns without burnout or extra hires.</p><span class="svc-tag">Automation</span></div>
+    </div>
+
+    <!-- CLUSTER 3 -->
+    <div class="cluster-panel" id="cluster-3">
+      <div class="svc-c"><h3>3-Level Frequency Layers</h3><div class="svc-n"> Push 3–5× More Campaigns Without Spiking Unsubscribes
+</div>
+<p>Frequency is king. But push too hard, and your base burns. Our 3-tier frequency system maximizes relevance and conversion pressure while built-in health checks protect the long-term value of every contact. 
+<b>You get to run aggressive campaign calendars without watching your unsubscribe rate climb. </b>It's the only way to monetize your base hard and keep it alive five years from now.</p><span class="svc-tag">Timing</span></div>
+      <div class="svc-c"><h3>Campaign & CRM Analytics</h3><div class="svc-n">Powered by Bloomreach + Looker</div>
+	  <p>End the attribution debate. Every campaign, every program, every segment, every channel — visible, comparable, defensible. 
+	  Marketing decisions backed by the same data your CFO trusts. No more "I think this worked." Just numbers, cohorts, and incremental revenue you can point to.</p><span class="svc-tag">Analytics</span></div>
+      <div class="svc-c" style="background:transparent;border-color:transparent;box-shadow:none;pointer-events:none"></div>
+    </div>
+
+    <!-- CLUSTER 4 -->
+    <div class="cluster-panel" id="cluster-4">
+      <div class="svc-c">
+	  <h3>Catchment-Area Segmentation</h3><div class="svc-n">Your Stores Are an Untapped Revenue Channel</div><p>Retail stores isn't legacy — it's logistics, trust, and impulse, all in one. 
+	  We map your entire customer base by distance to each branch, build catchment-aware segments, and incentivize the in-store journey with offers customers actually act on (because <b>"see it, try it, take it home today" </b> still wins). 
+	  It results real lift in walk-ins, visit rates, and click & collect — and an online-offline revenue loop that finally makes the ROPO effect work for you instead of against you.
+	 </p><span class="svc-tag">Online-offline revenue</span></div>
+      
+	  <div class="svc-c"><h3>Direct Mail</h3><div class="svc-n">The Channel Everyone Wrote Off, Quietly Outperforming Email for Specific Segments
+</div><p>Print isn't dead. For an entire — and growing — segment of customers (defined by age, by digital fatigue, by preference), the printed mailbox still converts at rates that put email to shame. <b>We have the case studies. 
+	  The revenue is real, recurring, and incremental.</b> And in a world where every brand is fighting for the same inbox, the mailbox is suddenly the least crowded room.
+	 </p><span class="svc-tag">Omnichannel</span></div>
+      <div class="svc-c" style="background:transparent;border-color:transparent;box-shadow:none;pointer-events:none"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px"></div>
   </div>
 </section>
+
+<script>
+function showCluster(n){
+  document.querySelectorAll('.cluster-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.cluster-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('cluster-'+n).classList.add('active');
+  document.querySelectorAll('.cluster-btn')[n-1].classList.add('active');
+}
+</script>
 
 <!-- ══ WEBINAR REGISTRATION CTA ══ -->
 <section id="webinar">
@@ -574,17 +634,17 @@
   <div class="container">
     <div class="w-inner">
       <span class="tag tag--ghost" style="margin-bottom:20px">Free webinar · Thursday, May 8, 2026</span>
-      <h2>See it live.<br/><em>CDP for Home &amp; DIY.</em></h2>
-      <p class="w-sub">60 minutes of real use cases, live demos, and benchmark results from the Home &amp; DIY segment — with ePACE &amp; Bloomreach.</p>
+      <h2>See it live.<br/><em>CDP/CRM Best Practices<br/>for Home &amp; DIY.</em></h2>
+      <p class="w-sub">6 use cases that are simple, proven, and you should already have — live demos and real benchmark results from the Home &amp; DIY segment, with ePACE &amp; Bloomreach.</p>
       <div class="w-agenda-pill">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        6 sessions · ASKO case study · AI demos · Q&amp;A · Includes free DMT Express offer
+        6 issues · 6 How to · Q&A · Free Digital Maturity Test
       </div>
       <div class="w-details">
         <div class="wd"><svg class="wd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Thursday, May 8, 2026</div>
         <div class="wd"><svg class="wd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> [TIME TBD] CET · 60 min</div>
-        <div class="wd"><svg class="wd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg> Hybrid — online &amp; in-person</div>
-        <div class="wd"><svg class="wd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Free — incl. DMT Express offer</div>
+        <div class="wd"><svg class="wd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg> Online</div>
+       
       </div>
       <!-- Registration form -->
       <div class="reg-box">
@@ -602,7 +662,7 @@
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
           Reserve my seat — May 8
         </button>
-        <p class="form-note">Or skip the webinar and <a href="mailto:hello@epace.com" style="color:rgba(250,210,50,.8)">book a 1:1 with our team directly →</a></p>
+        <p class="form-note">Or skip the webinar and <a href="mailto:info@epace.com" style="color:rgba(250,210,50,.8)">book an appointment with us directly →</a></p>
       </div>
     </div>
   </div>
@@ -620,21 +680,4 @@
       <div class="footer-links">
         <a href="https://epace.com">epace.com</a>
         <a href="https://www.bloomreach.com/en/case-studies/asko-nabytek-epace">ASKO Case Study</a>
-        <a href="https://www.bloomreach.com/en/case-studies/etabletka">etabletka Case Study</a>
-        <a href="https://domid-epace.github.io/dashboards/dmt-landing-page.html">DMT Express</a>
-        <a href="mailto:hello@epace.com">Contact</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<script>
-// Inline the ePACE SVG logo properly in both places
-document.querySelectorAll('.logo-ep img, footer img').forEach(img => {
-  if (img.src.includes('data:image/svg+xml')) {
-    // Already has logo - fine
-  }
-});
-</script>
-</body>
-</html>
+        <a href="m
