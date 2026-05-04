@@ -212,7 +212,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
     </div>
     <h1>SmartSegments: výsledky A/B testu<br><em>za duben 2026</em></h1>
     <p class="lede">
-      Shrnutí výsledků pilotního testu segmentované rozesílky newsletterů na 6 produktových rodinách. Test spočíval v náhodném rozdělení celé báze (~1.5M kontaktů) v poměru 50:50 (včetně segmentované části báze). Reálně jsme segmentovaným sdělením jsme zasáhli <b>~3 %</b> z báze, zbytek varianty i kontrolky dostával standardní rozesílku. Do segmentů jsme schopni přiřadit ~9.2% báze.
+      Shrnutí výsledků pilotního testu segmentované rozesílky newsletterů na 6 produktových rodinách. Test spočíval v náhodném rozdělení kontaktovatelné báze (~760 tis. kontaktů) v poměru 50:50. Reálně jsme segmentovaným sdělením zasáhli <b>~46 tis.</b> zákazníků (~12 % varianty), zbytek varianty i kontrolky dostával standardní rozesílku. Do segmentů jsme schopni přiřadit ~34 % ATEP báze (maximum ~50 % se všemi segmenty).
     </p>
     <div class="meta">
       <span><b>Období testu</b> · duben 2026 (~30 dní)</span>
@@ -223,20 +223,20 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
     <!-- DATA: hero-stats (whole-cohort variant vs control) -->
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="num">+28 423 <small>€</small></div>
-        <div class="label"><b class="pos">+2,49 %</b> tržby — variantní polovina vs. kontrolní</div>
+        <div class="num">+25 189 <small>€</small></div>
+        <div class="label"><b class="pos">+2,63 %</b> tržby — variantní polovina vs. kontrolní</div>
       </div>
       <div class="hero-stat">
-        <div class="num">+576</div>
-        <div class="label"><b class="pos">+13,7 %</b> nákupy navíc na variantní polovině</div>
+        <div class="num">+4,7 <small>%</small></div>
+        <div class="label">AOV — varianta (306 €) vs. kontrola (292 €)<br>uplift tažen hodnotou, ne počtem nákupů</div>
       </div>
       <div class="hero-stat">
-        <div class="num">+33,0 <small>%</small></div>
-        <div class="label">Offline nákupy ve variantě<br>(+612 nákupů, +31 086 €)</div>
+        <div class="num">+5,56 <small>%</small></div>
+        <div class="label">Offline tržby ve variantě<br>(+28 723 €, offline AOV 569 € vs. 533 €)</div>
       </div>
       <div class="hero-stat">
-        <div class="num">7,46 <small>%</small></div>
-        <div class="label">CTR segmentovaných emailů<br>vs. ~0,9 % u běžných NL</div>
+        <div class="num">26,90 <small>%</small></div>
+        <div class="label">OR zákazníků s přiřazeným segmentem<br>vs. 26,57 % bez segmentu (+1,2 % rel.)</div>
       </div>
     </div>
   </div>
@@ -255,26 +255,26 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
     <!-- DATA: cohort-funnel base / variant-half / treated -->
     <div class="dilution">
       <div class="dil-step">
-        <div class="v">1 521 072</div>
-        <div class="l">Celá adresovatelná báze ASKO</div>
+        <div class="v">~760 000</div>
+        <div class="l">Kontaktovatelní zákazníci v AB testu</div>
         <div class="dil-arrow">›</div>
       </div>
       <div class="dil-step">
-        <div class="v">~760 536</div>
+        <div class="v">~373 000</div>
         <div class="l">50 % variantní polovina (random split)</div>
         <div class="dil-arrow">›</div>
       </div>
       <div class="dil-step final">
         <div class="v">~46 000</div>
-        <div class="l">Skutečně dostali segmentované speciály<br><b>= 6 % varianty, ~3 % celé báze</b></div>
+        <div class="l">Skutečně dostali segmentované speciály<br><b>= ~12 % varianty, ~6 % AB báze</b></div>
       </div>
     </div>
 
     <div class="cards c3" style="margin-top:22px">
       <div class="card">
-        <div class="num pos">+0,62 €</div>
+        <div class="num pos">+0,55 €</div>
         <div class="label">na uživatele v segmentu / měsíc</div>
-        <div class="help">Pokud celý uplift +28 423 € atribujeme ~46 tis. zasaženým uživatelům, vychází ~0,62 €/uživatel/měsíc navíc. Přepočteno na rok ~7,4 €/uživatel.</div>
+        <div class="help">Pokud celý uplift +25 189 € atribujeme ~46 tis. zasaženým uživatelům, vychází ~0,55 €/uživatel/měsíc navíc. Přepočteno na rok ~6,6 €/uživatel.</div>
       </div>
       <div class="card">
         <div class="num pos">~690 000 €</div>
@@ -295,64 +295,54 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
   <div class="container">
     <h2><span class="accent"></span>Engagement na segmentovaných emailech</h2>
     <p class="deck">
-      Open rate a CTR na samotných segmentovaných speciálech pohodlně překračují benchmarky, o které se opíral BSoW.
-      To je pozitivní indikátor, že nám relevance sdělení pomáhá. Nyní jde jen o krátkodobý efekt.
+      Zákazníci s přiřazeným segmentem (ANO segmentace) vykazují mírně vyšší open rate oproti zákazníkům bez segmentu (NE segmentace). Signál je konzistentní, ale skromný — metriky zahrnují všechny emaily včetně plošných sendů, které dostávala celá varianta i kontrola.
     </p>
 
     <!-- DATA: engagement / regular vs segmented -->
     <div class="compare">
       <div class="row">
-        <div class="label">Open rate — běžné NL</div>
-        <div class="bar-wrap"><div class="bar dark" style="width:75%">27,0 %</div></div>
+        <div class="label">Open rate — NE segmentace</div>
+        <div class="bar-wrap"><div class="bar dark" style="width:99%">26,57 %</div></div>
         <div class="delta neutral">baseline</div>
       </div>
       <div class="row">
-        <div class="label">Open rate — segmentované</div>
-        <div class="bar-wrap"><div class="bar yellow" style="width:100%">35,99 %</div></div>
-        <div class="delta">+33 % rel.</div>
+        <div class="label">Open rate — ANO segmentace</div>
+        <div class="bar-wrap"><div class="bar yellow" style="width:100%">26,90 %</div></div>
+        <div class="delta">+1,2 % rel.</div>
       </div>
+
       <div class="row">
-        <div class="label">CTR (klik / odeslán) — běžné</div>
-        <div class="bar-wrap"><div class="bar dark" style="width:13%">0,81–1,06 %</div></div>
+        <div class="label">Unsubscribe — NE segmentace</div>
+        <div class="bar-wrap"><div class="bar dark" style="width:96%">0,26 %</div></div>
         <div class="delta neutral">baseline</div>
       </div>
       <div class="row">
-        <div class="label">CTR — segmentované</div>
-        <div class="bar-wrap"><div class="bar yellow" style="width:100%">7,46 %</div></div>
-        <div class="delta">+600–820 % rel.</div>
-      </div>
-      <div class="row">
-        <div class="label">Unsubscribe — běžné NL</div>
-        <div class="bar-wrap"><div class="bar dark" style="width:50%">0,27 %</div></div>
-        <div class="delta neutral">baseline</div>
-      </div>
-      <div class="row">
-        <div class="label">Unsubscribe — varianta</div>
-        <div class="bar-wrap"><div class="bar yellow" style="width:46%">0,25 %</div></div>
-        <div class="delta">−7 % rel.</div>
+        <div class="label">Unsubscribe — ANO segmentace</div>
+        <div class="bar-wrap"><div class="bar yellow" style="width:92%">0,25 %</div></div>
+        <div class="delta">−4 % rel.</div>
       </div>
     </div>
 
     <div class="cards c3" style="margin-top:22px">
       <div class="card">
-        <div class="num pos">+33 %</div>
-        <div class="label">Open rate vs. běžné NL</div>
-        <div class="help">Benchmark pro segmentaci (od Mailchimpu): <b>+14,3 %</b>. Reálný výsledek máme 2,3× nad benchmarkem.</div>
+        <div class="num pos">+1,2 %</div>
+        <div class="label">Open rate — ANO vs. NE segmentace (rel.)</div>
+        <div class="help">OR 26,90 % (ANO segmentace) vs. 26,57 % (NE segmentace). Konzistentní pozitivní signál napříč měsícem testu.</div>
       </div>
       <div class="card">
-        <div class="num pos">+600–820 %</div>
-        <div class="label">CTR per email sent</div>
-        <div class="help">Mailchimp benchmark: <b>+101 %</b>. Měřeno per odeslaný email. Segmentované obsahové ladění výrazně zvyšuje proklikovost.</div>
+        <div class="num pos">+4,7 %</div>
+        <div class="label">AOV — varianta nakupuje dráž</div>
+        <div class="help">Varianta 306,33 € vs. kontrola 292,49 €. Vyšší hodnota nákupů je hlavním motorem revenue upliftu. Offline AOV: 569 € vs. 533 €.</div>
       </div>
       <div class="card">
-        <div class="num pos">−7 %</div>
-        <div class="label">Unsubscribe vs. kontrola</div>
-        <div class="help">Variantní polovina odhlašuje méně. Dlouhodobě bychom očekávali ještě lepší výsledky.</div>
+        <div class="num pos">−4 %</div>
+        <div class="label">Unsubscribe — ANO vs. NE segmentace</div>
+        <div class="help">ANO segmentace 0,25 % vs. NE segmentace 0,26 %. Zákazníci s přiřazeným segmentem odhlašují méně.</div>
       </div>
     </div>
 
     <p class="note">
-      Srovnání CTR vs. CTR (klik / odeslaný), nikoli CTR vs. CTOR. Běžné rozesílky: 12 418 / 1 540 046 (varianta) a 16 246 / 1 539 523 (kontrola).
+      OR: ANO segmentace 445 856 / 1 657 406 (26,90 %) vs. NE segmentace 440 171 / 1 656 791 (26,57 %). Unsubscribe: ANO 1 101 (0,25 %) vs. NE 1 136 (0,26 %). Zdroj: Bloomreach dashboard Segmentation_ab_test_042026.
     </p>
   </div>
 </section>
@@ -369,28 +359,28 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
     <div class="channels">
       <div class="channel win">
         <h3>Offline</h3>
-        <div class="big pos">+33,03 %<small>+612 nákupů</small></div>
+        <div class="big pos">+5,56 %<small>+28 723 € tržby</small></div>
         <div class="pair">
-          <div><div class="l">Varianta — tržby</div><div class="v">729 907 €</div></div>
-          <div><div class="l">Kontrola — tržby</div><div class="v">698 821 €</div></div>
-          <div><div class="l">Varianta — AOV</div><div class="v">294,79 €</div></div>
-          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--good)">+31 086 €</div></div>
+          <div><div class="l">Varianta — tržby</div><div class="v">545 242 €</div></div>
+          <div><div class="l">Kontrola — tržby</div><div class="v">516 520 €</div></div>
+          <div><div class="l">Varianta — AOV</div><div class="v">569,15 €</div></div>
+          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--good)">+28 723 €</div></div>
         </div>
       </div>
       <div class="channel">
         <h3>Online</h3>
-        <div class="big neutral">−1,53 %<small>−36 nákupů</small></div>
+        <div class="big neutral">−0,80 %<small>−3 534 € tržby</small></div>
         <div class="pair">
-          <div><div class="l">Varianta — tržby</div><div class="v">441 766 €</div></div>
-          <div><div class="l">Kontrola — tržby</div><div class="v">444 429 €</div></div>
-          <div><div class="l">Varianta — AOV</div><div class="v">190,75 €</div></div>
-          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--muted)">−2 663 €</div></div>
+          <div><div class="l">Varianta — tržby</div><div class="v">439 303 €</div></div>
+          <div><div class="l">Kontrola — tržby</div><div class="v">442 837 €</div></div>
+          <div><div class="l">Varianta — AOV</div><div class="v">194,73 €</div></div>
+          <div><div class="l">Δ tržby</div><div class="v" style="color:var(--muted)">−3 534 €</div></div>
         </div>
       </div>
     </div>
 
     <p class="note">
-      AOV variantní poloviny je nižší (244,51 € vs. 271,43 € celkově) → uživatelé nakupují častěji menší položky.
+      AOV variantní poloviny je vyšší (306,33 € vs. 292,49 € celkově) → varianta nakupuje dráž, nikoli vícekrát. Offline AOV zvláště výrazný: 569,15 € (varianta) vs. 533,04 € (kontrola).
     </p>
   </div>
 </section>
@@ -544,7 +534,7 @@ h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);
     <div>
       <div class="keep">Keep the pace</div>
       <div class="updated" style="margin-top:6px">
-        Data k: <b>2026-04-28</b> · Období testu: duben 2026 (~30 dní) · K manuální aktualizaci na začátku května.
+        Data k: <b>2026-05-04</b> · Období testu: duben 2026 (~30 dní) · K manuální aktualizaci na začátku května.
       </div>
     </div>
     <div style="text-align:right">
