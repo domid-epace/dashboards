@@ -1679,11 +1679,27 @@ async function scanCompetitorBuiltWith(url, key) {
     } catch(e) { console.warn('BuiltWith attempt failed:', e.message, reqUrl); }
   }
   if (!data) return { detected_tools: [], reachable: false, error: 'builtwith_all_failed' };
-  const tools = [];
+  let tools = [];
   for (const result of (data.Results || [])) {
     for (const tech of (result.TechnologiesUsed || [])) {
       if (tech.Name) tools.push(tech.Name);
     }
+  }
+  // Free tier sometimes indexes under www.domain — retry once if empty
+  if (tools.length === 0 && !domain.startsWith('www.')) {
+    console.log(`BuiltWith: retrying with www.${domain}`);
+    try {
+      const wwwUrl = `https://api.builtwith.com/free1/api.json?KEY=${key}&LOOKUP=www.${domain}`;
+      const r2 = await fetch(wwwUrl, { signal: AbortSignal.timeout(8000) });
+      if (r2.ok) {
+        const d2 = await r2.json();
+        for (const result of (d2.Results || [])) {
+          for (const tech of (result.TechnologiesUsed || [])) {
+            if (tech.Name) tools.push(tech.Name);
+          }
+        }
+      }
+    } catch(e) { /* silent */ }
   }
   console.log(`BuiltWith detected ${tools.length} tools for ${domain}`);
   return { detected_tools: tools, reachable: true };
