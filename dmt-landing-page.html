@@ -1652,6 +1652,19 @@ const TECH_PATTERNS = [
   ['Segment',              /segment\.io|segment\.com\/analytics/i],
 ];
 
+async function scanCompetitorCascade(url, bwKey) {
+  // 1. Try CORS proxy + GTM scan first
+  const proxyScan = await scanUrl(url);
+  // If proxy worked and found at least one tool, trust it
+  if (proxyScan.reachable && proxyScan.detected_tools.length > 0) return proxyScan;
+  // Proxy failed or returned empty (likely Cloudflare challenge page) — try BuiltWith
+  if (bwKey && !bwKey.startsWith('__')) {
+    const bwScan = await scanCompetitorBuiltWith(url, bwKey);
+    if (bwScan.detected_tools.length > 0) return bwScan;
+  }
+  return proxyScan;
+}
+
 async function scanCompetitorBuiltWith(url, key) {
   const domain = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
   try {
@@ -1897,8 +1910,7 @@ async function dmtSubmit() {
     // Competitors use BuiltWith API (bypasses Cloudflare); main URL uses CORS proxy + GTM scan
     const comp1 = document.getElementById('dmt-comp1').value.trim();
     const comp2 = document.getElementById('dmt-comp2').value.trim();
-    const bwAvailable = BUILTWITH_KEY && !BUILTWITH_KEY.startsWith('__');
-    const scanComp = (u) => bwAvailable ? scanCompetitorBuiltWith(u, BUILTWITH_KEY) : scanUrl(u);
+    const scanComp = (u) => scanCompetitorCascade(u, BUILTWITH_KEY);
     const [tech, techComp1, techComp2] = await Promise.all([
       scanUrl(url),
       comp1 ? scanComp(comp1) : Promise.resolve(null),
