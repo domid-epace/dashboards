@@ -1937,10 +1937,9 @@ async function dmtSubmit() {
       }));
     }
 
-    // 4. Encode + redirect to dashboard
-    // encodeURIComponent prevents btoa's +/= chars from corrupting the URL query param
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(result))));
-    window.location.href = DMT_DASHBOARD_URL + '?r=' + encodeURIComponent(encoded);
+    // 4. Store in sessionStorage and redirect — avoids URI Too Long on large BuiltWith payloads
+    sessionStorage.setItem('dmt_result', JSON.stringify(result));
+    window.location.href = DMT_DASHBOARD_URL;
 
   } catch(err) {
     document.getElementById('dmt-loading').style.display = 'none';
