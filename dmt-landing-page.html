@@ -1464,12 +1464,12 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
           </div>
         </div>
 
-        <!-- ─ Step 6: Q5 — Email automatizace ─ -->
+        <!-- ─ Step 6: Q5 — Měření a KPI ─ -->
         <div id="dmt-step-6" class="dmt-step">
           <div class="dmt-step-counter">Krok 6 z 7 — Otázka 5/5</div>
-          <div class="dmt-q-label">Emailová automatizace a metriky</div>
-          <div class="dmt-q-hint">Reagujete na chování zákazníků automatizovaně — opuštěný košík, win-back po dlouhé neaktivitě, browse abandonment? Znáte přibližně open rate svých emailů?</div>
-          <textarea id="dmt-q5" class="dmt-input" placeholder="Např.: Máme jen ruční newslettery, open rate cca 20 %. Opuštěný košík nemáme, win-back jsme nikdy nezkoušeli."></textarea>
+          <div class="dmt-q-label">Měření a optimalizace</div>
+          <div class="dmt-q-hint">Sledujete výkon své marketingové komunikace? Znáte open rate, CTR nebo revenue per email? Testujete varianty (A/B testy)? Máte nastavený reporting KPIs?</div>
+          <textarea id="dmt-q5" class="dmt-input" placeholder="Např.: Sledujeme open rate (cca 22 %) a CTR v Mailchimpu, ale revenue per email nesledujeme. A/B testy děláme výjimečně. Pravidelný reporting nemáme."></textarea>
           <div class="dmt-nav">
             <button class="dmt-btn-back" onclick="dmtGoto(5)">← Zpět</button>
             <button class="dmt-btn-next" onclick="dmtGoto(7)">Dál →</button>
@@ -1525,7 +1525,7 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
                 <ul id="dmt-strengths"></ul>
               </div>
               <div class="dmt-result-block">
-                <div class="dmt-result-block-title red">Mezery</div>
+                <div class="dmt-result-block-title red">Příležitosti k růstu</div>
                 <ul id="dmt-gaps"></ul>
               </div>
             </div>
@@ -1602,10 +1602,24 @@ function dmtGoto(step) {
   document.getElementById('dmt-progress-fill').style.width = pct + '%';
 }
 
+function dmtNormalizeUrl(raw) {
+  let v = raw.trim();
+  if (!v) return '';
+  if (!/^https?:\/\//i.test(v)) v = 'https://' + v;
+  return v;
+}
+
 function dmtNext1() {
-  const urlInput = document.getElementById('dmt-url').value.trim();
+  const input = document.getElementById('dmt-url');
   const errEl = document.getElementById('dmt-url-err');
-  if (!urlInput) { errEl.style.display = 'block'; return; }
+  const normalized = dmtNormalizeUrl(input.value);
+  if (!normalized) { errEl.style.display = 'block'; return; }
+  input.value = normalized;
+  // Normalize competitor fields too
+  ['dmt-comp1','dmt-comp2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value.trim()) el.value = dmtNormalizeUrl(el.value);
+  });
   errEl.style.display = 'none';
   dmtGoto(2);
 }
@@ -1671,11 +1685,11 @@ function buildPrompt(url, tech, answers) {
     .join(', ') || 'none';
 
   const qs = [
-    'Marketingová databáze',
-    'Email marketing a automatizace',
-    'Personalizace',
-    'Zákaznická data — propojení a objem',
-    'Emailová automatizace a metriky',
+    'Consent & sběr kontaktů',
+    'Email a automatizace',
+    'Personalizace a segmentace',
+    'Data a integrace',
+    'Měření a optimalizace',
   ];
 
   const answersBlock = answers.map((a, i) =>
@@ -1706,13 +1720,20 @@ Return ONLY valid JSON (no prose, no fences):
   "tier_number": 2,
   "score_estimate": 38,
   "headline_cs": "One Czech sentence summarizing the situation",
-  "strengths_cs": ["strength 1", "strength 2"],
-  "gaps_cs": ["gap 1", "gap 2"],
-  "next_step_cs": "Czech next step recommendation (1-2 sentences)",
+  "dimensions": {
+    "consent_capture":  {"score": 45, "summary": "1 sentence in Czech on current state and growth potential"},
+    "email_automation": {"score": 35, "summary": "1 sentence in Czech"},
+    "personalization":  {"score": 30, "summary": "1 sentence in Czech"},
+    "data_integration": {"score": 40, "summary": "1 sentence in Czech"},
+    "measurement":      {"score": 25, "summary": "1 sentence in Czech"}
+  },
+  "strengths_cs": ["strength 1 — what is already working", "strength 2"],
+  "opportunities_cs": ["opportunity 1 — what becomes possible when this gap is closed", "opportunity 2"],
+  "next_step_cs": "Czech next step — framed as an opportunity (1-2 sentences)",
   "reasoning_en": "Brief internal reasoning"
 }
 
-Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers.`;
+Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers. Dimension scores (0-100) reflect each area independently; their average should align with score_estimate. Frame opportunities as growth levers, not deficiencies.`;
 }
 
 async function callAnthropic(prompt, apiKey) {
@@ -1726,7 +1747,7 @@ async function callAnthropic(prompt, apiKey) {
     },
     body: JSON.stringify({
       model: ANTHROPIC_MODEL,
-      max_tokens: 1024,
+      max_tokens: 1500,
       system: 'You are a senior MarTech consultant. Respond ONLY with valid JSON.',
       messages: [{ role: 'user', content: prompt }],
     }),
