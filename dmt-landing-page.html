@@ -1667,23 +1667,26 @@ async function scanCompetitorCascade(url, bwKey) {
 
 async function scanCompetitorBuiltWith(url, key) {
   const domain = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
-  try {
-    const resp = await fetch(
-      `https://api.builtwith.com/free1/api.json?KEY=${key}&LOOKUP=${domain}`,
-      { signal: AbortSignal.timeout(10000) }
-    );
-    if (!resp.ok) throw new Error(`BuiltWith ${resp.status}`);
-    const data = await resp.json();
-    const tools = [];
-    for (const result of (data.Results || [])) {
-      for (const tech of (result.TechnologiesUsed || [])) {
-        if (tech.Name) tools.push(tech.Name);
-      }
-    }
-    return { detected_tools: tools, reachable: true };
-  } catch(e) {
-    return { detected_tools: [], reachable: false, error: e.message };
+  const apiUrl = `https://api.builtwith.com/free1/api.json?KEY=${key}&LOOKUP=${domain}`;
+  let data = null;
+  // Try direct call first (BuiltWith supports CORS); fall back through proxies if blocked
+  for (const reqUrl of [apiUrl, ...CORS_PROXIES.map(p => p + encodeURIComponent(apiUrl))]) {
+    try {
+      const resp = await fetch(reqUrl, { signal: AbortSignal.timeout(10000) });
+      if (!resp.ok) { console.warn('BuiltWith non-ok', resp.status, reqUrl); continue; }
+      data = await resp.json();
+      if (data) { console.log('BuiltWith OK via', reqUrl.startsWith('https://api.builtwith') ? 'direct' : 'proxy'); break; }
+    } catch(e) { console.warn('BuiltWith attempt failed:', e.message, reqUrl); }
   }
+  if (!data) return { detected_tools: [], reachable: false, error: 'builtwith_all_failed' };
+  const tools = [];
+  for (const result of (data.Results || [])) {
+    for (const tech of (result.TechnologiesUsed || [])) {
+      if (tech.Name) tools.push(tech.Name);
+    }
+  }
+  console.log(`BuiltWith detected ${tools.length} tools for ${domain}`);
+  return { detected_tools: tools, reachable: true };
 }
 
 async function fetchWithProxy(url) {
@@ -1845,7 +1848,7 @@ Return ONLY valid JSON (no prose, no fences):
 }
 
 Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers. Dimension scores (0-100) reflect each area independently; their average should align with score_estimate. Frame opportunities as growth levers. For each dimension's "why": cite the specific tool, signal, or answer that drove the score.
-Competitor rules: populate "competitors" with one entry per URL listed in COMPETITOR SCANS; if tools were detected, base tier and summary on the actual stack; if scan failed, draw on your general knowledge of this Czech company and its known digital marketing capabilities — start summary_cs with "Dle dostupných informací: ". Summary should cover: estimated tier reasoning, key tools known or detected, and standout capability or gap on the CDP/personalization/CRM front. If no competitors were provided, output an empty array.`;
+Competitor rules: populate "competitors" with one entry per URL listed in COMPETITOR SCANS; if tools were detected, base tier and summary strictly on those tools. If scan failed: (1) DO NOT claim company ownership, group membership, or parent companies — you will make factual errors; (2) DO NOT name specific tools unless they were actually detected; (3) only describe the company type, market segment, and a conservative tier estimate based on what is typical for this category of retailer; (4) start summary_cs with "Tech scan nedostupný. " and keep it to 1-2 sentences of cautious inference, not confident claims. If no competitors were provided, output an empty array.`;
 }
 
 async function callAnthropic(prompt, apiKey) {
