@@ -1651,12 +1651,26 @@ const TECH_PATTERNS = [
 async function scanUrl(url) {
   try {
     const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
     const html = await resp.text();
+
+    // Fetch GTM containers — they have open CORS so no proxy needed.
+    // Stack tools (Bloomreach, Klaviyo, etc.) are often loaded only inside GTM.
+    const gtmIds = [...new Set((html.match(/GTM-[A-Z0-9]{5,8}/g) || []))].slice(0, 2);
+    let corpus = html;
+    for (const gtmId of gtmIds) {
+      try {
+        const gtmResp = await fetch(
+          `https://www.googletagmanager.com/gtm.js?id=${gtmId}`,
+          { signal: AbortSignal.timeout(15000) }
+        );
+        corpus += await gtmResp.text();
+      } catch(e) { /* silent — continue with what we have */ }
+    }
 
     const detected = [];
     for (const [label, pattern] of TECH_PATTERNS) {
-      if (pattern.test(html)) detected.push(label);
+      if (pattern.test(corpus)) detected.push(label);
     }
 
     const signals = {
@@ -1667,7 +1681,7 @@ async function scanUrl(url) {
       has_cart:            /košík|cart|basket|addtocart/i.test(html),
     };
 
-    return { detected_tools: detected, signals, reachable: true };
+    return { detected_tools: detected, signals, reachable: true, gtm_ids: gtmIds };
   } catch(e) {
     return { detected_tools: [], signals: {}, reachable: false, error: e.message };
   }
