@@ -11,12 +11,13 @@ jobs:
       - name: Send email via Seznam SMTP
         env:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          PAYLOAD:   ${{ toJson(github.event.client_payload) }}
         run: |
           python3 - <<'PYEOF'
           import smtplib, ssl, os, json, textwrap
           from email.message import EmailMessage
 
-          p = json.loads('${{ toJson(github.event.client_payload) }}')
+          p = json.loads(os.environ['PAYLOAD'])
 
           QS = [
             'Consent & sběr kontaktů',
