@@ -1571,6 +1571,7 @@ const CORS_PROXIES = [
   'https://corsproxy.io/?',
   'https://api.allorigins.win/raw?url=',
 ];
+const BUILTWITH_KEY = '__BUILTWITH_API_KEY__';
 
 // ── Tier config ───────────────────────────────────────────────
 const TOTAL_STEPS = 7;
@@ -1650,6 +1651,27 @@ const TECH_PATTERNS = [
   ['Zendesk',              /zendesk\.com|zd-widget/i],
   ['Segment',              /segment\.io|segment\.com\/analytics/i],
 ];
+
+async function scanCompetitorBuiltWith(url, key) {
+  const domain = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+  try {
+    const resp = await fetch(
+      `https://api.builtwith.com/free1/api.json?KEY=${key}&LOOKUP=${domain}`,
+      { signal: AbortSignal.timeout(10000) }
+    );
+    if (!resp.ok) throw new Error(`BuiltWith ${resp.status}`);
+    const data = await resp.json();
+    const tools = [];
+    for (const result of (data.Results || [])) {
+      for (const tech of (result.TechnologiesUsed || [])) {
+        if (tech.Name) tools.push(tech.Name);
+      }
+    }
+    return { detected_tools: tools, reachable: true };
+  } catch(e) {
+    return { detected_tools: [], reachable: false, error: e.message };
+  }
+}
 
 async function fetchWithProxy(url) {
   let lastErr;
@@ -1872,12 +1894,15 @@ async function dmtSubmit() {
 
   try {
     // 1. Scan main URL + competitors in parallel
+    // Competitors use BuiltWith API (bypasses Cloudflare); main URL uses CORS proxy + GTM scan
     const comp1 = document.getElementById('dmt-comp1').value.trim();
     const comp2 = document.getElementById('dmt-comp2').value.trim();
+    const bwAvailable = BUILTWITH_KEY && !BUILTWITH_KEY.startsWith('__');
+    const scanComp = (u) => bwAvailable ? scanCompetitorBuiltWith(u, BUILTWITH_KEY) : scanUrl(u);
     const [tech, techComp1, techComp2] = await Promise.all([
       scanUrl(url),
-      comp1 ? scanUrl(comp1) : Promise.resolve(null),
-      comp2 ? scanUrl(comp2) : Promise.resolve(null),
+      comp1 ? scanComp(comp1) : Promise.resolve(null),
+      comp2 ? scanComp(comp2) : Promise.resolve(null),
     ]);
 
     // 2. Build competitor scan data for prompt (even if tools[] is empty)

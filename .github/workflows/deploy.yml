@@ -23,8 +23,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inject API key
-        run: sed -i "s|__DMT_API_KEY__|${{ secrets.DMT_API_KEY }}|g" dmt-landing-page.html
+      - name: Inject API keys
+        run: |
+          sed -i "s|__DMT_API_KEY__|${{ secrets.DMT_API_KEY }}|g" dmt-landing-page.html
+          sed -i "s|__BUILTWITH_API_KEY__|${{ secrets.BUILTWITH_API_KEY }}|g" dmt-landing-page.html
 
       - uses: actions/configure-pages@v5
 
