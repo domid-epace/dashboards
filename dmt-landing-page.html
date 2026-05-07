@@ -1987,15 +1987,42 @@ async function callAnthropic(prompt, apiKey) {
 }
 
 // ── Email notification ────────────────────────────────────────
-function buildDashboardLink(result) {
+async function compressToB64(str) {
+  const bytes = new TextEncoder().encode(str);
+  const cs = new CompressionStream('deflate-raw');
+  const w = cs.writable.getWriter();
+  w.write(bytes); w.close();
+  const buf = await new Response(cs.readable).arrayBuffer();
+  const arr = new Uint8Array(buf);
+  let bin = ''; for (let i = 0; i < arr.length; i++) bin += String.fromCharCode(arr[i]);
+  return btoa(bin);
+}
+
+async function buildDashboardLink(result) {
   try {
-    const slim = { ...result,
-      competitors: (result.competitors || []).map(({ url, tier, summary_cs, tools }) => ({
-        url, tier, summary_cs, tools: (tools || []).slice(0, 10),
+    const dims = {};
+    for (const [k, v] of Object.entries(result.dimensions || {})) {
+      dims[k] = { score: v.score, summary: v.summary };
+    }
+    const slim = {
+      tier:             result.tier,
+      tier_label:       result.tier_label,
+      tier_number:      result.tier_number,
+      score_estimate:   result.score_estimate,
+      headline_cs:      result.headline_cs,
+      dimensions:       dims,
+      strengths_cs:     result.strengths_cs,
+      opportunities_cs: result.opportunities_cs,
+      next_step_cs:     result.next_step_cs,
+      url_scanned:      result.url_scanned,
+      tech_detected:    (result.tech_detected || []).slice(0, 15),
+      competitors:      (result.competitors || []).map(({ url, tier, summary_cs, scan_note, tools }) => ({
+        url, tier, summary_cs, scan_note: scan_note || undefined,
+        tools: (tools || []).slice(0, 8),
       })),
     };
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
-    return 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html?r=' + encodeURIComponent(encoded);
+    const compressed = await compressToB64(JSON.stringify(slim));
+    return 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html?r2=' + encodeURIComponent(compressed);
   } catch(e) { return DMT_DASHBOARD_URL; }
 }
 
@@ -2021,7 +2048,7 @@ async function sendDmtNotification(result, answers, url, name, email) {
           competitors: (result.competitors || []).map(c => ({
             url: c.url, tier: c.tier, scan_note: c.scan_note || null,
           })),
-          dashboard_link: buildDashboardLink(result),
+          dashboard_link: await buildDashboardLink(result),
         },
       }),
     });
