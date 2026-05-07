@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ePace – Jste připraveni na datově řízený marketing?</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -1573,9 +1572,7 @@ const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
 ];
 const BUILTWITH_KEY = '__BUILTWITH_API_KEY__';
-const EMAILJS_PUBLIC_KEY   = '__EMAILJS_PUBLIC_KEY__';
-const EMAILJS_SERVICE_ID   = '__EMAILJS_SERVICE_ID__';
-const EMAILJS_TEMPLATE_ID  = '__EMAILJS_TEMPLATE_ID__';
+const GITHUB_DISPATCH_TOKEN = '__GITHUB_DISPATCH_TOKEN__';
 
 // ── Tier config ───────────────────────────────────────────────
 const TOTAL_STEPS = 7;
@@ -2003,47 +2000,33 @@ function buildDashboardLink(result) {
 }
 
 async function sendDmtNotification(result, answers, url, name, email) {
-  if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.startsWith('__')) return;
-  const QS = [
-    'Consent & sběr kontaktů',
-    'Email a automatizace',
-    'Personalizace a segmentace',
-    'Data a integrace',
-    'Měření a optimalizace',
-  ];
-  const answersText = answers.map((a, i) =>
-    `${QS[i]}:\n${a || '(nezodpovězeno)'}`
-  ).join('\n\n');
-
-  const dashLink = buildDashboardLink(result);
-  const compText = (result.competitors || []).map(c =>
-    `• ${c.url} — Tier ${c.tier}${c.scan_note ? ' (scan nedostupný)' : ''}`
-  ).join('\n') || '(žádní)';
-
-  const message = [
-    `URL: ${url}`,
-    `Kontakt: ${name || '—'} <${email}>`,
-    `Tier: ${result.tier} — ${result.tier_label || ''}`,
-    '',
-    '--- ODPOVĚDI ---',
-    answersText,
-    '',
-    '--- KONKURENTI ---',
-    compText,
-    '',
-    '--- VÝSLEDEK ---',
-    dashLink,
-  ].join('\n');
-
+  if (!GITHUB_DISPATCH_TOKEN || GITHUB_DISPATCH_TOKEN.startsWith('__')) return;
   try {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email: 'dominik.duchek@epace.com',
-      subject:  `DMT: ${url} — Tier ${result.tier}`,
-      message,
+    await fetch('https://api.github.com/repos/domid-epace/dashboards/dispatches', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${GITHUB_DISPATCH_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        event_type: 'dmt-submission',
+        client_payload: {
+          url,
+          name: name || '',
+          email: email || '',
+          tier: result.tier || '',
+          tier_label: result.tier_label || '',
+          answers,
+          competitors: (result.competitors || []).map(c => ({
+            url: c.url, tier: c.tier, scan_note: c.scan_note || null,
+          })),
+          dashboard_link: buildDashboardLink(result),
+        },
+      }),
     });
   } catch(e) {
-    console.warn('EmailJS notification failed:', e);
+    console.warn('Dispatch notification failed:', e);
   }
 }
 

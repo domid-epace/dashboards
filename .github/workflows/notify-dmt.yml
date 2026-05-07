@@ -1,0 +1,68 @@
+name: DMT Submission Notification
+
+on:
+  repository_dispatch:
+    types: [dmt-submission]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email via Seznam SMTP
+        env:
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: |
+          python3 - <<'PYEOF'
+          import smtplib, ssl, os, json, textwrap
+          from email.message import EmailMessage
+
+          p = json.loads('${{ toJson(github.event.client_payload) }}')
+
+          QS = [
+            'Consent & sběr kontaktů',
+            'Email a automatizace',
+            'Personalizace a segmentace',
+            'Data a integrace',
+            'Měření a optimalizace',
+          ]
+          answers = p.get('answers', [])
+          answers_block = '\n\n'.join(
+            f"{QS[i]}:\n{answers[i] if i < len(answers) else '—'}"
+            for i in range(5)
+          )
+
+          competitors = p.get('competitors', [])
+          comp_block = '\n'.join(
+            f"  • {c.get('url','?')} — Tier {c.get('tier','?')}"
+            + (' (scan nedostupný)' if c.get('scan_note') else '')
+            for c in competitors
+          ) or '  (žádní)'
+
+          body = textwrap.dedent(f"""
+            URL:     {p.get('url','—')}
+            Kontakt: {p.get('name','—')} <{p.get('email','—')}>
+            Tier:    {p.get('tier','?')} — {p.get('tier_label','')}
+
+            ── ODPOVĚDI ──────────────────────────────
+            {answers_block}
+
+            ── KONKURENTI ────────────────────────────
+            {comp_block}
+
+            ── VÝSLEDEK ──────────────────────────────
+            {p.get('dashboard_link','—')}
+          """).strip()
+
+          msg = EmailMessage()
+          msg['From']    = 'no-reply@gel-gun.cz'
+          msg['To']      = 'dominik.duchek@epace.com'
+          msg['Subject'] = f"DMT: {p.get('url','?')} — Tier {p.get('tier','?')}"
+          msg.set_content(body)
+
+          ctx = ssl.create_default_context()
+          with smtplib.SMTP_SSL('smtp.seznam.cz', 465, context=ctx) as s:
+            s.login('no-reply@gel-gun.cz', os.environ['SMTP_PASS'])
+            s.send_message(msg)
+
+          print('Email sent.')
+          PYEOF
