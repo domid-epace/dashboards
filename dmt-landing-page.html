@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ePace – Jste připraveni na datově řízený marketing?</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -1572,6 +1573,9 @@ const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
 ];
 const BUILTWITH_KEY = '__BUILTWITH_API_KEY__';
+const EMAILJS_PUBLIC_KEY   = '__EMAILJS_PUBLIC_KEY__';
+const EMAILJS_SERVICE_ID   = '__EMAILJS_SERVICE_ID__';
+const EMAILJS_TEMPLATE_ID  = '__EMAILJS_TEMPLATE_ID__';
 
 // ── Tier config ───────────────────────────────────────────────
 const TOTAL_STEPS = 7;
@@ -1652,12 +1656,98 @@ const TECH_PATTERNS = [
   ['Segment',              /segment\.io|segment\.com\/analytics/i],
 ];
 
+// ── DNS-over-HTTPS scanner ────────────────────────────────────
+async function scanDNS(url) {
+  const domain = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/^www\./, '');
+  const tools = [];
+  const addTool = (t) => { if (!tools.includes(t)) tools.push(t); };
+
+  const TXT_PATTERNS = [
+    [/facebook-domain-verification/i,           'Meta Pixel'],
+    [/pinterest-site-verification/i,             'Pinterest Ads'],
+    [/google-site-verification/i,                'Google Analytics / GTM'],
+    [/^MS=/,                                     'Microsoft 365'],
+    [/atlassian-domain-verification/i,           'Atlassian'],
+    [/yandex-verification/i,                     'Yandex'],
+    [/v=spf.*include:ppsmtp\.(de|net)/i,         'Emarsys'],
+    [/v=spf.*include:[^"]*emarsys/i,             'Emarsys'],
+    [/v=spf.*include:[^"]*mailchimp/i,           'Mailchimp'],
+    [/v=spf.*include:[^"]*klaviyo/i,             'Klaviyo'],
+    [/v=spf.*include:[^"]*braze/i,               'Braze'],
+    [/v=spf.*include:[^"]*hubspot/i,             'HubSpot'],
+    [/v=spf.*include:[^"]*salesforce/i,          'Salesforce MC'],
+    [/v=spf.*include:[^"]*sendgrid/i,            'SendGrid'],
+    [/klaviyo-site-verification/i,               'Klaviyo'],
+    [/hubspot-developer-verification/i,          'HubSpot'],
+  ];
+
+  const MX_PATTERNS = [
+    [/ppsmtp\.(de|net)/i,                        'Emarsys'],
+    [/\.emarsys\./i,                             'Emarsys'],
+    [/mandrillapp/i,                             'Mailchimp'],
+    [/mailgun\.org/i,                            'Mailgun'],
+    [/sendgrid\.net/i,                           'SendGrid'],
+    [/amazonses\.com/i,                          'Amazon SES'],
+    [/netsystems\.cz/i,                          'Netsystems (CZ ESP)'],
+    [/sparkpostmail/i,                           'SparkPost'],
+    [/\.klaviyo\./i,                             'Klaviyo'],
+    [/mailhostbox\.com/i,                        'Mailhostbox'],
+  ];
+
+  const CNAME_SUBS = ['newsletter','email','track','click','link','news','mail','mailing','e','promo'];
+
+  const CNAME_PATTERNS = [
+    [/emarsys|e\.emarsys\.net|ppsmtp/i,          'Emarsys'],
+    [/mailchimp|list-manage/i,                   'Mailchimp'],
+    [/klaviyo/i,                                 'Klaviyo'],
+    [/braze/i,                                   'Braze'],
+    [/hubspot/i,                                 'HubSpot'],
+    [/salesforce|pardot|exacttarget/i,           'Salesforce MC'],
+    [/bloomreach|exponea/i,                      'Bloomreach'],
+    [/mparticle/i,                               'mParticle'],
+    [/segment\.com|segmentapis/i,                'Segment'],
+    [/sendgrid/i,                                'SendGrid'],
+    [/mailgun/i,                                 'Mailgun'],
+    [/netsystems/i,                              'Netsystems (CZ ESP)'],
+    [/klaviyo/i,                                 'Klaviyo'],
+  ];
+
+  const dnsGet = async (name, type) => {
+    try {
+      const r = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(name)}&type=${type}`,
+        { signal: AbortSignal.timeout(5000) });
+      const d = await r.json();
+      return (d.Answer || []).map(a => a.data);
+    } catch(e) { return []; }
+  };
+
+  // Fire TXT, MX, and all subdomain CNAMEs in parallel
+  const [txtRecords, mxRecords, ...cnameResults] = await Promise.all([
+    dnsGet(domain, 'TXT'),
+    dnsGet(domain, 'MX'),
+    ...CNAME_SUBS.map(s => dnsGet(`${s}.${domain}`, 'CNAME')),
+  ]);
+
+  for (const rec of txtRecords) {
+    for (const [pat, tool] of TXT_PATTERNS) if (pat.test(rec)) addTool(tool);
+  }
+  for (const rec of mxRecords) {
+    for (const [pat, tool] of MX_PATTERNS) if (pat.test(rec)) addTool(tool);
+  }
+  for (const answers of cnameResults) {
+    for (const rec of answers) {
+      for (const [pat, tool] of CNAME_PATTERNS) if (pat.test(rec)) addTool(tool);
+    }
+  }
+
+  return { detected_tools: tools };
+}
+
 async function scanCompetitorCascade(url, bwKey) {
-  // 1. Try CORS proxy + GTM scan first
-  const proxyScan = await scanUrl(url);
-  // If proxy worked and found at least one tool, trust it
-  if (proxyScan.reachable && proxyScan.detected_tools.length > 0) return proxyScan;
-  // Proxy failed or returned empty (likely Cloudflare challenge page) — try BuiltWith
+  // DNS always runs; proxy+GTM runs in parallel (inside scanUrl)
+  const proxyScan = await scanUrl(url); // scanUrl already merges DNS
+  if (proxyScan.detected_tools.length > 0) return proxyScan;
+  // Still nothing after proxy+DNS — try BuiltWith
   if (bwKey && !bwKey.startsWith('__')) {
     const bwScan = await scanCompetitorBuiltWith(url, bwKey);
     if (bwScan.detected_tools.length > 0) return bwScan;
@@ -1748,40 +1838,44 @@ function estimateCompetitorTier(tools) {
 }
 
 async function scanUrl(url) {
-  try {
-    const html = await fetchWithProxy(url);
-
-    // Fetch GTM containers — they have open CORS so no proxy needed.
-    // Stack tools (Bloomreach, Klaviyo, etc.) are often loaded only inside GTM.
-    const gtmIds = [...new Set((html.match(/GTM-[A-Z0-9]{5,8}/g) || []))].slice(0, 2);
-    let corpus = html;
-    for (const gtmId of gtmIds) {
+  const [proxyScan, dnsScan] = await Promise.all([
+    // Proxy + GTM scan
+    (async () => {
       try {
-        const gtmResp = await fetch(
-          `https://www.googletagmanager.com/gtm.js?id=${gtmId}`,
-          { signal: AbortSignal.timeout(15000) }
-        );
-        corpus += await gtmResp.text();
-      } catch(e) { /* silent — continue with what we have */ }
-    }
+        const html = await fetchWithProxy(url);
+        const gtmIds = [...new Set((html.match(/GTM-[A-Z0-9]{5,8}/g) || []))].slice(0, 2);
+        let corpus = html;
+        for (const gtmId of gtmIds) {
+          try {
+            const gtmResp = await fetch(
+              `https://www.googletagmanager.com/gtm.js?id=${gtmId}`,
+              { signal: AbortSignal.timeout(15000) }
+            );
+            corpus += await gtmResp.text();
+          } catch(e) { /* silent */ }
+        }
+        const detected = [];
+        for (const [label, pattern] of TECH_PATTERNS) {
+          if (pattern.test(corpus)) detected.push(label);
+        }
+        const signals = {
+          has_newsletter_form: /newsletter|odběr|subscribe/i.test(html),
+          has_cookie_banner:   /cookiebot|onetrust|cookieconsent|cookie-banner/i.test(html),
+          has_mobile_apps:     /play\.google\.com\/store|apps\.apple\.com/i.test(html),
+          has_loyalty:         /věrnostní|loyalty|bodový program/i.test(html),
+          has_cart:            /košík|cart|basket|addtocart/i.test(html),
+        };
+        return { detected_tools: detected, signals, reachable: true, gtm_ids: gtmIds };
+      } catch(e) {
+        return { detected_tools: [], signals: {}, reachable: false, error: e.message };
+      }
+    })(),
+    // DNS-over-HTTPS scan — always runs, complements proxy
+    scanDNS(url),
+  ]);
 
-    const detected = [];
-    for (const [label, pattern] of TECH_PATTERNS) {
-      if (pattern.test(corpus)) detected.push(label);
-    }
-
-    const signals = {
-      has_newsletter_form: /newsletter|odběr|subscribe/i.test(html),
-      has_cookie_banner:   /cookiebot|onetrust|cookieconsent|cookie-banner/i.test(html),
-      has_mobile_apps:     /play\.google\.com\/store|apps\.apple\.com/i.test(html),
-      has_loyalty:         /věrnostní|loyalty|bodový program/i.test(html),
-      has_cart:            /košík|cart|basket|addtocart/i.test(html),
-    };
-
-    return { detected_tools: detected, signals, reachable: true, gtm_ids: gtmIds };
-  } catch(e) {
-    return { detected_tools: [], signals: {}, reachable: false, error: e.message };
-  }
+  const allTools = [...new Set([...proxyScan.detected_tools, ...dnsScan.detected_tools])];
+  return { ...proxyScan, detected_tools: allTools };
 }
 
 // ── Claude API call ───────────────────────────────────────────
@@ -1895,6 +1989,64 @@ async function callAnthropic(prompt, apiKey) {
   return JSON.parse(raw);
 }
 
+// ── Email notification ────────────────────────────────────────
+function buildDashboardLink(result) {
+  try {
+    const slim = { ...result,
+      competitors: (result.competitors || []).map(({ url, tier, summary_cs, tools }) => ({
+        url, tier, summary_cs, tools: (tools || []).slice(0, 10),
+      })),
+    };
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
+    return 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html?r=' + encodeURIComponent(encoded);
+  } catch(e) { return DMT_DASHBOARD_URL; }
+}
+
+async function sendDmtNotification(result, answers, url, name, email) {
+  if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.startsWith('__')) return;
+  const QS = [
+    'Consent & sběr kontaktů',
+    'Email a automatizace',
+    'Personalizace a segmentace',
+    'Data a integrace',
+    'Měření a optimalizace',
+  ];
+  const answersText = answers.map((a, i) =>
+    `${QS[i]}:\n${a || '(nezodpovězeno)'}`
+  ).join('\n\n');
+
+  const dashLink = buildDashboardLink(result);
+  const compText = (result.competitors || []).map(c =>
+    `• ${c.url} — Tier ${c.tier}${c.scan_note ? ' (scan nedostupný)' : ''}`
+  ).join('\n') || '(žádní)';
+
+  const message = [
+    `URL: ${url}`,
+    `Kontakt: ${name || '—'} <${email}>`,
+    `Tier: ${result.tier} — ${result.tier_label || ''}`,
+    '',
+    '--- ODPOVĚDI ---',
+    answersText,
+    '',
+    '--- KONKURENTI ---',
+    compText,
+    '',
+    '--- VÝSLEDEK ---',
+    dashLink,
+  ].join('\n');
+
+  try {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email: 'dominik.duchek@epace.com',
+      subject:  `DMT: ${url} — Tier ${result.tier}`,
+      message,
+    });
+  } catch(e) {
+    console.warn('EmailJS notification failed:', e);
+  }
+}
+
 // ── Submit ────────────────────────────────────────────────────
 async function dmtSubmit() {
   const email = document.getElementById('dmt-email').value.trim();
@@ -1938,10 +2090,9 @@ async function dmtSubmit() {
 
     // 2. Build competitor scan data for prompt, capturing scan status
     const scanNote = (scan) => {
-      if (!scan) return null;
-      if (!scan.reachable) return 'Bot nevpuštěn – Cloudflare nebo bot protection';
-      if (scan.detected_tools.length === 0) return 'BuiltWith: žádná data pro tuto doménu (free tier omezení)';
-      return null;
+      if (!scan || scan.detected_tools.length > 0) return null;
+      if (!scan.reachable) return 'Bot nevpuštěn – CORS proxy blokována; DNS scan nepřinesl výsledky';
+      return 'Proxy + DNS scan: žádné marketingové nástroje detekovány';
     };
     const compScans = [
       comp1 ? { url: comp1, tools: (techComp1 && techComp1.detected_tools) || [], scan_note: scanNote(techComp1) } : null,
@@ -1968,7 +2119,9 @@ async function dmtSubmit() {
       return c;
     });
 
-    // 4. Store in sessionStorage and redirect — avoids URI Too Long on large BuiltWith payloads
+    // 4. Fire email notification (non-blocking) + store + redirect
+    const name = document.getElementById('dmt-name').value.trim();
+    sendDmtNotification(result, answers, url, name, email);
     sessionStorage.setItem('dmt_result', JSON.stringify(result));
     window.location.href = DMT_DASHBOARD_URL;
 
