@@ -1808,8 +1808,14 @@ async function dmtSubmit() {
   document.getElementById('dmt-loading').style.display = 'block';
 
   try {
-    // 1. Scan URL
-    const tech = await scanUrl(url);
+    // 1. Scan main URL + competitors in parallel
+    const comp1 = document.getElementById('dmt-comp1').value.trim();
+    const comp2 = document.getElementById('dmt-comp2').value.trim();
+    const [tech, techComp1, techComp2] = await Promise.all([
+      scanUrl(url),
+      comp1 ? scanUrl(comp1) : Promise.resolve(null),
+      comp2 ? scanUrl(comp2) : Promise.resolve(null),
+    ]);
 
     // 2. Call Claude
     const prompt = buildPrompt(url, tech, answers);
@@ -1818,6 +1824,10 @@ async function dmtSubmit() {
     // 3. Enrich result
     result.tech_detected = tech.detected_tools;
     result.url_scanned = url;
+    result.competitors = [
+      comp1 && techComp1 ? { url: comp1, tools: techComp1.detected_tools } : null,
+      comp2 && techComp2 ? { url: comp2, tools: techComp2.detected_tools } : null,
+    ].filter(Boolean);
 
     // 4. Encode + redirect to dashboard
     // encodeURIComponent prevents btoa's +/= chars from corrupting the URL query param
