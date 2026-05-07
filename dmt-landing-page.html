@@ -1567,7 +1567,10 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
 const DMT_DASHBOARD_URL = 'https://domid-epace.github.io/epace-dmt-auto/dashboard.html';
 const ANTHROPIC_API_KEY = '__DMT_API_KEY__';
 const ANTHROPIC_MODEL   = 'claude-sonnet-4-6';
-const CORS_PROXY        = 'https://corsproxy.io/?';
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
 
 // ── Tier config ───────────────────────────────────────────────
 const TOTAL_STEPS = 7;
@@ -1648,11 +1651,51 @@ const TECH_PATTERNS = [
   ['Segment',              /segment\.io|segment\.com\/analytics/i],
 ];
 
+async function fetchWithProxy(url) {
+  let lastErr;
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const resp = await fetch(proxy + encodeURIComponent(url), { signal: AbortSignal.timeout(12000) });
+      const text = await resp.text();
+      if (text && text.trim().length > 200) return text;
+    } catch(e) { lastErr = e; }
+  }
+  throw lastErr || new Error('All proxies failed for ' + url);
+}
+
+function estimateCompetitorTier(tools) {
+  if (!tools || tools.length === 0) return 'I';
+  const s = new Set(tools.map(t => t.toLowerCase()));
+  let pts = 0;
+  if (s.has('google analytics 4'))  pts += 2;
+  if (s.has('google tag manager'))  pts += 1;
+  if (s.has('meta pixel'))          pts += 1;
+  if (s.has('google ads'))          pts += 1;
+  if (s.has('tiktok pixel'))        pts += 1;
+  if (s.has('bloomreach'))          pts += 4;
+  if (s.has('klaviyo'))             pts += 3;
+  if (s.has('emarsys'))             pts += 3;
+  if (s.has('salesforce mc'))       pts += 3;
+  if (s.has('mailchimp'))           pts += 2;
+  if (s.has("luigi's box"))         pts += 2;
+  if (s.has('klevu'))               pts += 2;
+  if (s.has('nosto'))               pts += 2;
+  if (s.has('optimizely'))          pts += 3;
+  if (s.has('vwo'))                 pts += 2;
+  if (s.has('hotjar'))              pts += 1;
+  if (s.has('microsoft clarity'))   pts += 1;
+  if (s.has('segment'))             pts += 3;
+  if (s.has('meiro'))               pts += 3;
+  if (s.has('cookiebot') || s.has('onetrust') || s.has('usercentrics')) pts += 1;
+  if (pts >= 10) return 'IV';
+  if (pts >= 6)  return 'III';
+  if (pts >= 2)  return 'II';
+  return 'I';
+}
+
 async function scanUrl(url) {
   try {
-    const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
-    const html = await resp.text();
+    const html = await fetchWithProxy(url);
 
     // Fetch GTM containers — they have open CORS so no proxy needed.
     // Stack tools (Bloomreach, Klaviyo, etc.) are often loaded only inside GTM.
@@ -1735,11 +1778,11 @@ Return ONLY valid JSON (no prose, no fences):
   "score_estimate": 38,
   "headline_cs": "One Czech sentence summarizing the situation",
   "dimensions": {
-    "consent_capture":  {"score": 45, "summary": "1 sentence in Czech on current state and growth potential"},
-    "email_automation": {"score": 35, "summary": "1 sentence in Czech"},
-    "personalization":  {"score": 30, "summary": "1 sentence in Czech"},
-    "data_integration": {"score": 40, "summary": "1 sentence in Czech"},
-    "measurement":      {"score": 25, "summary": "1 sentence in Czech"}
+    "consent_capture":  {"score": 45, "summary": "1 sentence Czech: current state + growth potential", "why": "1-2 sentences Czech: specific evidence from scan/answers that drove this score"},
+    "email_automation": {"score": 35, "summary": "1 sentence Czech", "why": "1-2 sentences Czech"},
+    "personalization":  {"score": 30, "summary": "1 sentence Czech", "why": "1-2 sentences Czech"},
+    "data_integration": {"score": 40, "summary": "1 sentence Czech", "why": "1-2 sentences Czech"},
+    "measurement":      {"score": 25, "summary": "1 sentence Czech", "why": "1-2 sentences Czech"}
   },
   "strengths_cs": ["strength 1 — what is already working", "strength 2"],
   "opportunities_cs": ["opportunity 1 — what becomes possible when this gap is closed", "opportunity 2"],
@@ -1747,7 +1790,7 @@ Return ONLY valid JSON (no prose, no fences):
   "reasoning_en": "Brief internal reasoning"
 }
 
-Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers. Dimension scores (0-100) reflect each area independently; their average should align with score_estimate. Frame opportunities as growth levers, not deficiencies.`;
+Rules: calibrated scoring (Tier IV is rare), no CDP mention unless they have it, ground everything in scan/answers. Dimension scores (0-100) reflect each area independently; their average should align with score_estimate. Frame opportunities as growth levers. For each dimension's "why": cite the specific tool, signal, or answer that drove the score — e.g. "Q2 nezmiňuje welcome series ani cart abandonment flow" or "GA4 detekováno, ale Q5 neuvádí conversion tracking ani A/B testy".`;
 }
 
 async function callAnthropic(prompt, apiKey) {
@@ -1825,8 +1868,8 @@ async function dmtSubmit() {
     result.tech_detected = tech.detected_tools;
     result.url_scanned = url;
     result.competitors = [
-      comp1 && techComp1 ? { url: comp1, tools: techComp1.detected_tools } : null,
-      comp2 && techComp2 ? { url: comp2, tools: techComp2.detected_tools } : null,
+      comp1 && techComp1 ? { url: comp1, tools: techComp1.detected_tools, tier: estimateCompetitorTier(techComp1.detected_tools) } : null,
+      comp2 && techComp2 ? { url: comp2, tools: techComp2.detected_tools, tier: estimateCompetitorTier(techComp2.detected_tools) } : null,
     ].filter(Boolean);
 
     // 4. Encode + redirect to dashboard
