@@ -1501,7 +1501,7 @@ Business analýza je komplexní výstup, který jde výrazně hlouběji než Rea
             <div class="dmt-spinner"></div>
             <div class="dmt-loading-text">
               Analyzujeme váš web a vyhodnocujeme odpovědi…<br/>
-              <span style="font-size:0.8rem; opacity:0.6;">Obvykle trvá 10–20 sekund</span>
+              <span style="font-size:0.8rem; opacity:0.6;">Obvykle trvá 30–60 sekund</span>
             </div>
           </div>
         </div>
@@ -1806,8 +1806,9 @@ async function dmtSubmit() {
     result.url_scanned = url;
 
     // 4. Encode + redirect to dashboard
+    // encodeURIComponent prevents btoa's +/= chars from corrupting the URL query param
     const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(result))));
-    window.location.href = DMT_DASHBOARD_URL + '?r=' + encoded;
+    window.location.href = DMT_DASHBOARD_URL + '?r=' + encodeURIComponent(encoded);
 
   } catch(err) {
     document.getElementById('dmt-loading').style.display = 'none';
