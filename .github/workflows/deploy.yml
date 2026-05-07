@@ -27,7 +27,7 @@ jobs:
         run: |
           sed -i "s|__DMT_API_KEY__|${{ secrets.DMT_API_KEY }}|g" dmt-landing-page.html
           sed -i "s|__BUILTWITH_API_KEY__|${{ secrets.BUILTWITH_API_KEY }}|g" dmt-landing-page.html
-          sed -i "s|__GITHUB_DISPATCH_TOKEN__|${{ secrets.GITHUB_DISPATCH_TOKEN }}|g" dmt-landing-page.html
+          sed -i "s|__DMT_DISPATCH_TOKEN__|${{ secrets.DMT_DISPATCH_TOKEN }}|g" dmt-landing-page.html
 
       - uses: actions/configure-pages@v5
 
