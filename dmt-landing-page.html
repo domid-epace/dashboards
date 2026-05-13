@@ -139,30 +139,38 @@
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     gap: 3rem; align-items: center;
   }
-  .hero-visual-card {
+  .hero-visual {
     position: relative;
-    border-radius: 16px; overflow: hidden;
-    aspect-ratio: 4 / 3;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06);
-    background: #2a2f3d;
+    aspect-ratio: 6 / 5;
+    display: flex; align-items: center; justify-content: center;
   }
-  .hero-visual-card img {
-    display: block; width: 100%; height: 100%; object-fit: cover;
+  .hero-visual svg { width: 100%; height: 100%; }
+  .data-line {
+    stroke: rgba(250,210,50,0.22);
+    stroke-width: 1;
+    stroke-dasharray: 6 4;
+    animation: dash-flow 3s linear infinite;
   }
-  .hero-visual-card::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(170deg, rgba(0,0,0,0) 55%, rgba(40,45,60,0.35) 100%);
-    pointer-events: none;
+  .data-line-active {
+    stroke: rgba(250,210,50,0.5);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 4;
+    animation: dash-flow 2s linear infinite;
+  }
+  @keyframes dash-flow { to { stroke-dashoffset: -20; } }
+  @keyframes node-expand {
+    0% { r: 38; opacity: 0.6; }
+    100% { r: 60; opacity: 0; }
   }
   @media (min-width: 769px) {
     #hero .hero-h1 { font-size: clamp(2rem, 3.4vw, 2.8rem); }
   }
   @media (max-width: 880px) {
-    .hero-2col { grid-template-columns: 1fr; gap: 2rem; }
-    .hero-visual-card { aspect-ratio: 16 / 10; max-width: 460px; margin: 0 auto; }
+    .hero-2col { grid-template-columns: 1fr; gap: 1.5rem; }
+    .hero-visual { aspect-ratio: 6 / 4; max-width: 480px; margin: 0 auto; width: 100%; }
   }
   @media (max-width: 600px) {
-    .hero-visual-card { display: none; }
+    .hero-visual { display: none; }
   }
   /* Hero counter pill */
   .hero-counter {
@@ -1073,8 +1081,76 @@
           <a href="#footer" class="btn-ghost btn-quiet">Kontakt</a>
         </div>
       </div>
-      <div class="hero-visual-card fade-up fade-delay-2">
-        <img src="https://epace.com/assets/card-planning-workshop-NxDKFVs2.jpg" alt="ePACE konzultace a workshop" loading="lazy" />
+      <div class="hero-visual fade-up fade-delay-2">
+        <svg viewBox="0 0 480 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(250,210,50,0.05)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="480" height="400" fill="url(#grid)" />
+
+          <line x1="240" y1="200" x2="120" y2="100" class="data-line-active" />
+          <line x1="240" y1="200" x2="360" y2="100" class="data-line-active" />
+          <line x1="240" y1="200" x2="80" y2="280" class="data-line" />
+          <line x1="240" y1="200" x2="400" y2="280" class="data-line" />
+          <line x1="240" y1="200" x2="240" y2="340" class="data-line" />
+          <line x1="120" y1="100" x2="40" y2="60" class="data-line" />
+          <line x1="360" y1="100" x2="440" y2="60" class="data-line" />
+
+          <circle cx="240" cy="200" r="38" fill="rgba(250,210,50,0.08)" stroke="#FAD232" stroke-width="2" />
+          <circle cx="240" cy="200" r="38" fill="none" stroke="rgba(250,210,50,0.3)" stroke-width="1" style="animation: node-expand 2.5s ease-out infinite;" />
+          <circle cx="240" cy="200" r="28" fill="#0d1220" stroke="#FAD232" stroke-width="2" />
+          <text x="240" y="197" font-family="Poppins,sans-serif" font-size="8" font-weight="700" fill="#FAD232" text-anchor="middle">CUSTOMER</text>
+          <text x="240" y="208" font-family="Poppins,sans-serif" font-size="8" font-weight="700" fill="#FAD232" text-anchor="middle">PROFILE</text>
+
+          <circle cx="120" cy="100" r="22" fill="#0d1220" stroke="#FAD232" stroke-width="1.5" />
+          <text x="120" y="97" font-family="Poppins,sans-serif" font-size="7" fill="#FAD232" text-anchor="middle">CRM</text>
+          <text x="120" y="107" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.6)" text-anchor="middle">data</text>
+
+          <circle cx="360" cy="100" r="22" fill="#0d1220" stroke="#FAD232" stroke-width="1.5" />
+          <text x="360" y="97" font-family="Poppins,sans-serif" font-size="7" fill="#FAD232" text-anchor="middle">WEB</text>
+          <text x="360" y="107" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.6)" text-anchor="middle">events</text>
+
+          <circle cx="80" cy="280" r="18" fill="#0d1220" stroke="rgba(250,210,50,0.5)" stroke-width="1.5" />
+          <text x="80" y="277" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.8)" text-anchor="middle">EMAIL</text>
+          <text x="80" y="287" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.5)" text-anchor="middle">channel</text>
+
+          <circle cx="400" cy="280" r="18" fill="#0d1220" stroke="rgba(250,210,50,0.5)" stroke-width="1.5" />
+          <text x="400" y="277" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.8)" text-anchor="middle">ADS</text>
+          <text x="400" y="287" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.5)" text-anchor="middle">platform</text>
+
+          <circle cx="240" cy="340" r="18" fill="#0d1220" stroke="rgba(250,210,50,0.4)" stroke-width="1.5" />
+          <text x="240" y="337" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.8)" text-anchor="middle">ERP</text>
+          <text x="240" y="347" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.5)" text-anchor="middle">system</text>
+
+          <circle cx="40" cy="60" r="13" fill="#0d1220" stroke="rgba(250,210,50,0.3)" stroke-width="1" />
+          <text x="40" y="63" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.6)" text-anchor="middle">POS</text>
+
+          <circle cx="440" cy="60" r="13" fill="#0d1220" stroke="rgba(250,210,50,0.3)" stroke-width="1" />
+          <text x="440" y="63" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.6)" text-anchor="middle">API</text>
+
+          <circle r="4" fill="#FAD232" opacity="0.9">
+            <animateMotion dur="2.2s" repeatCount="indefinite" path="M120,100 L240,200" />
+          </circle>
+          <circle r="3" fill="#FAD232" opacity="0.7">
+            <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.6s" path="M360,100 L240,200" />
+          </circle>
+          <circle r="3" fill="#FAD232" opacity="0.5">
+            <animateMotion dur="3.2s" repeatCount="indefinite" begin="1s" path="M240,200 L80,280" />
+          </circle>
+          <circle r="3" fill="#FAD232" opacity="0.5">
+            <animateMotion dur="2.6s" repeatCount="indefinite" begin="0.3s" path="M240,200 L400,280" />
+          </circle>
+
+          <rect x="340" y="160" width="110" height="56" rx="8" fill="#111827" stroke="rgba(250,210,50,0.2)" stroke-width="1" />
+          <text x="395" y="180" font-family="Poppins,sans-serif" font-size="7" fill="rgba(250,210,50,0.7)" text-anchor="middle" letter-spacing="1">READINESS</text>
+          <text x="395" y="202" font-family="Poppins,sans-serif" font-size="18" font-weight="800" fill="#FAD232" text-anchor="middle">74%</text>
+
+          <rect x="30" y="160" width="72" height="42" rx="6" fill="#111827" stroke="rgba(250,210,50,0.15)" stroke-width="1" />
+          <text x="66" y="176" font-family="Poppins,sans-serif" font-size="6" fill="rgba(250,210,50,0.6)" text-anchor="middle">SOURCES</text>
+          <text x="66" y="193" font-family="Poppins,sans-serif" font-size="14" font-weight="800" fill="#FAD232" text-anchor="middle">6</text>
+        </svg>
       </div>
     </div>
   </div>
@@ -2620,6 +2696,22 @@ function handleFormSubmit(e) {
   document.getElementById('readiness-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
 }
+
+// Preselect contact-form service from ?service= URL param (deep link from dashboard)
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const svc = params.get('service');
+    if (!svc) return;
+    const radio = document.querySelector('input[name="service"][value="' + svc + '"]');
+    if (radio) radio.checked = true;
+    // If a hash like #cta-final was provided, browsers handle the scroll; nudge if not.
+    if (window.location.hash !== '#cta-final') {
+      const target = document.getElementById('cta-final');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch (e) { /* silent */ }
+})();
 </script>
 
 <!-- FOOTER -->
