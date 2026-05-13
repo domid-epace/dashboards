@@ -132,10 +132,37 @@
       linear-gradient(180deg, var(--grey-dark) 0%, #383D4D 100%);
   }
   #hero .container {
-    max-width: 640px; margin: 0 auto; text-align: left;
+    max-width: 1100px; margin: 0 auto; text-align: left;
+  }
+  .hero-2col {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 3rem; align-items: center;
+  }
+  .hero-visual-card {
+    position: relative;
+    border-radius: 16px; overflow: hidden;
+    aspect-ratio: 4 / 3;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06);
+    background: #2a2f3d;
+  }
+  .hero-visual-card img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+  }
+  .hero-visual-card::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(170deg, rgba(0,0,0,0) 55%, rgba(40,45,60,0.35) 100%);
+    pointer-events: none;
   }
   @media (min-width: 769px) {
     #hero .hero-h1 { font-size: clamp(2rem, 3.4vw, 2.8rem); }
+  }
+  @media (max-width: 880px) {
+    .hero-2col { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual-card { aspect-ratio: 16 / 10; max-width: 460px; margin: 0 auto; }
+  }
+  @media (max-width: 600px) {
+    .hero-visual-card { display: none; }
   }
   /* Hero counter pill */
   .hero-counter {
@@ -1026,22 +1053,29 @@
 <!-- HERO -->
 <section id="hero">
   <div class="container">
-    <h1 class="hero-h1 fade-up fade-delay-1">
-      Jste připraveni na<br/><em>datově řízený marketing</em>?
-    </h1>
-    <p class="hero-h2 fade-up fade-delay-2">
-      Zjistěte svou úroveň digitální zralosti — zdarma, za pár minut.
-    </p>
-    <p class="hero-support fade-up fade-delay-3">
-      Váš web, pár otázek, okamžitý výsledek ve formě Tieru I–IV.
-    </p>
-    <div id="hero-counter" class="hero-counter" style="display:none;">
-      <span class="hero-counter-dot"></span>
-      <span>Otestovalo už <strong id="hero-counter-num">—</strong> firem</span>
-    </div>
-    <div class="hero-ctas fade-up fade-delay-4">
-      <a href="#dmt-express" class="btn-primary">Spustit test (3 min)</a>
-      <a href="#footer" class="btn-ghost btn-quiet">Kontakt</a>
+    <div class="hero-2col">
+      <div class="hero-text">
+        <h1 class="hero-h1 fade-up fade-delay-1">
+          Jste připraveni na<br/><em>datově řízený marketing</em>?
+        </h1>
+        <p class="hero-h2 fade-up fade-delay-2">
+          Zjistěte svou úroveň digitální zralosti — zdarma, za pár minut.
+        </p>
+        <p class="hero-support fade-up fade-delay-3">
+          Váš web, pár otázek, okamžitý výsledek ve formě Tieru I–IV.
+        </p>
+        <div id="hero-counter" class="hero-counter" style="display:none;">
+          <span class="hero-counter-dot"></span>
+          <span>Otestovalo už <strong id="hero-counter-num">—</strong> firem</span>
+        </div>
+        <div class="hero-ctas fade-up fade-delay-4">
+          <a href="#dmt-express" class="btn-primary">Spustit test (3 min)</a>
+          <a href="#footer" class="btn-ghost btn-quiet">Kontakt</a>
+        </div>
+      </div>
+      <div class="hero-visual-card fade-up fade-delay-2">
+        <img src="https://epace.com/assets/card-planning-workshop-NxDKFVs2.jpg" alt="ePACE konzultace a workshop" loading="lazy" />
+      </div>
     </div>
   </div>
 </section>
@@ -1111,11 +1145,11 @@
 
           <label class="dmt-input-label">Velikost aktivní marketingové databáze</label>
           <div class="dmt-choice-grid col">
-            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-1" value="<5000"><span>Méně než 5 000</span></label>
-            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-2" value="5000-25000"><span>5 000 – 25 000</span></label>
-            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-3" value="25000-100000"><span>25 000 – 100 000</span></label>
-            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-4" value="100000-500000"><span>100 000 – 500 000</span></label>
-            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-5" value="500000+"><span>500 000+</span></label>
+            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-1" value="<50000"><span>Méně než 50 000</span></label>
+            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-2" value="50000-100000"><span>50 000 – 100 000</span></label>
+            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-3" value="100000-500000"><span>100 000 – 500 000</span></label>
+            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-4" value="500000-1000000"><span>500 000 – 1 000 000</span></label>
+            <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-5" value="1000000+"><span>Více než 1 000 000</span></label>
             <label class="dmt-choice"><input type="radio" name="q1a-size" id="dmt-q1a-6" value="unknown"><span>Nevím / nemáme</span></label>
           </div>
 
@@ -1123,9 +1157,9 @@
           <div class="dmt-choice-grid col">
             <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="newsletter"><span>Newsletter signup na webu</span></label>
             <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="eshop_reg"><span>Registrace v eshopu / portálu</span></label>
-            <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="lead_magnet"><span>Lead magnet — ebook, kalkulačka, webinar</span></label>
+            <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="lead_magnet"><span>Lead magnet — ebook, kalkulačka, webinář</span></label>
             <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="offline"><span>Offline — POS, papír, akce</span></label>
-            <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="partners"><span>Import z partnerů</span></label>
+            <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="partners"><span>Import od partnerů</span></label>
             <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="contests"><span>Soutěže / hry</span></label>
             <label class="dmt-choice"><input type="checkbox" name="q1b-source[]" value="none"><span>Nesbíráme systematicky</span></label>
           </div>
@@ -1403,19 +1437,19 @@ const BIZ_LABELS = {
 };
 
 const LABELS_Q1A = {
-  '<5000': 'Méně než 5 000',
-  '5000-25000': '5 000 – 25 000',
-  '25000-100000': '25 000 – 100 000',
+  '<50000': 'Méně než 50 000',
+  '50000-100000': '50 000 – 100 000',
   '100000-500000': '100 000 – 500 000',
-  '500000+': '500 000+',
+  '500000-1000000': '500 000 – 1 000 000',
+  '1000000+': 'Více než 1 000 000',
   'unknown': 'Nevím / nemáme',
 };
 const LABELS_Q1B = {
   newsletter: 'Newsletter signup na webu',
   eshop_reg: 'Registrace v eshopu / portálu',
-  lead_magnet: 'Lead magnet (ebook, kalkulačka, webinar)',
+  lead_magnet: 'Lead magnet (ebook, kalkulačka, webinář)',
   offline: 'Offline (POS, papír, akce)',
-  partners: 'Import z partnerů',
+  partners: 'Import od partnerů',
   contests: 'Soutěže / hry',
   none: 'Nesbíráme systematicky',
 };
