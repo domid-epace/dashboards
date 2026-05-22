@@ -1723,6 +1723,14 @@ function dmtGoto(step) {
   if (next) next.classList.add('active');
   const pct = step === 0 ? 0 : Math.round((step / TOTAL_STEPS) * 100);
   document.getElementById('dmt-progress-fill').style.width = pct + '%';
+  // Scroll to top of form section on every step change,
+  // offsetting for the fixed header so users never get lost.
+  const section = document.getElementById('dmt-express');
+  if (section) {
+    const headerHeight = (document.getElementById('site-header') || {}).offsetHeight || 68;
+    const top = section.getBoundingClientRect().top + window.scrollY - headerHeight;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
 }
 
 function dmtNormalizeUrl(raw) {
