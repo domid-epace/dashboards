@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="cs"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASKO CRM 2026 — pololetní bilance a plán H2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#FAD232; --slate:#282D3C; --slate-2:#1F2330;
+  --grey:#E3E3E3; --grey-2:#F5F5F7; --ink:#1A1A2E; --muted:#6E7280;
+  --good:#1FA971; --warn:#D17B00; --bad:#C0392B; --link:#0075C4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;scroll-behavior:smooth}
+body{font-family:'Poppins',system-ui,-apple-system,Segoe UI,sans-serif;background:#FBFBFC;color:var(--ink);line-height:1.45;font-weight:400}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+
+/* HERO */
+.hero{background:var(--slate);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-180px;top:-180px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(250,210,50,.18) 0%,rgba(250,210,50,0) 70%);pointer-events:none}
+.hero .topbar{background:var(--yellow);height:9px;width:100%}
+.hero-inner{padding:50px 0 60px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-size:14px;color:rgba(255,255,255,.7)}
+.brand .dot{width:14px;height:14px;border-radius:50%;background:var(--yellow);display:inline-block}
+.brand span.x{color:rgba(255,255,255,.4);margin:0 4px}
+.hero h1{font-size:44px;line-height:1.1;margin:18px 0 12px;font-weight:700;letter-spacing:-.02em}
+.hero h1 em{color:var(--yellow);font-style:normal}
+.hero .lede{font-size:17px;color:rgba(255,255,255,.82);max-width:940px;font-weight:300}
+.hero .lede b{color:#fff;font-weight:600}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:22px;font-size:13px;color:rgba(255,255,255,.6);font-weight:500}
+.hero .meta b{color:#fff;font-weight:600}
+.tagline{position:absolute;right:32px;bottom:16px;font-weight:900;font-size:13px;letter-spacing:3px;color:var(--yellow);text-transform:uppercase}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
+.hero-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden}
+.hero-stat::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--yellow)}
+.hero-stat .num{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+.hero-stat .num small{font-size:15px;font-weight:600;color:var(--yellow);margin-left:4px}
+.hero-stat .label{font-size:12.5px;color:rgba(255,255,255,.7);margin-top:8px;font-weight:400;line-height:1.4}
+.hero-stat .num.neg{color:#FFC7BE}
+
+/* SECTIONS */
+section{padding:44px 0}
+section.dark{background:var(--slate);color:#fff}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+section.dark .eyebrow{color:var(--yellow)}
+section h2{font-size:26px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;color:var(--ink)}
+section.dark h2{color:#fff}
+section .deck{font-size:15px;color:var(--muted);max-width:980px;margin-bottom:22px;font-weight:400;line-height:1.6}
+section.dark .deck{color:rgba(255,255,255,.72)}
+h2 .accent{display:inline-block;width:10px;height:10px;background:var(--yellow);border-radius:50%;margin-right:12px;vertical-align:middle;transform:translateY(-3px)}
+.divider-band{height:9px;background:var(--yellow)}
+
+/* CARDS */
+.cards{display:grid;gap:16px}
+.cards.c2{grid-template-columns:repeat(2,1fr)}
+.cards.c3{grid-template-columns:repeat(3,1fr)}
+.cards.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--grey);border-radius:12px;padding:22px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--yellow)}
+.card .num{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.05}
+.card .num.pos{color:var(--good)} .card .num.neg{color:var(--bad)}
+.card .label{font-size:13px;color:var(--muted);margin-top:6px;font-weight:500}
+.card .help{font-size:12.5px;color:var(--muted);margin-top:10px;font-weight:300;line-height:1.5}
+.card.dark{background:var(--slate);color:#fff;border:none}
+.card.dark .num{color:#fff}.card.dark .label,.card.dark .help{color:rgba(255,255,255,.72)}
+.card.dark::before{background:var(--yellow)}
+
+/* MANAGERIAL SUMMARY */
+.summary{background:#fff;border:1px solid var(--grey);border-left:5px solid var(--yellow);border-radius:14px;padding:30px 34px;box-shadow:0 10px 30px rgba(40,45,60,.06)}
+.summary .tl{font-size:19px;font-weight:600;line-height:1.5;color:var(--ink);letter-spacing:-.01em}
+.summary .tl b{color:var(--ink);font-weight:800;background:linear-gradient(transparent 60%,rgba(250,210,50,.5) 60%)}
+.summary ul{margin:22px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 30px}
+.summary li{position:relative;padding-left:30px;font-size:14px;line-height:1.55;color:#33384a}
+.summary li::before{content:"";position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:var(--yellow);color:var(--slate);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.summary li b{font-weight:700;color:var(--ink)}
+.summary li.warn::before{background:var(--warn)}
+.summary li.good::before{background:var(--good)}
+
+/* EXPANDABLE — "go deep on challenge" */
+details.exp{border:1px solid var(--grey);border-radius:10px;background:#fff;margin-top:12px;overflow:hidden}
+details.exp>summary{cursor:pointer;padding:13px 18px;font-weight:600;font-size:13.5px;color:var(--ink);list-style:none;display:flex;align-items:center;gap:12px;background:var(--grey-2);transition:background .15s}
+details.exp>summary:hover{background:#ECECF1}
+details.exp>summary::-webkit-details-marker{display:none}
+details.exp>summary .plus{flex:0 0 auto;width:20px;height:20px;border-radius:5px;background:var(--yellow);color:var(--slate);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;line-height:1}
+details.exp[open]>summary .plus{background:var(--slate);color:#fff}
+details.exp>summary .plus::before{content:"+"}
+details.exp[open]>summary .plus::before{content:"\2212"}
+details.exp>summary .tag{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+details.exp .body{padding:18px 20px;font-size:13.5px;color:#3a3f52;line-height:1.6;border-top:1px solid var(--grey)}
+details.exp .body p{margin:0 0 10px}
+details.exp .body p:last-child{margin-bottom:0}
+section.dark details.exp{background:#2E3446;border-color:rgba(255,255,255,.1)}
+section.dark details.exp>summary{background:#333A4D;color:#fff}
+section.dark details.exp>summary:hover{background:#3a4256}
+section.dark details.exp .body{color:rgba(255,255,255,.8);border-top-color:rgba(255,255,255,.1)}
+
+/* DATA TABLE */
+table.dt{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+table.dt th,table.dt td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--grey)}
+table.dt th:first-child,table.dt td:first-child{text-align:left}
+table.dt thead th{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--grey)}
+table.dt tbody tr:hover{background:var(--grey-2)}
+table.dt td b{font-weight:700;color:var(--ink)}
+.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
+table.dt tr.total td{border-top:2px solid var(--slate);border-bottom:none;font-weight:800;color:var(--ink)}
+section.dark table.dt th,section.dark table.dt td{border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+section.dark table.dt thead th{color:rgba(255,255,255,.6);border-bottom-color:rgba(255,255,255,.25)}
+section.dark table.dt tbody tr:hover{background:rgba(255,255,255,.05)}
+
+/* COMPARE BARS */
+.compare{margin:6px 0}
+.compare .row{display:grid;grid-template-columns:210px 1fr 128px;align-items:center;gap:14px;margin-bottom:8px}
+.compare .label{font-size:13px;font-weight:500;color:var(--muted)}
+.compare .bar-wrap{height:28px;background:var(--grey-2);border-radius:6px;overflow:hidden;position:relative}
+.compare .bar{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 12px;color:#fff;font-weight:600;font-size:12.5px;white-space:nowrap}
+.compare .bar.dark{background:#5C6373}.compare .bar.yellow{background:var(--yellow);color:var(--ink)}
+.compare .delta{text-align:right;font-weight:700;font-size:14px}
+
+/* PROJECT BIO CARDS */
+.bio{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.biocard{background:#fff;border:1px solid var(--grey);border-radius:12px;padding:0;overflow:hidden;position:relative}
+.biocard .head{display:flex;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid var(--grey)}
+.biocard .head .nm{font-weight:700;font-size:15px;color:var(--ink)}
+.biocard .head .st{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:20px;white-space:nowrap}
+.st.on{background:#E7F7EF;color:#12805a}.st.slip{background:#FCEFD9;color:#a05e00}.st.blk{background:#FBE4E0;color:#a3271b}.st.cut{background:#EEE;color:#666}
+.biocard .body2{padding:14px 18px;font-size:13px;color:#3a3f52;line-height:1.55}
+.biocard .tl2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:var(--grey-2);color:var(--muted)}
+.pill.plan{background:#EEF2FB;color:#3760b0}.pill.real{background:#FDF4D6;color:#8a6400}.pill.loss{background:#FBE9E7;color:#b23a2a}
+.biocard .why{color:var(--muted);font-size:12.5px}
+
+/* FAN CHART */
+.chartwrap{background:#fff;border:1px solid var(--grey);border-radius:14px;padding:22px 22px 10px;box-shadow:0 10px 30px rgba(40,45,60,.06)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin:6px 2px 16px;font-size:12.5px;color:#3a3f52;font-weight:500}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:22px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+.scenbox{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.scen{border-radius:12px;padding:18px 20px;color:#fff;position:relative;overflow:hidden}
+.scen.p{background:linear-gradient(135deg,#9e3226,#C0392B)}
+.scen.r{background:linear-gradient(135deg,#282D3C,#3a4256)}
+.scen.o{background:linear-gradient(135deg,#b89000,#FAD232);color:var(--slate)}
+.scen .tt{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.9}
+.scen .vv{font-size:34px;font-weight:900;letter-spacing:-.02em;margin:4px 0 2px}
+.scen .ss{font-size:12.5px;font-weight:500;opacity:.92;line-height:1.45}
+.scen.o .ss{opacity:.8}
+
+/* NEXT / PLAN GRID */
+.plan{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+.plan .item{background:#fff;border:1px solid var(--grey);border-radius:10px;padding:20px;position:relative}
+.plan .item .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:3px 8px;border-radius:3px;margin-bottom:10px}
+.tag.add{background:var(--good);color:#fff}.tag.change{background:var(--yellow);color:var(--ink)}.tag.cut{background:var(--slate);color:#fff}
+.plan .item h3{margin:0 0 6px;font-size:15.5px;color:var(--ink);font-weight:700}
+.plan .item p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.plan .item ul{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--muted);line-height:1.55}
+
+/* COMPETITOR TABLE */
+.compgrid{overflow-x:auto}
+table.comp{width:100%;border-collapse:collapse;font-size:12.5px;min-width:720px}
+table.comp th,table.comp td{padding:9px 10px;border:1px solid var(--grey);text-align:center;vertical-align:top}
+table.comp th{background:var(--grey-2);font-weight:700;color:var(--ink);font-size:11.5px}
+table.comp td:first-child,table.comp th:first-child{text-align:left;font-weight:600;color:var(--ink);background:#fff;position:sticky;left:0}
+table.comp td.asko{background:#FFFCEB;font-weight:600}
+table.comp th.asko{background:var(--yellow);color:var(--slate)}
+.yes{color:var(--good);font-weight:700}.no{color:var(--bad);font-weight:700}
+
+.note{font-size:12px;color:var(--muted);font-style:italic;margin-top:16px;line-height:1.5}
+section.dark .note{color:rgba(255,255,255,.55)}
+.keyline{border-left:3px solid var(--yellow);padding:12px 0 12px 16px;margin-top:16px;font-size:14px;color:var(--ink);line-height:1.55}
+section.dark .keyline{color:#fff}
+
+/* FOOTER */
+footer{background:var(--slate-2);color:rgba(255,255,255,.6);padding:30px 0;font-size:13px}
+footer .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:flex-end}
+footer a{color:var(--yellow);text-decoration:none}
+footer .keep{font-weight:900;color:var(--yellow);letter-spacing:3px;text-transform:uppercase;font-size:14px}
+footer .updated{font-size:12px;color:rgba(255,255,255,.45)}
+footer .updated b{color:#fff}
+
+@media (max-width:980px){
+  .hero h1{font-size:30px}
+  .hero-stats,.cards.c4,.cards.c3,.plan,.scenbox{grid-template-columns:1fr 1fr}
+  .summary ul{grid-template-columns:1fr}
+  .bio{grid-template-columns:1fr}
+  .compare .row{grid-template-columns:1fr 70px}
+  .compare .bar-wrap{display:none}
+}
+@media (max-width:640px){
+  .hero-stats,.cards.c4,.cards.c3,.cards.c2,.plan,.scenbox{grid-template-columns:1fr}
+}
+
+/* CHART HOVER + EDITOR */
+.chartsvg{position:relative}
+.chart-tip{position:absolute;top:4px;transform:translateX(-50%);background:#fff;border:1px solid var(--grey);border-left:3px solid var(--yellow);border-radius:8px;padding:9px 12px;font-size:11.5px;line-height:1.5;color:var(--ink);box-shadow:0 8px 22px rgba(40,45,60,.18);pointer-events:none;opacity:0;transition:opacity .08s;white-space:nowrap;z-index:6}
+.chart-tip .h{font-weight:800;margin-bottom:4px;font-size:12px}
+.chart-tip .r{display:flex;justify-content:space-between;gap:16px}
+.chart-tip .r span:first-child{color:var(--muted)}
+.chart-tip .sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.hit:hover{fill:rgba(40,45,60,0.035)}
+#edTool{position:fixed;right:16px;bottom:16px;z-index:99999;display:none;gap:8px;font-family:'Poppins',sans-serif}
+#edTool.show{display:flex}
+#edTool button{border:none;border-radius:9px;padding:11px 15px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+#edTool .on{background:var(--yellow);color:var(--slate)}
+#edTool .dl{background:var(--slate);color:#fff}
+#edTool .hint{background:#fff;color:var(--muted);font-weight:600;align-self:center;padding:9px 12px;border-radius:8px;font-size:12px;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+body.editing{caret-color:var(--warn)}
+</style>
+</head>
+<body class="">
+
+<!-- ============================ HERO ============================ -->
+<div class="hero">
+  <div class="topbar"></div>
+  <div class="container hero-inner">
+    <div class="brand"><span class="dot"></span> ePACE <span class="x">×</span> ASKO</div>
+    <h1>ASKO CRM 2026<br><em>Pololetní bilance a plán na H2</em></h1>
+    <p class="lede">
+      Za první pololetí jsme vygenerovali zhruba&nbsp;<b>stejný inkrement jako loni — 1,93 mil. €</b> — a to při poklesu obratu ASKO o zhruba 10 %. Podíl CRM na obratu tedy roste. Vůči plánu 500 tis. €/měsíc ale za H1 <b>chybí ~1,07 mil. € </b>(předpokládáme rovné rozdělení inkrementu). Prozkoumali jsme kde ztrácíme, co se zdrželo a proč. Zároveň realisticky predikujeme vývoj v roce 2026.
+    </p>
+    <div class="meta">
+      <span><b>Období</b> · leden–červen 2026</span>
+      <span><b>Zdroj</b> · Looker, BigQuery, Bloomreach</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">1,93 <small>mil. €</small></div>
+        <div class="label">Inkrement za H1 2026 — kumulativně (kontraktační metrika)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">~0 <small>%</small></div>
+        <div class="label">inkrement meziročně vs. H1 2025 — <b style="color:var(--yellow)">stejný výkon při −10 % obratu ASKO</b></div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">+10%</div>
+        <div class="label">podíl inkrementu na celkovém obratu ASKO v 2026/H1 — 5.40%&nbsp;→ 5.96 %</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num neg">−179 <small>tis. €/měs</small></div>
+        <div class="label">odchylka od lineárního plánu 500 tis. €/měs → −1,07 mil. € za H1</div>
+      </div>
+    </div>
+  </div>
+  <div class="tagline">Keep the pace</div>
+</div>
+
+<!-- ==================== MANAŽERSKÉ SHRNUTÍ ==================== -->
+<section style="background:#F7F7FA">
+  <div class="container">
+    <div class="eyebrow">Manažerské shrnutí</div>
+    <h2 style="margin-bottom:20px">Stav CRM projektu</h2>
+    <div class="summary">
+      <div class="tl">
+        Za H1 jsme udrželi <b>loňský inkrement (1,93 mil. €)</b> navzdory ~10% poklesu obratu ASKO — podíl CRM na obratu roste, ale vůči plánu 500 tis. €/měsíc <b>chybí ~1,07 mil. €</b>. Celý rok se rozhodne v H2: reálně míříme <b>mezi 4,7 mil. €&nbsp; a 6,2 mil. €&nbsp; inkrementu</b>&nbsp;— o výsledku rozhodne síla sezóny a odblokování klíčových projektů.
+      </div>
+      <ul>
+        <li><b>Držíme úroveň 2025.</b> H1 inkrement 1,93 mil. € = přesně loňská hodnota, při poklesu obratu ASKO z 35,7 na 32,3 mil. €.</li>
+        <li class="warn"><b>Skluz za plánem.</b> Plán 500 tis. €/měs (6 mio/rok = SF). Realita ~321 tis. €/měs → za H1 mezera ~1,07 mil. €.</li>
+        <li><b>Rok stojí na sezóně H2.</b> V roce 2025 bylo H2 2,2× silnější než H1. Sama sezóna nás může dostat mezi FF a SF.</li>
+        <li class="warn"><b>Newslettery ztratily ~31 % atribuovaného revenue.</b> 2/3 únava báze (+12 % mailů, −27 % klikajících), 1/3 pokles trhu (prodejny −13 %).</li>
+        <li><b>Zdržení klíčových projektů proti plánu.</b> Velký nákup, rekomendace, login push — blokerů je víc, nejčastěji zpomaluje Inveo.</li>
+        <li class="good"><b>Máme plán pro H2.</b>&nbsp;Plán pro newslettery + věrnostní program + několik menších quick wins.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider-band"></div>
+
+<!-- ==================== ČÁST A — H1 ==================== -->
+<!-- INKREMENT H1 — REALITA -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Část A · H1 — co ukazují data</div>
+    <h2><span class="accent"></span>Inkrement H1: kde reálně jsme</h2>
+    <p class="deck">Inkrement za H1 2026 je <b>1 926 517 €</b> — meziročně prakticky totožný s H1 2025 (1 926 604 €). To je při ~10% poklesu obratu ASKO dobrá zpráva o výkonu CRM. Plán ale počítal s průměrem ~500 tis. €/měsíc, realita je ~321 tis. — <b>měsíčně chybí ~179 tis. €</b>, za pololetí ~1,07 mil. €. Situace měsíčního inkrementu není díky sezonalitě kritická, ale potřebujeme ji intenzivněji řešit v běžném provozu.</p>
+    <div class="cards c4">
+      <div class="card"><div class="num">1,93 mil. €</div><div class="label">Inkrement H1 2026</div><div class="help">Kumulativně leden–červen. Kontraktační metrika (Looker / BUS board).</div></div>
+      <div class="card"><div class="num">321 tis. €</div><div class="label">Průměr / měsíc H1</div><div class="help">Silně kolísá: květen 508 tis., červen 140 tis. Číst po kvartálech, ne po měsících.</div></div>
+      <div class="card"><div class="num neg">−1,07 mil. €</div><div class="label">Mezera vůči plánu za H1</div><div class="help">Plán ~500 tis. €/měs × 6 = 3,0 mil. €. Realita 1,93 mil. €. Předpokládá lineární rozdělení inkrementu; sezónnost ale táhne výkon do H2, kde se mezera dorovnává.</div></div>
+      <div class="card dark"><div class="num">2,2×</div><div class="label">Sezónnost 2025 (H2/H1)</div><div class="help">Druhá polovina roku byla loni 2,2× silnější. Proto se rok láme až v Q4.</div></div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Měsíční průběh inkrementu 2025 vs. 2026 <span class="tag">data · Looker</span></summary>
+      <div class="body">
+        <table class="dt">
+          <thead><tr><th>Měsíc</th><th>2025</th><th>2026</th></tr></thead>
+          <tbody>
+            <tr><td>Leden</td><td>611 009</td><td>288 900</td></tr>
+            <tr><td>Únor</td><td>464 438</td><td>365 047</td></tr>
+            <tr><td>Březen</td><td class="neg">−35 653</td><td>398 591</td></tr>
+            <tr><td>Duben</td><td>215 146</td><td>226 349</td></tr>
+            <tr><td>Květen</td><td>245 627</td><td>507 562</td></tr>
+            <tr><td>Červen</td><td>426 037</td><td>140 068</td></tr>
+            <tr class="total"><td>H1 celkem</td><td>1 926 604</td><td>1 926 517</td></tr>
+            <tr><td>Červenec</td><td>403 687</td><td>—</td></tr>
+            <tr><td>Srpen</td><td>496 768</td><td>—</td></tr>
+            <tr><td>Září</td><td>818 386</td><td>—</td></tr>
+            <tr><td>Říjen</td><td>328 162</td><td>—</td></tr>
+            <tr><td>Listopad</td><td>1 103 159</td><td>—</td></tr>
+            <tr><td>Prosinec</td><td>1 108 436</td><td>—</td></tr>
+            <tr class="total"><td>Rok celkem</td><td>6 185 203</td><td>zatím 1 926 517</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px">Co je vidět: leden a únor 2026 startovaly pod loňskem, ale březen–květen 2026 byly nad loňskem a rozdíl dorovnaly. Červen je slabý (140 tis.).</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- EMAILING REVENUE -->
+<section style="background:#F7F7FA">
+  <div class="container">
+    <h2><span class="accent"></span>Emailing: chybějící ~milion</h2>
+    <p class="deck">
+      Newslettery meziročně ztratily ~31 % obratu. V datech jsme dohledali dvě příčiny. <b>Dvě třetiny</b> jdou na vrub únavě báze (posíláme víc, kliká méně lidí), <b>jedna třetina</b> na vrub poklesu trhu (klesají tržby prodejen, kam newslettery lidi táhnou). Klikne-li dnes někdo, nakoupí častěji než loni (vyšší konverzní poměr) — problém máme <b>před</b> proklikem.
+    </p><p class="deck"><i>Oproti Lookeru jde o nižší pokles. Datová chyba v Lookeru způsobila, že nám chyběly off-line nákupy do 14 dnů. I po opravě ale zůstává pokles výkonu (jen není od 2025/09, ale zhruba od 2026/01).</i></p>
+    <div class="cards c4">
+      <div class="card"><div class="num">+12 %</div><div class="label">Doručené newslettery</div><div class="help">11,7 → 13,1 mil. e-mailů. Objem posíláme vyšší než loni.</div></div>
+      <div class="card"><div class="num neg">−27 %</div><div class="label">Unikátních lidí, kteří kliknou</div><div class="help">73 600 → 53 800. Tady je jádro problému — únava báze.</div></div>
+      <div class="card"><div class="num pos">+23 %</div><div class="label">Z klikajících nakoupí</div><div class="help">1,06 % → 1,30 %. Kdo se proklikne, konvertuje líp než loni.</div></div>
+      <div class="card"><div class="num neg">−38 %</div><div class="label">Revenue na e-mail</div><div class="help">0,048 € → 0,030 €. Výsledek nižší reakce při vyšším objemu.</div></div>
+    </div>
+
+    <div class="keyline">
+      Kdo klikne, nakupuje častěji, než loni. Ztrácíme <b>před</b> proklikem — teoreticky proto není řešení „posílat víc“, ale ještě víc řídit&nbsp;<b>komu, co a kdy</b> posíláme.
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Rozklad: únava báze vs. pokles trhu <span class="tag">proč se to děje</span></summary>
+      <div class="body">
+        <table class="dt">
+          <thead><tr><th>Plošné newslettery (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th><th>Pásmo</th></tr></thead>
+          <tbody>
+            <tr><td>Doručené e-maily</td><td>11,7 mil.</td><td>13,1 mil.</td><td>+12 %</td><td>objem ↑</td></tr>
+            <tr><td>Lidé, kteří kliknou (unik.)</td><td>73 600</td><td>53 800</td><td class="neg">−27 %</td><td>únava</td></tr>
+            <tr><td>Z klikajících nakoupí</td><td>1,06 %</td><td>1,30 %</td><td class="pos">+23 %</td><td>OK</td></tr>
+            <tr><td>Revenue na e-mail</td><td>0,048 €</td><td>0,030 €</td><td class="neg">−38 %</td><td>výsledek</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:14px"><b>Únava báze (≈ 2/3 propadu).</b> Posíláme o 12 % víc e-mailů, ale kliká o 27 % méně lidí. Báze neklesá — naopak roste o 25 % na 880 tis. kontaktů — slábne její reakce. <b>38 % oslovených dostává 8+ e-mailů měsíčně a jde na ně 67 % všech rozesílek.</b> V měsících nad 3,5 mil. odeslaných mailů padá efektivita do revenue na polovinu. E-maily chodí na část báze, která je zdopovědná za <b>25% celkového revenue</b>.</p>
+        <p><b>Pokles trhu (≈ 1/3 propadu).</b> Newslettery táhnou lidi hlavně na prodejny (~90 % jejich atribuovaného obratu). A prodejny klesají: turnikety −6,7 %, obrat prodejen −13 %. Menší offline pak sráží i atribuovaný obrat newsletteru.</p>
+        <table class="dt" style="margin-top:8px">
+          <thead><tr><th>Tržní kontext (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th></tr></thead>
+          <tbody>
+            <tr><td>Návštěvnost prodejen (turnikety)</td><td>1,37 mil.</td><td>1,28 mil.</td><td class="neg">−6,7 %</td></tr>
+            <tr><td>Obrat prodejen (BigQuery)</td><td>25,3 mil. €</td><td>22,1 mil. €</td><td class="neg">−13 %</td></tr>
+            <tr><td>Obrat e-shopu (YoY)</td><td>5,5 mil. €</td><td>5,8 mil. €</td><td class="pos">+6 %</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><b>Kde jsme mohli být rychlejší (za ePACE).</b> V Q1/Q2 jsme měli silněji tlačit na testy frekvence a rychleji dostat segmentaci do ostrého provozu.</p>
+      </div>
+    </details>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Co s tím — a kolik to může vrátit <span class="tag">řešení</span></summary>
+      <div class="body">
+        <p>Abychom maximalizovali prokliky, musíme lépe řídit <b>KOMU (segmentace)</b>, <b>CO (content)</b> a <b>KDY (frequency)</b> posíláme:</p>
+        <p><b>1 · Frequency management.</b> Srovnat frekvenci u přetížených 38 % báze (8+ mailů/měs.). Návrh Master Frequency Policy máme připravený.<br>
+        <b>2 · Segmentace v plném provozu.</b> Jeden z mála světlých bodů letošního mailingu — jede zhruba měsíc, patří na plnou bázi.<br>
+        <b>3 · Content.</b> Obsah, který stojí za otevření i bez slevy, ve vizuálně silnějším podání.</p>
+        <p>Roční dopad těchto tří aktivit odhadujeme <b>do 1 mil. €</b>&nbsp;revenue. Při jeho naplnění bychom rok 2026 mohli zavřít na srovnatelném revenue jako 2025.</p>
+        <p><b>Měření odstíněné o propad revenue:</b>&nbsp;do dashboardu chceme přidat podíl revenue emailingu na celkovém obratu. Meziročně klesl z 3,22 % na 2,55 % (−20,8 %).</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- PÁTEŘNÍ UCs -->
+<section>
+  <div class="container">
+    <h2><span class="accent"></span>Páteřní use casy: kdo táhne, kdo brzdí</h2>
+    <p class="deck">
+      Páteřní automatizované UC meziročně posílily objem i revenue - zkoušeli jsme 2 atribuční modely, oba ukázaly pozitivní vývoj YoY (+13 %/+ 17%). Odeslaných mailů:&nbsp;<b>+87,7 %</b>, tržby&nbsp;<b>+13,9 %</b>, tržba na e-mail vzhledem k objemu&nbsp;<b>−39,3 %</b>. Přidali jsme hlavně remindery s nižší hodnotou na e-mail a širší zásah. Novým use casům se relativně daří. Datově se rozcházíme se zaslaným ASKO reportem revenue UCs.</p>
+    <div class="cards c3">
+      <div class="card"><div class="num pos">+113 %</div><div class="label">UC2 Svátky — tržby YoY</div><div class="help">RPE +10,8 %. Reminder škáluje objemem i lepší monetizací (CTOR +68,6 %). SMS reminder x2 revenue v posledním měsíci.</div></div>
+      <div class="card"><div class="num pos">+85 %</div><div class="label">UC16 Odměna za kontakt — tržby YoY</div><div class="help">Nejvyšší RPE portfolia € 41,58 (na malé bázi). Meziroční tržby zde zaznamenaly největší nárůst.</div></div>
+      <div class="card"><div class="num pos">+573 %</div><div class="label">UC25 Výročí nákupu — tržby YoY</div><div class="help">Scénář narostl na revenue. Oslovuje ale hodně lidí, což způsobuje nízké revenue per email (RPE € 0,14).</div></div>
+      <div class="card"><div class="num neg">−36 %</div><div class="label">UC1 Welcome — tržby YoY</div><div class="help">Hlavní brzda. RPE −38,6 % (€ 6,03 → € 3,70), dlouhodobě neměnný design, potlačené proti UC12.</div></div>
+      <div class="card"><div class="num neg">−17 %</div><div class="label">UC12 Narozeniny — tržby YoY</div><div class="help">Objem +137 %, ale OR spadl (−30,9 %) a RPE −65 % — objem s ředěním hodnoty.</div></div>
+      <div class="card dark"><div class="num">23 000×</div><div class="label">UC24 Voucher — připomenutí v e-mailech</div><div class="help">+14 000 unikátů na webu, ~+100 využitých voucherů/měs. Nízkonákladový asistent napříč UC.</div></div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Kompletní žebříček 10 UC — H1 2026 <span class="tag">tržby &amp; RPE</span></summary>
+      <div class="body">
+        <table class="dt">
+          <thead><tr><th>Use case</th><th>Doručeno</th><th>CTOR</th><th>Nákupy</th><th>Tržby</th><th>RPE €</th></tr></thead>
+          <tbody>
+            <tr><td>UC3 · Opuštěná návštěva</td><td>180 373</td><td>18,7 %</td><td>717</td><td>327 849 €</td><td>1,82</td></tr>
+            <tr><td>UC1 · Welcome (double opt-in)</td><td>79 313</td><td>47,5 %</td><td>720</td><td>293 752 €</td><td>3,70</td></tr>
+            <tr><td>UC12 · Narozeniny</td><td>152 428</td><td>20,1 %</td><td>495</td><td>207 918 €</td><td>1,36</td></tr>
+            <tr><td>UC4 · Opuštěný košík</td><td>55 237</td><td>25,6 %</td><td>387</td><td>128 050 €</td><td>2,32</td></tr>
+            <tr><td>UC2 · Svátky</td><td>489 580</td><td>9,6 %</td><td>211</td><td>86 175 €</td><td>0,18</td></tr>
+            <tr><td>UC16 · Odměna za kontakt</td><td>1 806</td><td>13,4 %</td><td>53</td><td>75 096 €</td><td><b>41,58</b></td></tr>
+            <tr><td>UC14 · Cross-sell <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>13 719</td><td>7,8 %</td><td>1 174</td><td><b>61 006 €</b></td><td>4,45</td></tr>
+            <tr><td>UC30 · Price drop <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>17 928</td><td>16,2 %</td><td>142</td><td><b>45 409 €</b></td><td>2,53</td></tr>
+            <tr><td>UC32 · Back in stock <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>14 886</td><td>23,3 %</td><td>61</td><td><b>41 110 €</b></td><td>2,76</td></tr>
+            <tr><td>UC25 · Výročí nákupu</td><td>161 115</td><td>3,7 %</td><td>39</td><td>23 013 €</td><td>0,14</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><b>UC24 Voucher management</b> — nízkonákladový asistent: připomněl voucher 23 000× v e-mailech a 14 000 unikátům na webu, měsíčně cca +100 využitých voucherů navíc.</p>
+        <p class="note">RPE = tržby / doručené e-maily. Uplifty jsou meziroční na normalizovaném H1. UC1/UC16 vykazují OR &gt; 100 % (vícenásobná otevření na malém objemu) — brát orientačně. Zdroj: Bloomreach → BigQuery, 30. 6. 2026.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- KLÍČOVÉ PROJEKTY — BIO KARTY -->
+<section style="background:#FFF8F0">
+  <div class="container">
+    <h2><span class="accent"></span>Skluz klíčových projektů: harmonogram</h2>
+    <p class="deck">Většina projektů je opožděná, což ukazuje na trochu optimistické plánování. U každého projektu je <b>plánovaný</b> vs. <b>reálný</b> termín dodání a hlavní důvod skluzu. Většina zdržení má společného jmenovatele: <b>součinnost s Inveem</b> a <b>change requesty</b>.&nbsp;</p>
+    <div class="bio">
+      <div class="biocard">
+        <div class="head"><span class="nm">Velký nákup (S6)</span><span class="st slip">skluz Led → Črc</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 01</span><span class="pill real">realita 07</span><span class="pill loss">Klíčový projekt</span></div>
+          Predikce velkého nákupu: 6 % báze ≈ 30 % obratu. Malý uplift = velký absolutní inkrement.
+          <div class="why" style="margin-top:8px">Blokováno na Inveu ve dvou bodech: registrační stránka (žádána v lednu, dodána v červnu) a storna (zadání zasláno v květnu, řešíme manuálním importem). Plus dlouhé propočty MVP cashback voucherů.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Rekomendace do mailu / košíku</span><span class="st slip">skluz Bře → Kvě</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 03</span><span class="pill real">realita 05</span><span class="pill loss">Důležitý projekt</span></div>
+          Zvedá AOV i konverzi. Reko blok nasazen do vybraných mailů i do košíku na webu.
+          <div class="why" style="margin-top:8px">Zdržení integrací Inveo do košíku + ladění edge casů (aby se nedoporučovaly matrace špatných rozměrů). Zadání na Inveo 8. 4., reakce Inveo 12. 5.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Segmentace zákaznické báze</span><span class="st on">v termínu</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 03</span><span class="pill real">realita 03</span><span class="pill loss">Klíčový projekt</span></div>
+          Dodáno včas pro testování. Do ostrého provozu až po A/B testu (04), který prokázal +2,63 % tržeb varianty.
+          <div class="why" style="margin-top:8px">Současná realizace bohužel neodpovídá testům: rozdíl je hlavně v obsahu emailů.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Monetizace recenzí</span><span class="st slip">skluz Úno → Črc</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 02</span><span class="pill real">realita 07</span></div>
+          Spuštěno k 07/2026, zatím jen na online nákupy (~30 % zákazníků).
+          <div class="why" style="margin-top:8px">Zdrženo kombinací endpointů Inveo a change requestů (obrázky v recenzích + storage, sloučení s dotazníkem spokojenosti místo feedtracku).</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Věrnostní program (ASKO Plus)</span><span class="st slip">discovery Dub → Črv</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 04</span><span class="pill real">realita 06</span><span class="pill">Priorita č. 1</span></div>
+          Discovery hotové, zadání pro Inveo i legal odesláno, žádný blocker spuštění v září.
+          <div class="why" style="margin-top:8px">Původní plán počítal s lehkou explorací tématu a celkově nižší prioritou projektu. Pokuty ČOI a navázaným přístup k programu změnil směr projektu. Krátkodobě (2026) nejde o páku na inkrement.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Login push / ztotožnění</span><span class="st slip">skluz Bře → Zář</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 03</span><span class="pill real">realita 09</span></div>
+          Rozhodnuto o začlenění do startu věrnostního programu.
+          <div class="why" style="margin-top:8px">Tím se celý UC posouvá o půl roku. Vědomé rozhodnutí ASKO.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">SMS / WhatsApp</span><span class="st on">v termínu</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 06</span><span class="pill real">realita 06</span></div>
+          První A/B testy běží v červnu. Hledáme UC, kde na SMS lidé nejlépe reagují.
+          <div class="why" style="margin-top:8px">Profitabilitu jsme prokázali v ad hoc kampani na TOP 4 prodejny. WhatsApp zatím odkládáme kvůli ceně za zprávu.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Automatizace rozesílky NL</span><span class="st slip">skluz Kvě → Črv</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 05</span><span class="pill real">realita 06</span></div>
+          Do A/B testu dodáno na konci června.
+          <div class="why" style="margin-top:8px">Zdrženo hypercare v A/B testu segmentace a pomalejší reakcí ePACE po jeho ukončení — měli jsme na to skočit rovnou.</div>
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Ježíšek 2026</span><span class="st slip">skluz Črv → Zář</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 06</span><span class="pill real">realita ~09</span></div>
+          Opožděno follow-up projektem na Ježíška 2025. Sezónní páka pro Q4.
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Combo offers</span><span class="st cut">zrušeno</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 06</span><span class="pill">rozhodnutí ASKO</span></div>
+          Zrušeno kvůli kolizi se slevovou politikou a nutnosti spolupráce s nákupním oddělením.
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Conversational AI</span><span class="st cut">zrušeno</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 07</span><span class="pill">po průzkumu</span></div>
+          Řešení Bloomreach je příliš drahé, alternativy trhu zatím nebyly připravené. Zvolili jsme počkat.
+        </div>
+      </div>
+      <div class="biocard">
+        <div class="head"><span class="nm">Landing page</span><span class="st slip">skluz Dub → ~Pro</span></div>
+        <div class="body2">
+          <div class="tl2"><span class="pill plan">plán 04</span><span class="pill real">realita ~12</span></div>
+          Zařazeno až do druhé fáze věrnostního programu.
+        </div>
+      </div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Konzervativní odhad inkrementu ztraceného zpožděním <span class="tag">poctivě: s rezervou</span></summary>
+      <div class="body">
+        <p>Přesné číslo neexistuje — uplift jednotlivých pák se plně projeví až v provozu a v sezóně. Držíme se proto <b>konzervativních rozpětí</b>:</p>
+        <p><b>Velký nákup (6 měsíců skluzu)</b> je největší položka: cílí na 6 % báze, která tvoří ~30 % obratu. I 2–3% uplift na této skupině znamená statisíce € ročně; půlroční skluz reálně stál desítky až nižší stovky tisíc €.<br>
+        <b>Rekomendace (2 měsíce)</b> při RPE € 4,45 a rostoucím zásahu: nižší desítky tisíc €.<br>
+        <b>Monetizace recenzí (5 měsíců, jen online)</b> a <b>automatizace NL (1–2 měsíce)</b>: jednotky až nižší desítky tisíc € každá.</p>
+        <p><b>Souhrn (konzervativně): řádově nižší stovky tisíc € inkrementu, které se posunuly z H1 do H2</b> — část je k záchraně, pokud pojedeme rychleji. Zdržení je z větší části na součinnosti (Inveo) a zčásti na naší straně (rychlost reakce po A/B testu).</p>
+      </div>
+    </details>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Kam tekl čas týmu (leden–květen) <span class="tag">pracnost</span></summary>
+      <div class="body">
+        <p>Tři věci z rozpadu pracnosti:</p>
+        <p>• Čas nad realizací plánových UC je víceméně v normě.<br>
+        • ~10 % času šlo do ad hoc neplánovaných projektů (zahrady, storna objednávek).<br>
+        • Tíží nás objem času v datových pracích, projektovém řízení a obsluze newsletterů — <b>38 % kapacity s omezeným dopadem na výkon</b>.</p>
+        <table class="dt">
+          <thead><tr><th>Kategorie</th><th>Hodiny (led–kvě)</th></tr></thead>
+          <tbody>
+            <tr><td>Plánové UC (delivery)</td><td>1 119,5</td></tr>
+            <tr><td>Ad hoc projekty (TOP 4 prodejny, zahrady, storna…)</td><td>201</td></tr>
+            <tr><td>Rutinní obsluha (DM 215, PM 271,5, ACM 126, BUS 35, NPS 18, NL 232)</td><td>898,5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ÚSPĚŠNÉ AKCE + ONLINE/OFFLINE -->
+<section>
+  <div class="container">
+    <h2><span class="accent"></span>Co fungovalo — a proč neškálujeme</h2>
+    <p class="deck">
+      Několik ad hoc akcí prokazatelně vydělalo, ale chybí nám návaznost. Většinou je to náklad, pracnost nebo chybějící navazující plán.
+    </p>
+    <div class="cards c3">
+      <div class="card"><div class="num" style="font-size:21px">Direct mail</div><div class="label">Nasazen 3× — pokaždé přinesl revenue</div><div class="help">Pilot 06/25, samostatný projekt 10/25, součást TOP 4 prodejny. Blocker: vysoké náklady a pracnost; kalkulace pravidelné rozesílky běží.</div></div>
+      <div class="card"><div class="num pos">TOP 4</div><div class="label">Prodejny — geolokace + více kanálů</div><div class="help">E-mail → neotevřel → SMS/Direct mail dle blízkosti pobočky. Chybí plán další utilizace (UC Closest Shop).</div></div>
+      <div class="card"><div class="num pos">Ježíšek</div><div class="label">Sběr telefonů + retence</div><div class="help">Zájem o soutěž, ochota uvádět telefon (kanál pro SMS). Nutná investice do výher; zákazníci u ASKO zůstávají a nakupují.</div></div>
+    </div>
+
+    <h3 style="font-size:19px;font-weight:700;color:var(--ink);margin:34px 0 8px"><span class="accent"></span>Online vs. offline — kde se ASKO daří</h3>
+    <p class="deck" style="margin-bottom:16px"><b>Online</b> letos roste +6 % YoY — došlo ke zvrácení trendu, i když jsme proti 2024/2023 stále níž; nárůst jde pravděpodobně z konverzního poměru, ne z trafficu ani AOV. <b>Offline</b> konzistentně klesá: footfall padá pomaleji (−6,7 %) než revenue, AOV zhruba stabilní → ukazuje nám to na kombinaci, kde se méně lidí rozhodne přijít a méně z nich pak nakoupí.</p>
+    <div class="cards c2" style="margin-bottom:18px">
+      <div class="card"><div class="num pos">+6 %</div><div class="label">Online obrat YoY 2026</div><div class="help">Trend zvrácen. Proti 2024/2023 stále níž. Pravděpodobně vyšší konverzní poměr, ne traffic.</div></div>
+      <div class="card"><div class="num neg">−13 %</div><div class="label">Obrat prodejen (offline)</div><div class="help">Footfall −6,7 %, AOV stabilní. Méně návštěv i nižší konverze návštěvy na nákup.</div></div>
+    </div>
+    <table class="dt" style="max-width:520px">
+      <thead><tr><th>Obrat na návštěvníka 2026 (výběr)</th><th>€ / návštěvník</th></tr></thead>
+      <tbody>
+        <tr><td>Brno <span class="pill real" style="font-size:9px">nejlepší</span></td><td><b>64 €</b></td></tr>
+        <tr><td>Štěrboholy</td><td>53 €</td></tr>
+        <tr><td>Tábor</td><td class="neg">29 €</td></tr>
+        <tr><td>Olomouc</td><td class="neg">28 €</td></tr>
+        <tr><td>Plzeň</td><td class="neg">26 €</td></tr>
+      </tbody>
+    </table>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Co jsme navrhli a bylo zamítnuto <span class="tag">blockers</span></summary>
+      <div class="body">
+        <table class="dt">
+          <thead><tr><th>Návrh ePACE</th><th>Důvod zamítnutí</th></tr></thead>
+          <tbody>
+            <tr><td>Slevy na služby (doprava zdarma)</td><td>Marže a náklady na dopravce</td></tr>
+            <tr><td>Kreativa e-mailové komunikace</td><td>ASKO agendu řídí interně</td></tr>
+            <tr><td>Pravidelný Direct Mail (UC2, UC12, voucher)</td><td>Vysoké náklady — podléhá kalkulaci</td></tr>
+            <tr><td>Combo offers (bundle)</td><td>Kolize se slevovou politikou + nákupní oddělení</td></tr>
+            <tr><td>Promo rukávy / promo materiál na prodejnách</td><td>Bez testu, priorita servisu prodejců</td></tr>
+            <tr><td>Gamifikace na prodejnách</td><td>Nejnižší priorita</td></tr>
+            <tr><td>Welcome voucher</td><td>Slevová politika — mnoho produktů už se slevou</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:10px">Emailová kreativa a direct mailing jsou za nás témata stále vhodná k testu.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ==================== MODEL H2 (BRIDGE A→B) ==================== -->
+<section class="dark">
+  <div class="container">
+    <div class="eyebrow">Model · VÝVOJ INKREMENTU&nbsp;</div>
+    <h2>Inkrement do konce roku: otevřené všechny tři scénáře</h2>
+    <p class="deck">
+      Jsme přesně na úrovni 2025. Kdybychom drželi loňskou sezónu, rok zavřeme kolem <b>6 mil. €</b> (success fee). To ale silně závisí na Q4 a na tom, kolik toho stihneme nasadit. Model je proto&nbsp;<b>rozpětí</b>: optimisticky nasadíme všechny změny, pesimisticky zůstanou blokátory (Inveo) a věrnostní program pojede jen v MVP. Sázet na opakování loňských milionových listopadů a prosinců by bylo naivní — proto realistický scénář sezónu záměrně sráží.
+    </p>
+    <div class="chartwrap">
+      <div class="legend">
+        <span><i style="border-color:#282D3C"></i> Skutečnost H1 2026</span>
+        <span><i style="border-color:#B08400;border-top-style:dashed"></i> Optimistický</span>
+        <span><i style="border-color:#282D3C;border-top-style:dashed"></i> Realistický</span>
+        <span><i style="border-color:#C0392B;border-top-style:dashed"></i> Pesimistický</span>
+        <span><i style="border-color:#9AA0AC;border-top-style:dotted"></i> 2025 (reference)</span>
+      </div>
+      <div class="chartsvg">
+<svg viewBox="0 0 980 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vývoj kumulativního inkrementu 2026 se scénáři H2" style="width:100%;height:auto;font-family:Poppins,sans-serif" id="incChart">
+<line x1="78" y1="416.0" x2="954" y2="416.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="420.0" text-anchor="end" font-size="12" fill="#6E7280">0</text>
+<line x1="78" y1="356.0" x2="954" y2="356.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="360.0" text-anchor="end" font-size="12" fill="#6E7280">1</text>
+<line x1="78" y1="296.0" x2="954" y2="296.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="300.0" text-anchor="end" font-size="12" fill="#6E7280">2</text>
+<line x1="78" y1="236.0" x2="954" y2="236.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="240.0" text-anchor="end" font-size="12" fill="#6E7280">3</text>
+<line x1="78" y1="176.0" x2="954" y2="176.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="180.0" text-anchor="end" font-size="12" fill="#6E7280">4</text>
+<line x1="78" y1="116.0" x2="954" y2="116.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="120.0" text-anchor="end" font-size="12" fill="#6E7280">5</text>
+<line x1="78" y1="56.0" x2="954" y2="56.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="68" y="60.0" text-anchor="end" font-size="12" fill="#6E7280">6</text>
+<text x="68" y="16" text-anchor="end" font-size="10" fill="#6E7280">mil. €</text>
+<text x="78.0" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Led</text>
+<text x="157.6" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Úno</text>
+<text x="237.3" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Bře</text>
+<text x="316.9" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Dub</text>
+<text x="396.5" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Kvě</text>
+<text x="476.2" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Črv</text>
+<text x="555.8" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Črc</text>
+<text x="635.5" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Srp</text>
+<text x="715.1" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Zář</text>
+<text x="794.7" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Říj</text>
+<text x="874.4" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Lis</text>
+<text x="954.0" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Pro</text>
+<rect x="476.2" y="26" width="477.8" height="390" fill="#FAD232" opacity="0.04"></rect>
+<line x1="476.2" y1="26" x2="476.2" y2="416" stroke="#B9BdC7" stroke-width="1" stroke-dasharray="3 4"></line>
+<text x="470.2" y="39" text-anchor="end" font-size="10" font-weight="700" fill="#8A8F9A" letter-spacing="1">SKUTEČNOST</text>
+<text x="482.2" y="39" text-anchor="start" font-size="10" font-weight="700" fill="#B08400" letter-spacing="1">MODEL H2</text>
+<path d="M476.2,300.4 L555.8,276.2 L635.5,246.4 L715.1,197.3 L794.7,177.6 L874.4,111.4 L954.0,44.9 L954.0,134.3 L874.4,177.6 L794.7,220.6 L715.1,233.4 L635.5,265.3 L555.8,284.7 L476.2,300.4 Z" fill="#FAD232" opacity="0.16"></path>
+<path d="M78.0,379.3 L157.6,351.5 L237.3,353.6 L316.9,340.7 L396.5,326.0 L476.2,300.4 L555.8,276.2 L635.5,246.4 L715.1,197.3 L794.7,177.6 L874.4,111.4 L954.0,44.9" fill="none" stroke="#9AA0AC" stroke-width="1.6" stroke-dasharray="2 5" opacity="0.75"></path>
+<line x1="78" y1="138.9" x2="954" y2="138.9" stroke="#D17B00" stroke-width="1.6" stroke-dasharray="7 4"></line>
+<text x="84" y="132.9" font-size="11.5" font-weight="700" fill="#D17B00">Fail-fee práh · 4 618 719 €</text>
+<line x1="78" y1="56.0" x2="954" y2="56.0" stroke="#1FA971" stroke-width="1.6" stroke-dasharray="7 4"></line>
+<text x="84" y="50.0" font-size="11.5" font-weight="700" fill="#1FA971">Success-fee / cíl · 6 000 000 €</text>
+<path d="M476.2,300.4 L555.8,284.7 L635.5,265.3 L715.1,233.4 L794.7,220.6 L874.4,177.6 L954.0,134.3" fill="none" stroke="#C0392B" stroke-width="2" stroke-dasharray="6 4"></path>
+<path d="M476.2,300.4 L555.8,281.0 L635.5,257.2 L715.1,217.9 L794.7,202.2 L874.4,149.2 L954.0,96.0" fill="none" stroke="#282D3C" stroke-width="2.4" stroke-dasharray="6 4"></path>
+<path d="M476.2,300.4 L555.8,276.2 L635.5,246.4 L715.1,197.3 L794.7,177.6 L874.4,111.4 L954.0,44.9" fill="none" stroke="#B08400" stroke-width="2" stroke-dasharray="6 4"></path>
+<path d="M78.0,398.7 L157.6,376.8 L237.3,352.8 L316.9,339.3 L396.5,308.8 L476.2,300.4" fill="none" stroke="#282D3C" stroke-width="3.4"></path>
+<circle cx="78.0" cy="398.7" r="3.6" fill="#282D3C"></circle>
+<circle cx="157.6" cy="376.8" r="3.6" fill="#282D3C"></circle>
+<circle cx="237.3" cy="352.8" r="3.6" fill="#282D3C"></circle>
+<circle cx="316.9" cy="339.3" r="3.6" fill="#282D3C"></circle>
+<circle cx="396.5" cy="308.8" r="3.6" fill="#282D3C"></circle>
+<circle cx="476.2" cy="300.4" r="3.6" fill="#282D3C"></circle>
+<circle cx="476.2" cy="300.4" r="5.5" fill="#FAD232" stroke="#282D3C" stroke-width="2"></circle>
+<circle cx="954.0" cy="44.9" r="4" fill="#B08400"></circle>
+<circle cx="954.0" cy="96.0" r="4" fill="#282D3C"></circle>
+<circle cx="954.0" cy="134.3" r="4" fill="#C0392B"></circle>
+<text x="946.0" y="48.9" text-anchor="end" font-size="12" font-weight="800" fill="#B08400">6,19 mil.</text>
+<text x="946.0" y="100.0" text-anchor="end" font-size="12" font-weight="800" fill="#282D3C">5,33 mil.</text>
+<text x="946.0" y="148.3" text-anchor="end" font-size="12" font-weight="800" fill="#C0392B">4,69 mil.</text>
+<text x="476.2" y="286.4" text-anchor="middle" font-size="12" font-weight="800" fill="#282D3C">1,93 mil. €</text>
+<line id="hovL" x1="715.1" y1="26" x2="715.1" y2="416" stroke="#282D3C" stroke-width="1" opacity="0"></line>
+<rect class="hit" data-i="0" x="70.0" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="1" x="117.8" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="2" x="197.4" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="3" x="277.1" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="4" x="356.7" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="5" x="436.4" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="6" x="516.0" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="7" x="595.6" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="8" x="675.3" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="9" x="754.9" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="10" x="834.5" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="11" x="914.2" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"></rect>
+</svg>
+        <div class="chart-tip" id="chartTip" style="left: 72.9694%; transform: translateX(-92%); opacity: 0;"><div class="h">Zář · kumulativně</div><div class="r"><span><i class="sw" style="background:#9AA0AC"></i>2025</span><b>3 645 445 €</b></div><div class="r"><span><i class="sw" style="background:#B08400"></i>Optimistický</span><b>3 645 358 €</b></div><div class="r"><span><i class="sw" style="background:#282D3C"></i>Realistický</span><b>3 301 590 €</b></div><div class="r"><span><i class="sw" style="background:#C0392B"></i>Pesimistický</span><b>3 043 764 €</b></div></div>
+      </div>
+    </div>
+    <div class="scenbox">
+      <div class="scen p">
+        <div class="tt">Pesimistický</div>
+        <div class="vv">4,69 mil. €</div>
+        <div class="ss">Páky nezaberou, ASKO Plus jen MVP, slabší sezóna. I tak <b>fail-fee práh těsně překonáme</b> — je to spodní hranice, ne prognóza.</div>
+      </div>
+      <div class="scen r">
+        <div class="tt">Realistický</div>
+        <div class="vv">5,33 mil. €</div>
+        <div class="ss">Sezóna proběhne mírněji, klíčové páky najedou v průběhu H2. <b>Nad fail-fee, ~89 % success fee.</b></div>
+      </div>
+      <div class="scen o">
+        <div class="tt">Optimistický</div>
+        <div class="vv">6,19 mil. €</div>
+        <div class="ss">Všechny páky nasazené, plná sezóna jako 2025. <b>Success fee překročen</b> — na úrovni loňska.</div>
+      </div>
+    </div>
+    <div class="keyline">
+      Rozdíl mezi 4,7 a 6,2 mil. € není trh — je to <b>exekuce v H2</b>. Fail-fee práh pravděpodobně překonáme, success fee je dosažitelný jen kombinací silné sezóny <b>a</b> rychlého nasazení pák.
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Jak je model postavený <span class="tag">metodika</span></summary>
+      <div class="body">
+        <p><b>Základ:</b> skutečný H1 2026 (1 926 517 €) + projekce H2 podle měsíčního tvaru sezóny 2025 (nábytkový peak září–prosinec), škálovaného faktorem podle scénáře.</p>
+        <p><b>Pesimistický</b> = 0,65× loňská H2 (pokračující pokles trhu + přetrvávající blokátory). <b>Realistický</b> = 0,80× (sezóna mírnější, bez opakování dvojnásobných milionových Lis+Pro). <b>Optimistický</b> = 1,0× (opakování loňské sezóny při plné exekuci pák, kdy execution upside dorovná −10% trh).</p>
+        <table class="dt">
+          <thead><tr><th>Scénář</th><th>H2 2026</th><th>Rok 2026</th><th>% success fee</th></tr></thead>
+          <tbody>
+            <tr><td>Pesimistický</td><td>2,77 mil. €</td><td>4,69 mil. €</td><td>78 %</td></tr>
+            <tr><td>Realistický</td><td>3,41 mil. €</td><td>5,33 mil. €</td><td>89 %</td></tr>
+            <tr><td>Optimistický</td><td>4,26 mil. €</td><td>6,19 mil. €</td><td>103 %</td></tr>
+            <tr class="total"><td>Reference 2025</td><td>4,26 mil. €</td><td>6,19 mil. €</td><td>103 %</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:10px" class="note">Prahy: fail-fee 4 618 719 €, success fee / cíl 6 000 000 €. Měsíční inkrement silně kolísá — model je proto kvartální, ne měsíční přesnost.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<div class="divider-band"></div>
+
+<!-- ==================== ČÁST B — H2 PLÁN ==================== -->
+<section style="background:#F7F7FA">
+  <div class="container">
+    <div class="eyebrow">Část B · H2 — akční plán</div>
+    <h2><span class="accent"></span>Navrhované změny plánu</h2>
+    <p class="deck">
+      Priority H2: dotlačit tři nejlépe doložené páky do plného výkonu, opravit emailing, přitlačit na Q4 — a naopak ubrat tam, kde kapacita mizí bez dopadu na inkrement. Cílem je se co nejvíc přiblížit success fee.
+    </p>
+    <div class="plan">
+      <div class="item"><span class="tag add">PŘIDAT</span><h3>Tři páky na plný výkon</h3><ul><li><b>Segmentace</b> na 100 % báze a 11 rodin</li><li><b>Rekomendace</b> všude (web, mail, košík) — dotáhnout nápočty</li><li><b>Velký nákup (S6)</b> — odblokovat přes Inveo</li></ul></div>
+      <div class="item"><span class="tag change">ZMĚNIT</span><h3>Emailing</h3><ul><li>Opravit obsah segmentovaných rozesílek (dnes působí jako běžné NL)</li><li>Zavést frequency policy</li><li>Vyřešit timing rozesílek + nové odesílací domény</li></ul></div>
+      <div class="item"><span class="tag add">PŘIDAT</span><h3>Věrnostní program „s přínosem“</h3><ul><li>Landing page + jednoduchý welcome scénář</li><li>Stránka zájmu zákazníka pro prodejce</li><li>Early access ke slevovým akcím</li></ul></div>
+      <div class="item"><span class="tag add">TESTOVAT</span><h3>Drobné UC v MVP módu</h3><ul><li>Web push, Exit intent</li><li><b>ROPO intent</b>: vysoká CHS bez add-to-cart + closest_shop → SMS reaktivační voucher</li><li>Falling asleep reaktivace, Social proof, Friend-get-friend</li></ul></div>
+      <div class="item"><span class="tag change">ZMĚNIT</span><h3>Vylepšit páteřní UC</h3><ul><li><b>Audit UC1 welcome</b> (dlouhodobě neměnný, −36 %)</li><li>UC1 test: sleva 150 / 250 / 500 Kč dle min. objednávky</li><li>Rozšířit zásah UC14 / UC30 / UC32</li></ul></div>
+      <div class="item"><span class="tag cut">UBRAT</span><h3>Uvolnit kapacitu</h3><ul><li>Snížit náročnost obsluhy NL (změna flow, AI do tvorby) — nebo předat režii ASKO týmu</li><li>Minimalizovat dopad ASKO Plus na in-scope</li><li>Omezit ad hoc datové tasky bez dopadu na SF</li></ul></div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Návrh: měsíc, kdy emailing převezmeme my <span class="tag">test contentu + frekvence</span></summary>
+      <div class="body">
+        <p>Navrhujeme test, kde <b>dočasně převezmeme práci nad emailingem</b> (cca mid-červenec – mid-srpen, klidně jen 1 měsíc) a získáme možnost lépe ovlivnit content i timing. Na vstupu si vezmeme jen seznam akcí, které se odehrají, případně overstock produkty k odpromování.</p>
+        <p>V rámci testu <b>propojíme segmentaci, frekvenci i obsah</b> — podobně jako u A/B testu segmentace. Cílem je otestovat nové šablony a interaktivnější content a změřit dopad na prokliky, kde dnes ztrácíme.</p>
+      </div>
+    </details>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Restart UC14 a rekomendace do dalších kanálů <span class="tag">z interní revize</span></summary>
+      <div class="body">
+        <p>UC14 cross-sell letos v Lookeru vyskočil z ~2 tis. €/měs (do 03/2026) na ~10 tis. €/měs (do 06/2026). Za nárůstem stojí i „rest CZ/SK“ fallback model, který přidal ~3,2 tis. mailů a zvedl objem rozesílek o ~174 % — objem ale narostl rychleji než revenue (fallback má nižší OR).</p>
+        <p><b>Kudy dál:</b> rekomendační blok už běží v DOI, UC2, UC3, UC4, UC12, UC25 a nově v NPS. Prostor vidíme (1) v experimentu, kdy historické segmenty nahradíme dočasně REST modelem + A/B na předmět, (2) v rekomendacích na web tam, kde je Inveo nemá (PDP bez reko), a (3) v SMS a direct mailu pro méně digitální (starší) část báze, kde e-mail nezasáhne.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- KONKURENCE -->
+<section>
+  <div class="container">
+    <h2><span class="accent"></span>Konkurence: co dělají jinak</h2>
+    <p class="deck">
+      Zmapovali jsme CRM a akviziční mechaniky pěti hráčů (Sconto, Möbelix, JYSK, XXXLutz, Bonami). Nejdůležitější zjištění: <b>ASKO je jediný z velkých hráčů bez věrnostního programu</b> — přesně ten, který teď stavíme (ASKO Plus). A v obsahu a gamifikaci máme prostor přiučit se.
+    </p>
+    <div class="cards c3">
+      <div class="card"><div class="num" style="font-size:22px">JYSK</div><div class="label">Gamifikace místo slevy</div><div class="help">Akvizice na měsíční soutěži o dárkovou kartu 3 000 Kč, ne na okamžité slevě. Jediný, kdo staví registraci na psychologii výhry.</div></div>
+      <div class="card"><div class="num" style="font-size:22px">Bonami</div><div class="label">Obsah + kredity + wishlist</div><div class="help">Benchmark pro lifestyle obsah: interiérové proměny, Reels, silný wishlist pro personalizaci. Kredity za nákupy i recenze.</div></div>
+      <div class="card"><div class="num" style="font-size:22px">Möbelix / XXXLutz</div><div class="label">Propracovaný loyalty</div><div class="help">Möbelix: nejagresivnější akvizice (750 + 500 + 350 Kč + body). XXXLutz HIT karta: měsíční nabídky, roční bonus, jídlo k narozeninám.</div></div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Srovnávací tabulka mechanik <span class="tag">6 hráčů</span></summary>
+      <div class="body">
+        <div class="compgrid">
+        <table class="comp">
+          <thead><tr><th>Mechanika</th><th>Sconto</th><th>Möbelix</th><th>JYSK</th><th>XXXLutz</th><th>Bonami</th><th class="asko">ASKO</th></tr></thead>
+          <tbody>
+            <tr><td>Benefit za registraci</td><td>35% sleva</td><td>750 Kč</td><td>soutěž 3 000 Kč</td><td>150 Kč</td><td>300 Kč kredit</td><td class="asko">150 Kč</td></tr>
+            <tr><td>Věrnostní program</td><td class="yes">✓ Club</td><td class="yes">✓ Karta výhod</td><td class="no">✗ (jen B2B)</td><td class="yes">✓ HIT karta</td><td class="yes">✓ Kredity</td><td class="asko no">✗ zavádí se</td></tr>
+            <tr><td>Opuštěný košík</td><td>?</td><td>?</td><td>?</td><td>?</td><td class="yes">✓</td><td class="asko yes">✓</td></tr>
+            <tr><td>Personalizace NL</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="asko yes">✓</td></tr>
+            <tr><td>Narozeniny</td><td>35% sleva</td><td>350 Kč</td><td>100 Kč</td><td>jídlo zdarma</td><td class="no">✗</td><td class="asko">20% sleva</td></tr>
+            <tr><td>Soutěže</td><td>občas</td><td>občas</td><td class="yes">velmi aktivní</td><td>občas</td><td class="yes">velmi kreativní</td><td class="asko">sezónní</td></tr>
+            <tr><td>Wishlist</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ silný</td><td class="asko yes">✓</td></tr>
+            <tr><td>Sociální sítě</td><td>aktivní</td><td>vysoký</td><td>střední+</td><td>vysoký</td><td class="yes">extrémní</td><td class="asko">střední</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-top:12px"><b>Co si vzít pro ASKO:</b> (1) věrnostní program dotáhnout — je to hygiena trhu; (2) silnější lifestyle/obsahová komunikace (Bonami je laťka); (3) zvážit gamifikaci akvizice po vzoru JYSK; (4) víc těžit z wishlistu pro personalizaci a remarketing.</p>
+        <p class="note">Zdroj: Confluence ASK — „Investigace konkurenčních webů“ (červen 2026).</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="keep">Keep the pace</div>
+      <div class="updated" style="margin-top:6px">Pololetní bilance ASKO CRM · aktualizováno k <b>1. 7. 2026</b> · připravil tým ePACE pro BUS status</div>
+    </div>
+    <div style="text-align:right;font-size:12px;color:rgba(255,255,255,.5)">
+      Metrika inkrementu: Looker / BUS board · data Bloomreach → BigQuery<br>
+      Atribuce 24 h online / 7 dní offline
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+(function(){var CH={"D": [{"m": "Led", "v25": 611009, "fut": 0, "v26": 288900}, {"m": "Úno", "v25": 1075447, "fut": 0, "v26": 653947}, {"m": "Bře", "v25": 1039794, "fut": 0, "v26": 1052538}, {"m": "Dub", "v25": 1254940, "fut": 0, "v26": 1278887}, {"m": "Kvě", "v25": 1500567, "fut": 0, "v26": 1786449}, {"m": "Črv", "v25": 1926604, "fut": 0, "v26": 1926517}, {"m": "Črc", "v25": 2330291, "fut": 1, "opt": 2330204, "real": 2249467, "pess": 2188914}, {"m": "Srp", "v25": 2827059, "fut": 1, "opt": 2826972, "real": 2646881, "pess": 2511813}, {"m": "Zář", "v25": 3645445, "fut": 1, "opt": 3645358, "real": 3301590, "pess": 3043764}, {"m": "Říj", "v25": 3973607, "fut": 1, "opt": 3973520, "real": 3564120, "pess": 3257069}, {"m": "Lis", "v25": 5076766, "fut": 1, "opt": 5076679, "real": 4446647, "pess": 3974122}, {"m": "Pro", "v25": 6185202, "fut": 1, "opt": 6185115, "real": 5333396, "pess": 4694605}], "X": [78.0, 157.6, 237.3, 316.9, 396.5, 476.2, 555.8, 635.5, 715.1, 794.7, 874.4, 954.0], "W": 980};var svg=document.getElementById('incChart');if(!svg)return;
+ var tip=document.getElementById('chartTip');var g=document.getElementById('hovL');
+ function fmt(v){return Math.round(v).toLocaleString('cs-CZ').replace(/\u00A0/g,' ')+' \u20AC';}
+ function show(i){var d=CH.D[i];var x=CH.X[i];var pct=x/CH.W*100;
+  g.setAttribute('x1',x);g.setAttribute('x2',x);g.setAttribute('opacity','0.35');
+  var h='<div class="h">'+d.m+' \u00B7 kumulativn\u011B</div>';
+  h+='<div class="r"><span><i class="sw" style="background:#9AA0AC"></i>2025</span><b>'+fmt(d.v25)+'</b></div>';
+  if(!d.fut){h+='<div class="r"><span><i class="sw" style="background:#282D3C"></i>2026</span><b>'+fmt(d.v26)+'</b></div>';}
+  else{h+='<div class="r"><span><i class="sw" style="background:#B08400"></i>Optimistick\u00FD</span><b>'+fmt(d.opt)+'</b></div>';
+       h+='<div class="r"><span><i class="sw" style="background:#282D3C"></i>Realistick\u00FD</span><b>'+fmt(d.real)+'</b></div>';
+       h+='<div class="r"><span><i class="sw" style="background:#C0392B"></i>Pesimistick\u00FD</span><b>'+fmt(d.pess)+'</b></div>';}
+  tip.innerHTML=h;tip.style.left=pct+'%';
+  tip.style.transform=pct>70?'translateX(-92%)':(pct<15?'translateX(-8%)':'translateX(-50%)');
+  tip.style.opacity='1';}
+ function hide(){tip.style.opacity='0';g.setAttribute('opacity','0');}
+ svg.querySelectorAll('.hit').forEach(function(r){r.addEventListener('mouseenter',function(){show(+r.dataset.i);});r.addEventListener('mousemove',function(){show(+r.dataset.i);});r.addEventListener('mouseleave',hide);});
+})();
+(function(){var tool=document.getElementById('edTool');if(!tool){return;}
+ if(/edit/i.test(location.hash)||/[?&]edit/i.test(location.search)){tool.classList.add('show');}
+ var editing=false;
+ document.getElementById('edToggle').addEventListener('click',function(){editing=!editing;
+  document.body.contentEditable=editing?'true':'false';document.body.classList.toggle('editing',editing);
+  if(editing){document.querySelectorAll('details').forEach(function(d){d.open=true;});}
+  this.innerHTML=editing?'\u2713 \u00DApravy zapnut\u00E9':'\u270E Zapnout \u00FApravy';});
+ document.getElementById('edDownload').addEventListener('click',function(){
+  var clone=document.documentElement.cloneNode(true);
+  var t=clone.querySelector('#edTool');if(t)t.remove();
+  var b=clone.querySelector('body');if(b){b.removeAttribute('contenteditable');b.classList.remove('editing');}
+  clone.querySelectorAll('[contenteditable]').forEach(function(e){e.removeAttribute('contenteditable');});
+  clone.querySelectorAll('details').forEach(function(x){x.removeAttribute('open');});
+  var tp=clone.querySelector('#chartTip');if(tp)tp.style.opacity='0';
+  var out='<!doctype html>\n<html lang="cs">'+clone.innerHTML+'</html>';
+  var blob=new Blob([out],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='asko-crm-2026-bilance-h2.html';document.body.appendChild(a);a.click();a.remove();});
+})();
+</script>
+
+
+
+</body></html>
