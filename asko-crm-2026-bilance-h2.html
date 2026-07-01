@@ -216,6 +216,16 @@ footer .updated b{color:#fff}
 #edTool .on{background:var(--yellow);color:var(--slate)}
 #edTool .dl{background:var(--slate);color:#fff}
 #edTool .hint{background:#fff;color:var(--muted);font-weight:600;align-self:center;padding:9px 12px;border-radius:8px;font-size:12px;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.decomp .bar{display:flex;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--grey)}
+.decomp .seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;letter-spacing:.3px;white-space:nowrap;padding:0 4px}
+.decomp .rows{margin-top:16px;display:grid;gap:11px}
+.decomp .r{display:grid;grid-template-columns:15px 190px 1fr;gap:12px;align-items:start;font-size:13px}
+.decomp .r .sw{width:13px;height:13px;border-radius:3px;margin-top:3px}
+.decomp .r .nm{font-weight:700;color:var(--ink)}
+.decomp .r .ds{color:var(--muted);font-size:12.5px;line-height:1.45}
+.attrbox{background:#fff;border:1px solid var(--grey);border-left:3px solid var(--link);border-radius:10px;padding:15px 18px;margin-top:16px;font-size:12.5px;color:#3a3f52;line-height:1.55}
+.attrbox b{color:var(--ink)}
+@media(max-width:640px){.decomp .r{grid-template-columns:15px 1fr}.decomp .r .ds{grid-column:2/-1}}
 body.editing{caret-color:var(--warn)}
 .biocard.ontime{border-color:#B7E4CC;background:#F3FBF7}
 .biocard.ontime .head{border-bottom-color:#CDECDB}
@@ -284,7 +294,7 @@ body.editing{caret-color:var(--warn)}
         <li class="good"><b>Máme plán pro H2.</b>&nbsp;Plán pro newslettery + věrnostní program + několik menších quick wins.</li>
         <li><b>Rok stojí na sezóně H2.</b> V roce 2025 bylo H2 2,2× silnější než H1. Statistická projekce z 30 měsíců dat míří nad success fee.</li>
         <li class="warn"><b>Stav vůči lineárnímu plánu.</b> Plán 500 tis. €/měs (6,14 mio/rok = SF). Realita ~321 tis. €/měs → za H1 mezera ~1,07 mil. €.</li>
-        <li class="warn"><b>Newslettery ztratily ~31 % atribuovaného revenue.</b> 2/3 únava báze (+12 % mailů, −27 % klikajících), 1/3 pokles trhu (prodejny −13 %).</li>
+        <li class="warn"><b>Newslettery −14 % YoY (dohodnutá atribuce).</b> Reportovaných −50–80 % byl hlavně artefakt měření; reálný pokles táhne trh (prodejny −13 %), únava báze je menší, testovatelný signál.</li>
         <li class="warn"><b>Zdržení klíčových projektů proti plánu.</b> Velký nákup, rekomendace, login push — blokerů je víc, nejčastěji zpomaluje Inveo.</li>
       </ul>
     </div>
@@ -359,35 +369,55 @@ body.editing{caret-color:var(--warn)}
 <!-- EMAILING REVENUE -->
 <section style="background:#F7F7FA">
   <div class="container">
-    <h2><span class="accent"></span>Emailing: chybí ~milion?</h2>
+    <h2><span class="accent"></span>Emailing: propad byl hlavně v měření, ne ve výkonu</h2>
     <p class="deck">
-      Newslettery meziročně ztratily ~38 % obratu. V datech jsme dohledali dvě příčiny. <b>Dvě třetiny</b> jdou na vrub únavě báze (posíláme víc, kliká méně lidí), <b>jedna třetina</b> na vrub poklesu trhu (klesají tržby prodejen, kam newslettery lidi táhnou). Klikne-li dnes někdo, nakoupí častěji než loni (vyšší konverzní poměr) — problém máme <b>před</b> proklikem.
-    </p><p class="deck"><i>Oproti Lookeru jde o nižší pokles. Datová chyba v Lookeru způsobila, že nám chyběly off-line nákupy do 14 dnů. I po opravě ale zůstává pokles výkonu (jen není od 2025/09, ale zhruba od 2026/01).</i></p>
+      V reportu klient viděl propad newsletterů <b>−50 až −80 % YoY</b>. Po sjednocení atribuce na jedno pravidlo pro celou historii je reálný pokles <b>−14 % YoY</b> (led–kvě, 1,19 → 1,02 mil. €). Většina reportovaného propadu byl <b>artefakt měření</b>, ne pokles výkonu kampaní. Zbytek táhne hlavně trh — prodejny klesají −13 % a ~85 % obratu e-mailů vzniká na pobočkách (ROPO). Kdo dnes klikne, nakupuje dokonce častěji než loni (+23 %).
+    </p>
     <div class="cards c4">
-      <div class="card"><div class="num">+12 %</div><div class="label">Doručené newslettery</div><div class="help">11,7 → 13,1 mil. e-mailů. Objem posíláme vyšší než loni.</div></div>
-      <div class="card"><div class="num neg">−27 %</div><div class="label">Unikátních lidí, kteří kliknou</div><div class="help">73 600 → 53 800. Tady je jádro problému — únava báze.</div></div>
-      <div class="card"><div class="num pos">+23 %</div><div class="label">Z klikajících nakoupí</div><div class="help">1,06 % → 1,30 %. Kdo se proklikne, konvertuje líp než loni.</div></div>
-      <div class="card"><div class="num neg">−38 %</div><div class="label">Revenue na e-mail</div><div class="help">0,048 € → 0,030 €. Výsledek nižší reakce při vyšším objemu.</div></div>
+      <div class="card"><div class="num neg">−14 %</div><div class="label">Reálný pokles newsletterů YoY</div><div class="help">Dohodnutá atribuce (led–kvě): 1,19 → 1,02 mil. €. Oproti reportovaným −50 až −80 %.</div></div>
+      <div class="card"><div class="num neg">−13 %</div><div class="label">Obrat prodejen (trh)</div><div class="help">Hlavní reálná příčina. ~85 % obratu e-mailů je ROPO — číslo mechanicky kopíruje prodejny.</div></div>
+      <div class="card"><div class="num neg">−27 %</div><div class="label">Unikátních klikajících (plošné)</div><div class="help">Při +11 % odeslaných. Signál únavy báze — reálný, ale menší a testovatelný.</div></div>
+      <div class="card"><div class="num pos">+23 %</div><div class="label">Z klikajících nakoupí</div><div class="help">1,06 % → 1,30 %. Kdo se proklikne, konvertuje líp než loni — jádro funguje.</div></div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--ink);margin:30px 0 4px">Z čeho se skládá reportovaný propad</h3>
+    <p class="deck" style="margin-bottom:12px">Orientační rozklad (guesstimate): reportovaný propad −50 až −80 % se po sjednocení atribuce smrskne na reálných −14 % YoY. Většina byla měření.</p>
+    <div class="decomp">
+      <div class="bar">
+        <div class="seg" style="width:65%;background:#282D3C">Měření / atribuce ~65 %</div>
+        <div class="seg" style="width:20%;background:#D17B00">Trh ~20 %</div>
+        <div class="seg" style="width:10%;background:#B08400">Únava ~10 %</div>
+        <div class="seg" style="width:5%;background:#9AA0AC">~5 %</div>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="sw" style="background:#282D3C"></span><span class="nm">Atribuce / měření ~65 %</span><span class="ds">Looker v 9/2025 přepnul zdroj a přestal vidět nákupy na prodejnách (~85 % obratu e-mailů); k tomu duplicitní web eventy, nekonzistentní scope a měnová chyba v základně 2024. Po sjednocení atribuce většina propadu mizí.</span></div>
+        <div class="r"><span class="sw" style="background:#D17B00"></span><span class="nm">Pokles trhu ~20 %</span><span class="ds">Prodejny −13 %, návštěvnost −6,7 %. Protože ~85 % obratu e-mailů je ROPO (výběr online → nákup na pobočce), číslo e-mailů mechanicky kopíruje prodejny dolů.</span></div>
+        <div class="r"><span class="sw" style="background:#B08400"></span><span class="nm">Únava báze / frekvence ~10 %</span><span class="ds">+11 % odeslaných, ale −27 % unikátních klikajících na plošných rozesílkách. Reálný, ale menší signál — segmentace ho obrací (+16 % prokliků) a konverze klikajících roste (+23 %).</span></div>
+        <div class="r"><span class="sw" style="background:#9AA0AC"></span><span class="nm">Přesun do automatů + ostatní ~5 %</span><span class="ds">Automaty +14 % (≈ +157 tis. €) zachytí část nákupů dřív připsaných newsletteru; plus revenue je brutto (nezapočtená storna) a reziduální datové vady.</span></div>
+      </div>
+    </div>
+
+    <div class="attrbox">
+      <b>Jak měříme — dohodnutá atribuce.</b> Nákup se připíše newsletteru, když zákazník e-mail <b>otevřel nebo proklikl</b> a poté nakoupil — <b>online do 24 h, offline do 14 dnů</b>. Deduplikace last-touch (jeden nákup = jeden e-mail), jen plošné newslettery (automaty vyloučené), bez extrémů (nákupy nad 5 000 € a profily s 20+ nákupy). Stejné pravidlo pro celou historii 2024–2026. Přísnější, čistě proklikové měření (klik do 24 h) dává konzervativní spodní hranici ~−31 %.
     </div>
 
     <div class="keyline">
-      Kdo klikne, nakupuje častěji, než loni. Ztrácíme <b>před</b> proklikem — teoreticky proto není řešení „posílat víc“, ale ještě víc řídit&nbsp;<b>komu, co a kdy</b> posíláme.
+      Jádro funguje: kdo dnes klikne, nakupuje častěji než loni (+23 %). Propad není o kvalitě kampaní — je o měření a trhu. Cesta ven je <b>víc segmentace a řízení frekvence</b>, ne návrat k plošnému spamu.
     </div>
 
     <details class="exp">
-      <summary><span class="plus"></span> Rozklad: únava báze vs. pokles trhu <span class="tag">proč se to děje</span></summary>
+      <summary><span class="plus"></span> Detail rozkladu — čísla a tržní kontext <span class="tag">dohodnutá atribuce</span></summary>
       <div class="body">
         <table class="dt">
-          <thead><tr><th>Plošné newslettery (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th><th>Pásmo</th></tr></thead>
+          <thead><tr><th>Plošné newslettery (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th></tr></thead>
           <tbody>
-            <tr><td>Doručené e-maily</td><td>11,7 mil.</td><td>13,1 mil.</td><td>+12 %</td><td>objem ↑</td></tr>
-            <tr><td>Lidé, kteří kliknou (unik.)</td><td>73 600</td><td>53 800</td><td class="neg">−27 %</td><td>únava</td></tr>
-            <tr><td>Z klikajících nakoupí</td><td>1,06 %</td><td>1,30 %</td><td class="pos">+23 %</td><td>OK</td></tr>
-            <tr><td>Tržby newsletterů (absolutní)</td><td>≈ 562 tis. €</td><td>≈ 393 tis. €</td><td class="neg">−30 %</td><td>výsledek</td></tr>
+            <tr><td>Doručené e-maily</td><td>9,6 mil.</td><td>10,7 mil.</td><td>+11 %</td></tr>
+            <tr><td>Lidé, kteří kliknou (unik.)</td><td>73 600</td><td>53 800</td><td class="neg">−27 %</td></tr>
+            <tr><td>Z klikajících nakoupí</td><td>1,06 %</td><td>1,30 %</td><td class="pos">+23 %</td></tr>
+            <tr><td>Atribuované tržby (dohodnutá atribuce)</td><td>1,19 mil. €</td><td>1,02 mil. €</td><td class="neg">−14 %</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:14px"><b>Únava báze (≈ 2/3 propadu).</b> Posíláme o 12 % víc e-mailů, ale kliká o 27 % méně lidí. Báze neklesá — naopak roste o 25 % na 880 tis. kontaktů — slábne její reakce. <b>38 % oslovených dostává 8+ e-mailů měsíčně a jde na ně 67 % všech rozesílek.</b> V měsících nad 3,5 mil. odeslaných mailů padá efektivita do revenue na polovinu. E-maily chodí na část báze, která je zdopovědná za <b>25% celkového revenue</b>.</p>
-        <p><b>Pokles trhu (≈ 1/3 propadu).</b> Newslettery táhnou lidi hlavně na prodejny (~90 % jejich atribuovaného obratu). A prodejny klesají: turnikety −6,7 %, obrat prodejen −13 %. Menší offline pak sráží i atribuovaný obrat newsletteru.</p>
+        <p style="margin-top:14px"><b>Trh je hlavní reálná příčina.</b> Newslettery táhnou lidi hlavně na prodejny (~85 % jejich atribuovaného obratu), a prodejny klesají. Menší offline tak mechanicky sráží i atribuovaný obrat newsletteru.</p>
         <table class="dt" style="margin-top:8px">
           <thead><tr><th>Tržní kontext (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th></tr></thead>
           <tbody>
@@ -396,7 +426,8 @@ body.editing{caret-color:var(--warn)}
             <tr><td>Obrat e-shopu (YoY)</td><td>5,5 mil. €</td><td>5,8 mil. €</td><td class="pos">+6 %</td></tr>
           </tbody>
         </table>
-        <p><b>Kontext — přesun do automatů.</b> Automatizované UC meziročně vzrostly o +14 % tržeb (≈ +157 tis. €). Část nákupů, které by dřív spadly pod newsletter, dnes zachytí remindery a automaty (UC3 opuštěná návštěva, UC4 košík). Pokles newsletterů (≈ −169 tis. €) je tak z velké části <b>přesun</b>, ne čistá ztráta — e-mailový kanál jako celek zůstává zhruba stabilní.</p>
+        <p style="margin-top:12px"><b>Přesun do automatů.</b> Automatizované UC meziročně vzrostly o +14 % tržeb (≈ +157 tis. €). Část nákupů, které by dřív spadly pod newsletter, dnes zachytí remindery a automaty (UC3, UC4). Pokles newsletterů (≈ −169 tis. €) je tak z velké části <b>přesun</b>, ne čistá ztráta — e-mailový kanál jako celek zůstává zhruba stabilní.</p>
+        <p><b>Únava báze — signál k testu.</b> 38 % oslovených dostává 8+ e-mailů měsíčně a jde na ně 67 % všech rozesílek; v měsících nad ~3,5 mil. odeslaných padá výkon na e-mail na polovinu. Segmentace ale ukazuje opak (A/B +2,63 %, prokliky segmentů +16 %) — proto je cesta relevance, ne objem.</p>
         <p style="margin-top:12px"><b>Kde jsme mohli být rychlejší (za ePACE).</b> V Q1/Q2 jsme měli silněji tlačit na testy frekvence a rychleji dostat segmentaci do ostrého provozu.</p>
       </div>
     </details>
@@ -405,11 +436,11 @@ body.editing{caret-color:var(--warn)}
       <summary><span class="plus"></span> Co s tím — a kolik to může vrátit <span class="tag">řešení</span></summary>
       <div class="body">
         <p>Abychom maximalizovali prokliky, musíme lépe řídit <b>KOMU (segmentace)</b>, <b>CO (content)</b> a <b>KDY (frequency)</b> posíláme:</p>
-        <p><b>1 · Frequency management.</b> Srovnat frekvenci u přetížených 38 % báze (8+ mailů/měs.). Návrh Master Frequency Policy máme připravený.<br>
+        <p><b>1 · Frequency management.</b> Dlouhodobě srovnat frekvenci u přetížených 38 % báze (8+ mailů/měs.). Návrh Master Frequency Policy máme připravený.<br>
         <b>2 · Segmentace v plném provozu.</b> Jeden z mála světlých bodů letošního mailingu — jede zhruba měsíc, patří na plnou bázi.<br>
         <b>3 · Content.</b> Obsah, který stojí za otevření i bez slevy, ve vizuálně silnějším podání.</p>
         <p>Roční dopad těchto tří aktivit odhadujeme <b>do 1 mil. €</b>&nbsp;revenue. Při jeho naplnění bychom rok 2026 mohli zavřít na srovnatelném revenue jako 2025.</p>
-        <p><b>Měření odstíněné o propad revenue:</b>&nbsp;do dashboardu chceme přidat podíl revenue emailingu na celkovém obratu. Meziročně klesl z 3,22 % na 2,55 % (−20,8 %).</p>
+        <p><b>Měření odstíněné o vývoj trhu:</b>&nbsp;do dashboardu přidáváme podíl revenue emailingu na celkovém obratu — na 24měsíčním klouzavém průměru je za posledních 5 měsíců většinou v plusu (led +31 %, dub +30 %, kvě +18 %).</p>
       </div>
     </details>
   </div>
