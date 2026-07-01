@@ -226,6 +226,13 @@ footer .updated b{color:#fff}
 .attrbox{background:#fff;border:1px solid var(--grey);border-left:3px solid var(--link);border-radius:10px;padding:15px 18px;margin-top:16px;font-size:12.5px;color:#3a3f52;line-height:1.55}
 .attrbox b{color:var(--ink)}
 @media(max-width:640px){.decomp .r{grid-template-columns:15px 1fr}.decomp .r .ds{grid-column:2/-1}}
+.ucgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.ucwrap{position:relative}
+.uctitle{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
+.uclegend{display:flex;gap:14px;font-size:11px;color:var(--muted);margin-bottom:4px}
+.uclegend i{display:inline-block;width:16px;height:0;border-top-width:3px;border-top-style:solid;margin-right:5px;vertical-align:middle}
+.uchit:hover{fill:rgba(40,45,60,.03)}
+@media(max-width:760px){.ucgrid{grid-template-columns:1fr}}
 body.editing{caret-color:var(--warn)}
 .biocard.ontime{border-color:#B7E4CC;background:#F3FBF7}
 .biocard.ontime .head{border-bottom-color:#CDECDB}
@@ -369,13 +376,9 @@ body.editing{caret-color:var(--warn)}
 <!-- EMAILING REVENUE -->
 <section style="background:#F7F7FA">
   <div class="container">
-    <h2><span class="accent"></span>Emailing: propad byl hlavně v měření, ne ve výkonu</h2>
-    <p class="deck">
-      Report ukazoval propad newsletterů <b>−50 až −80 % YoY</b>. Klíč je ve způsobu měření. Do <b>09/2025</b> Looker počítal obrat e-mailů přes Bloomreach — nákup se připsal, když mu předcházela interakce s e-mailem (e-shop do 24 h, prodejna do 14 dnů). V 09/2025 se výpočet přepnul na nový zdroj dat, který ale <b>nevidí nákupy na prodejnách</b> — a právě tam vzniká ~85 % obratu připsaného e-mailům. Číslo proto skokově spadlo, přestože se kampaně nezměnily.
-    </p>
-    <p class="deck">
-      Když stejné pravidlo atribuce použijeme <b>konzistentně na celou historii</b>, reálný pokles je <b>−14 % YoY</b> (led–kvě, 1,19 → 1,02 mil. €). Do zbytku hrají: pokles trhu (prodejny −13 %, ~85 % obratu e-mailů je ROPO), přesun části nákupů do automatů (+14 % YoY), brutto revenue (nezapočtená storna) a slabší signál možné únavy báze (méně unikátních klikajících, ale vyšší konverze). Kdo dnes klikne, nakupuje dokonce častěji než loni.
-    </p>
+    <h2><span class="accent"></span>Emailing: propad hlavně v měření, ne ve výkonu</h2>
+    <p class="deck" style="max-width:none">
+      Looker ukazoval propad newsletterů <b>−50 až −80 % YoY</b>. Do <b>09/2025</b> Looker počítal obrat e-mailů přímo v Bloomreach — nákup se připsal po interakci s newsletterem <i>(click nebo open, pak nákup na e-shopu do 24 h nebo prodejně do 14 dnů)</i>. V 09/2025 se výpočet kvůli udržení historických dat přepnul do BigQuery, ale <b>došlo k odstranění 14d okna nákupů na prodejnách</b>, které jsou zodpovědné za ~85 % obratu připsaného e-mailům. Číslo proto skokově spadlo na stejných kampaních.</p>
     <div class="cards c4">
       <div class="card"><div class="num neg">−14 %</div><div class="label">Reálný pokles revenue YoY</div><div class="help">Dohodnutá atribuce (led–kvě): 1,19 → 1,02 mil. €. Oproti reportovaným −50 až −80 %.</div></div>
       <div class="card"><div class="num">+11 %</div><div class="label">Odeslaných e-mailů</div><div class="help">9,6 → 10,7 mil. plošných newsletterů. Objem posíláme vyšší než loni.</div></div>
@@ -385,21 +388,18 @@ body.editing{caret-color:var(--warn)}
 
     <h3 style="font-size:17px;font-weight:700;color:var(--ink);margin:30px 0 8px">Z čeho se propad skládá</h3>
     <p class="deck" style="max-width:none">
-      Zhruba <b>70 % rozdílu</b> mezi reportem a realitou způsobila změna atribučního modelu v 09/2025 (nový zdroj přestal vidět nákupy na prodejnách). Zbytek je kombinace tří faktorů: <b>1)</b> pokles trhu — prodejny −13 % a ~85 % obratu e-mailů je ROPO, takže číslo e-mailů kopíruje prodejny; <b>2)</b> přesun části nákupů do automatů, které meziročně vzrostly o +14 %; <b>3)</b> brutto revenue (nezapočtená storna) a reziduální datové vady. Navíc vidíme <b>signály možné únavy báze</b> — méně unikátních klikajících (−27 %), ale vyšší konverzní poměr (+23 %) — které chceme ověřit testem frekvence.
-    </p>
+      Zhruba <b>70 % rozdílu</b> mezi reportem a realitou způsobila <b>změna atribučního modelu v 09/2025</b>. Zpětně jsme proto opravili atribuci u dat od 2025/09 <i>(je tak stejná jako celá historie), </i>což nás posunulo na&nbsp;&nbsp;<b>−14 % YoY</b> (led–kvě, 1,19 → 1,02 mil. €). Těchto -14% je způsobeno kombinací:</p><p class="deck" style="max-width:none"><b>1)</b> <b>pokles trhu:</b> prodejny −13 % a ~85 % obratu e-mailů je ROPO,<br><b>2)</b> přesun části nákupů do automatů, (+14 % YoY);<br><b>3)</b>&nbsp;Navíc vidíme <b>signály možné únavy báze:</b>&nbsp;méně unikátních klikajících (−27 %), ale vyšší konverzní poměr (+23 %) — chceme ověřit testem frekvence.</p>
 
     <div class="attrbox">
-      <b>Jak měříme — dohodnutá atribuce.</b> Nákup se připíše newsletteru, když zákazník e-mail <b>otevřel nebo proklikl</b> a poté nakoupil — <b>online do 24 h, offline do 14 dnů</b>. Deduplikace last-touch (jeden nákup = jeden e-mail), jen plošné newslettery (automaty vyloučené), bez extrémů (nákupy nad 5 000 € a profily s 20+ nákupy). Stejné pravidlo pro celou historii 2024–2026. Přísnější, čistě proklikové měření (klik do 24 h) dává konzervativní spodní hranici ~−31 %.
-    </div>
+      <b>Jak teda měříme — atribuce 1d/14d.</b> Nákup se připíše newsletteru, když zákazník e-mail <b>interagoval</b>&nbsp;<i>(otevřel nebo proklikl)</i><b>&nbsp;a poté nakoupil</b> — <b>online do 24 h, offline do 14 dnů</b>. Plus pravidla: jeden nákup = jeden e-mail, automaty vyloučené, bez extrémů (nákupy nad 5 000 € a profily s 20+ nákupy). Stejné pravidlo pro celou historii 2024–2026.</div>
 
     <div class="keyline">
-      Jádro funguje: kdo dnes klikne, nakupuje častěji než loni (+23 %). Propad není o kvalitě kampaní — je o měření a trhu. Cesta ven je <b>víc segmentace a řízení frekvence</b>, ne návrat k plošnému spamu.
-    </div>
+      Vyšší míra konverze: kdo dnes klikne, nakupuje častěji než loni (+23 %). Potřebujeme ale víc prokliků. Cesta dál je přes<b>&nbsp;segmentaci a řízení frekvence.</b></div>
 
     <details class="exp">
-      <summary><span class="plus"></span> Report vs. dohodnutá atribuce — měsíc po měsíci <span class="tag">dopad změny 09/2025</span></summary>
+      <summary><span class="plus"></span>Původní Looker vs. opravená atribuce — měsíc po měsíci <span class="tag">dopad změny 09/2025</span></summary>
       <div class="body">
-        <p>Report (Looker) obsahuje skokovou změnu zdroje v 09/2025; dohodnutá atribuce používá jedno pravidlo pro celou historii. Proto report za 2026 „padá" (−52 % YoY led–kvě), zatímco konzistentní pohled ukazuje −14 %.</p>
+        <p>Report (Looker) obsahuje skokovou změnu zdroje v 09/2025; opravená atribuce používá jedno pravidlo pro celou historii. Proto report za 2026 „padá" (−52 % YoY led–kvě), zatímco konzistentní pohled ukazuje −14 %.</p>
         <table class="dt">
           <thead><tr><th>Měsíc</th><th>Report (Looker)</th><th>YoY</th><th>Dohodnutá atribuce</th><th>YoY</th></tr></thead>
           <tbody>
@@ -411,7 +411,7 @@ body.editing{caret-color:var(--warn)}
             <tr><td>2025-06</td><td>93 118 €</td><td class="neg">-18 %</td><td>215 012 €</td><td class="pos">+140 %</td></tr>
             <tr><td>2025-07</td><td>106 422 €</td><td class="neg">-42 %</td><td>156 125 €</td><td class="pos">+98 %</td></tr>
             <tr><td>2025-08</td><td>126 748 €</td><td class="neg">-24 %</td><td>254 718 €</td><td class="pos">+155 %</td></tr>
-            <tr><td>2025-09 <span class="pill real" style="font-size:9px">změna zdroje</span></td><td>81 653 €</td><td class="neg">-55 %</td><td>241 652 €</td><td class="pos">+76 %</td></tr>
+            <tr><td>2025-09 <span class="pill real" style="font-size:9px">změna atribuce Looker</span></td><td>81 653 €</td><td class="neg">-55 %</td><td>241 652 €</td><td class="pos">+76 %</td></tr>
             <tr><td>2025-10</td><td>83 855 €</td><td class="neg">-51 %</td><td>360 172 €</td><td class="pos">+24 %</td></tr>
             <tr><td>2025-11</td><td>104 785 €</td><td class="neg">-52 %</td><td>344 309 €</td><td class="pos">+196 %</td></tr>
             <tr><td>2025-12</td><td>79 411 €</td><td class="neg">-65 %</td><td>191 333 €</td><td class="pos">+63 %</td></tr>
@@ -436,10 +436,10 @@ body.editing{caret-color:var(--warn)}
             <tr><td>Doručené e-maily</td><td>9,6 mil.</td><td>10,7 mil.</td><td>+11 %</td></tr>
             <tr><td>Lidé, kteří kliknou (unik.)</td><td>73 600</td><td>53 800</td><td class="neg">−27 %</td></tr>
             <tr><td>Z klikajících nakoupí</td><td>1,06 %</td><td>1,30 %</td><td class="pos">+23 %</td></tr>
-            <tr><td>Atribuované tržby (dohodnutá atribuce)</td><td>1,19 mil. €</td><td>1,02 mil. €</td><td class="neg">−14 %</td></tr>
+            <tr><td>Atribuované tržby (opravená atribuce)</td><td>1,19 mil. €</td><td>1,02 mil. €</td><td class="neg">−14 %</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:14px"><b>Trh je hlavní reálná příčina.</b> Newslettery táhnou lidi hlavně na prodejny (~85 % jejich atribuovaného obratu), a prodejny klesají. Menší offline tak mechanicky sráží i atribuovaný obrat newsletteru.</p>
+        <p style="margin-top:14px"><b>Trh je hlavní příčina.</b> Newslettery mají většinu off-line revenue (~85 %), a prodejny klesají. Menší offline tak ovlivňuje i atribuovaný obrat newsletteru.</p>
         <table class="dt" style="margin-top:8px">
           <thead><tr><th>Tržní kontext (led–kvě)</th><th>2025</th><th>2026</th><th>Změna</th></tr></thead>
           <tbody>
@@ -448,20 +448,20 @@ body.editing{caret-color:var(--warn)}
             <tr><td>Obrat e-shopu (YoY)</td><td>5,5 mil. €</td><td>5,8 mil. €</td><td class="pos">+6 %</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:12px"><b>Přesun do automatů.</b> Automatizované UC meziročně vzrostly o +14 % tržeb (≈ +157 tis. €). Část nákupů, které by dřív spadly pod newsletter, dnes zachytí remindery a automaty (UC3, UC4). Pokles newsletterů (≈ −169 tis. €) je tak z velké části <b>přesun</b>, ne čistá ztráta.</p>
-        <p style="margin-top:12px"><b>Kde jsme mohli být rychlejší (za ePACE).</b> V Q1/Q2 jsme měli silněji tlačit na testy frekvence a rychleji dostat segmentaci do ostrého provozu.</p>
+        <p style="margin-top:12px"><b>Přesun do automatů.</b> Automatizované UC meziročně vzrostly o +14 % tržeb (≈ +157 tis. €). Část nákupů, které by dřív spadly pod newsletter, dnes zachytí remindery a automaty (UC3, UC4). Pokles newsletterů (≈ −169 tis. €) je tak z části i&nbsp;<b>přesun</b>, nejen čistá ztráta. Přesné vysvětlení toho, který efekt měl na vývoj jak velký vliv nevíme.</p>
+        <p style="margin-top:12px"><b>Kde jsme mohli být lepší za ePACE:</b>&nbsp;V Q1/Q2 jsme měli silněji tlačit na testy frekvence a rychleji dostat segmentaci do ostrého provozu.</p>
       </div>
     </details>
 
     <details class="exp">
-      <summary><span class="plus"></span> Co s tím — a kolik to může vrátit <span class="tag">řešení</span></summary>
+      <summary><span class="plus"></span> Co s tím dál?<span class="tag">NEXT STEPS</span></summary>
       <div class="body">
         <p>Abychom maximalizovali prokliky, musíme lépe řídit <b>KOMU (segmentace)</b>, <b>CO (content)</b> a <b>KDY (frequency)</b> posíláme:</p>
         <p><b>1 · Frequency management.</b> Dlouhodobě srovnat frekvenci u přetížených 38 % báze (8+ mailů/měs.). Návrh Master Frequency Policy máme připravený.<br>
         <b>2 · Segmentace v plném provozu.</b> Jeden ze světlých bodů letošního mailingu — jede zhruba měsíc, patří na plnou bázi.<br>
         <b>3 · Content.</b> Obsah, který stojí za otevření i bez slevy, ve vizuálně silnějším podání.</p>
-        <p>Roční dopad těchto tří aktivit odhadujeme <b>do 1 mil. €</b>&nbsp;revenue. Při jeho naplnění bychom rok 2026 mohli zavřít na srovnatelném revenue jako 2025.</p>
-        <p><b>Podíl newsletterů na obratu (dohodnutá atribuce).</b> Abychom odstínili vývoj trhu, sledujeme podíl obratu newsletterů na celkovém obratu ASKO. Ten drží: led–kvě 2025 ≈ 3,9 %, 2026 ≈ 3,7 % — téměř stabilní, přestože celkový trh klesá. E-mail si drží svůj podíl na zmenšujícím se koláči.</p>
+        <p>Roční dopad těchto tří aktivit odhadujeme <i>(stále)</i>&nbsp;<b>do 1 mil. €</b>&nbsp;revenue v ročním okně od spuštění. Rok 2026 bychom tak mohli zavřít na srovnatelném revenue jako 2025.</p>
+        <p><b>Podíl newsletterů na obratu (opravená atribuce).</b> Abychom odstínili vývoj trhu, sledujeme podíl obratu newsletterů na celkovém obratu ASKO. Ten drží: led–kvě 2025 ≈ 3,9 %, 2026 ≈ 3,7 % — téměř stabilní, přestože celkový trh klesá. E-mail si drží svůj podíl na zmenšujícím se koláči.</p>
       </div>
     </details>
   </div>
@@ -505,38 +505,94 @@ body.editing{caret-color:var(--warn)}
           </tbody>
         </table>
         <div style="margin-top:18px">
-          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Vývoj tržeb UC3 a UC4 (H1, 2024 → 2026)</div>
-          <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;height:auto;font-family:Poppins,sans-serif" role="img" aria-label="Vývoj tržeb UC3 a UC4 2024-2026 H1">
-<line x1="54" y1="220.0" x2="570" y2="220.0" stroke="#E3E3E3" stroke-width="1"/>
-<text x="46" y="224.0" text-anchor="end" font-size="11" fill="#6E7280">0</text>
-<line x1="54" y1="162.9" x2="570" y2="162.9" stroke="#E3E3E3" stroke-width="1"/>
-<text x="46" y="166.9" text-anchor="end" font-size="11" fill="#6E7280">100</text>
-<line x1="54" y1="105.7" x2="570" y2="105.7" stroke="#E3E3E3" stroke-width="1"/>
-<text x="46" y="109.7" text-anchor="end" font-size="11" fill="#6E7280">200</text>
-<line x1="54" y1="48.6" x2="570" y2="48.6" stroke="#E3E3E3" stroke-width="1"/>
-<text x="46" y="52.6" text-anchor="end" font-size="11" fill="#6E7280">300</text>
-<text x="46" y="14" text-anchor="end" font-size="9" fill="#6E7280">tis. €</text>
-<text x="54.0" y="240" text-anchor="middle" font-size="11" fill="#6E7280">H1 2024</text>
-<text x="312.0" y="240" text-anchor="middle" font-size="11" fill="#6E7280">H1 2025</text>
-<text x="570.0" y="240" text-anchor="middle" font-size="11" fill="#6E7280">H1 2026</text>
-<path d="M54.0,131.8 L312.0,74.3 L570.0,32.7" fill="none" stroke="#282D3C" stroke-width="2.6"/>
-<path d="M54.0,199.8 L312.0,174.4 L570.0,146.8" fill="none" stroke="#B08400" stroke-width="2.6"/>
-<circle cx="54.0" cy="131.8" r="3.4" fill="#282D3C"/>
-<text x="54.0" y="122.80000000000001" text-anchor="middle" font-size="10.5" font-weight="700" fill="#282D3C">154 k</text>
-<circle cx="312.0" cy="74.3" r="3.4" fill="#282D3C"/>
-<text x="312.0" y="65.3" text-anchor="middle" font-size="10.5" font-weight="700" fill="#282D3C">254 k</text>
-<circle cx="570.0" cy="32.7" r="3.4" fill="#282D3C"/>
-<text x="570.0" y="23.700000000000003" text-anchor="middle" font-size="10.5" font-weight="700" fill="#282D3C">327 k</text>
-<circle cx="54.0" cy="199.8" r="3.4" fill="#B08400"/>
-<text x="54.0" y="215.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#B08400">35 k</text>
-<circle cx="312.0" cy="174.4" r="3.4" fill="#B08400"/>
-<text x="312.0" y="190.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#B08400">79 k</text>
-<circle cx="570.0" cy="146.8" r="3.4" fill="#B08400"/>
-<text x="570.0" y="162.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#B08400">128 k</text>
-<text x="578.0" y="36.7" font-size="11" font-weight="800" fill="#282D3C">UC3</text>
-<text x="578.0" y="150.8" font-size="11" font-weight="800" fill="#B08400">UC4</text>
-</svg>
-          <div class="note" style="margin-top:4px">Dva nejsilnější behaviorální UC rostou meziročně i proti 2024 — objemem i absolutní hodnotou.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Vývoj tržeb UC3 a UC4 v čase — měsíčně (dohodnutá atribuce)</div>
+          <div class="ucgrid">
+            <div class="ucwrap"><div class="uctitle">UC3 · Opuštěná návštěva</div><div class="uclegend"><span><i style="border-color:#C3C7CE"></i>2024</span><span><i style="border-color:#282D3C"></i>2025</span><span><i style="border-color:#E0A400"></i>2026</span></div><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:Poppins,sans-serif" id="ucChart3">
+<line x1="46" y1="266.0" x2="546" y2="266.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="270.0" text-anchor="end" font-size="10" fill="#6E7280">0</text>
+<line x1="46" y1="206.0" x2="546" y2="206.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="210.0" text-anchor="end" font-size="10" fill="#6E7280">30</text>
+<line x1="46" y1="146.0" x2="546" y2="146.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="150.0" text-anchor="end" font-size="10" fill="#6E7280">60</text>
+<line x1="46" y1="86.0" x2="546" y2="86.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="90.0" text-anchor="end" font-size="10" fill="#6E7280">90</text>
+<line x1="46" y1="26.0" x2="546" y2="26.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="30.0" text-anchor="end" font-size="10" fill="#6E7280">120</text>
+<text x="38" y="18" text-anchor="end" font-size="9" fill="#6E7280">tis. €</text>
+<text x="46.0" y="284" text-anchor="middle" font-size="10" fill="#6E7280">1</text>
+<text x="91.5" y="284" text-anchor="middle" font-size="10" fill="#6E7280">2</text>
+<text x="136.9" y="284" text-anchor="middle" font-size="10" fill="#6E7280">3</text>
+<text x="182.4" y="284" text-anchor="middle" font-size="10" fill="#6E7280">4</text>
+<text x="227.8" y="284" text-anchor="middle" font-size="10" fill="#6E7280">5</text>
+<text x="273.3" y="284" text-anchor="middle" font-size="10" fill="#6E7280">6</text>
+<text x="318.7" y="284" text-anchor="middle" font-size="10" fill="#6E7280">7</text>
+<text x="364.2" y="284" text-anchor="middle" font-size="10" fill="#6E7280">8</text>
+<text x="409.6" y="284" text-anchor="middle" font-size="10" fill="#6E7280">9</text>
+<text x="455.1" y="284" text-anchor="middle" font-size="10" fill="#6E7280">10</text>
+<text x="500.5" y="284" text-anchor="middle" font-size="10" fill="#6E7280">11</text>
+<text x="546.0" y="284" text-anchor="middle" font-size="10" fill="#6E7280">12</text>
+<polyline points="46.0,216.0 91.5,243.5 136.9,222.0 182.4,231.6 227.8,232.2 273.3,232.0 318.7,208.3 364.2,209.6 409.6,190.0 455.1,141.6 500.5,201.6 546.0,160.0" fill="none" stroke="#C3C7CE" stroke-width="2.4"></polyline><circle cx="46.0" cy="216.0" r="2.6" fill="#C3C7CE"></circle><circle cx="91.5" cy="243.5" r="2.6" fill="#C3C7CE"></circle><circle cx="136.9" cy="222.0" r="2.6" fill="#C3C7CE"></circle><circle cx="182.4" cy="231.6" r="2.6" fill="#C3C7CE"></circle><circle cx="227.8" cy="232.2" r="2.6" fill="#C3C7CE"></circle><circle cx="273.3" cy="232.0" r="2.6" fill="#C3C7CE"></circle><circle cx="318.7" cy="208.3" r="2.6" fill="#C3C7CE"></circle><circle cx="364.2" cy="209.6" r="2.6" fill="#C3C7CE"></circle><circle cx="409.6" cy="190.0" r="2.6" fill="#C3C7CE"></circle><circle cx="455.1" cy="141.6" r="2.6" fill="#C3C7CE"></circle><circle cx="500.5" cy="201.6" r="2.6" fill="#C3C7CE"></circle><circle cx="546.0" cy="160.0" r="2.6" fill="#C3C7CE"></circle>
+<polyline points="46.0,135.0 91.5,205.2 136.9,223.1 182.4,204.1 227.8,159.3 273.3,151.4 318.7,219.9 364.2,158.7 409.6,175.9 455.1,54.7 500.5,32.4 546.0,161.4" fill="none" stroke="#282D3C" stroke-width="2.4"></polyline><circle cx="46.0" cy="135.0" r="2.6" fill="#282D3C"></circle><circle cx="91.5" cy="205.2" r="2.6" fill="#282D3C"></circle><circle cx="136.9" cy="223.1" r="2.6" fill="#282D3C"></circle><circle cx="182.4" cy="204.1" r="2.6" fill="#282D3C"></circle><circle cx="227.8" cy="159.3" r="2.6" fill="#282D3C"></circle><circle cx="273.3" cy="151.4" r="2.6" fill="#282D3C"></circle><circle cx="318.7" cy="219.9" r="2.6" fill="#282D3C"></circle><circle cx="364.2" cy="158.7" r="2.6" fill="#282D3C"></circle><circle cx="409.6" cy="175.9" r="2.6" fill="#282D3C"></circle><circle cx="455.1" cy="54.7" r="2.6" fill="#282D3C"></circle><circle cx="500.5" cy="32.4" r="2.6" fill="#282D3C"></circle><circle cx="546.0" cy="161.4" r="2.6" fill="#282D3C"></circle>
+<polyline points="46.0,93.7 91.5,154.2 136.9,203.7 182.4,143.5 227.8,172.4 273.3,162.1" fill="none" stroke="#E0A400" stroke-width="2.4"></polyline><circle cx="46.0" cy="93.7" r="2.6" fill="#E0A400"></circle><circle cx="91.5" cy="154.2" r="2.6" fill="#E0A400"></circle><circle cx="136.9" cy="203.7" r="2.6" fill="#E0A400"></circle><circle cx="182.4" cy="143.5" r="2.6" fill="#E0A400"></circle><circle cx="227.8" cy="172.4" r="2.6" fill="#E0A400"></circle><circle cx="273.3" cy="162.1" r="2.6" fill="#E0A400"></circle>
+<line id="ucChart3G" x1="0" y1="26" x2="0" y2="266" stroke="#282D3C" stroke-width="1" opacity="0"></line>
+<rect class="uchit" data-i="0" x="40.0" y="26" width="28.8" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="1" x="68.8" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="2" x="114.2" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="3" x="159.7" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="4" x="205.1" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="5" x="250.6" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="6" x="296.0" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="7" x="341.4" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="8" x="386.9" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="9" x="432.4" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="10" x="477.8" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="11" x="523.2" y="26" width="28.8" height="240" fill="transparent" style="cursor:crosshair"></rect>
+</svg><div class="chart-tip" id="ucTip3"></div></div>
+            <div class="ucwrap"><div class="uctitle">UC4 · Opuštěný košík</div><div class="uclegend"><span><i style="border-color:#C3C7CE"></i>2024</span><span><i style="border-color:#282D3C"></i>2025</span><span><i style="border-color:#E0A400"></i>2026</span></div><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:Poppins,sans-serif" id="ucChart4">
+<line x1="46" y1="266.0" x2="546" y2="266.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="270.0" text-anchor="end" font-size="10" fill="#6E7280">0</text>
+<line x1="46" y1="218.0" x2="546" y2="218.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="222.0" text-anchor="end" font-size="10" fill="#6E7280">10</text>
+<line x1="46" y1="170.0" x2="546" y2="170.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="174.0" text-anchor="end" font-size="10" fill="#6E7280">20</text>
+<line x1="46" y1="122.0" x2="546" y2="122.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="126.0" text-anchor="end" font-size="10" fill="#6E7280">30</text>
+<line x1="46" y1="74.0" x2="546" y2="74.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="78.0" text-anchor="end" font-size="10" fill="#6E7280">40</text>
+<line x1="46" y1="26.0" x2="546" y2="26.0" stroke="#E3E3E3" stroke-width="1"></line>
+<text x="38" y="30.0" text-anchor="end" font-size="10" fill="#6E7280">50</text>
+<text x="38" y="18" text-anchor="end" font-size="9" fill="#6E7280">tis. €</text>
+<text x="46.0" y="284" text-anchor="middle" font-size="10" fill="#6E7280">1</text>
+<text x="91.5" y="284" text-anchor="middle" font-size="10" fill="#6E7280">2</text>
+<text x="136.9" y="284" text-anchor="middle" font-size="10" fill="#6E7280">3</text>
+<text x="182.4" y="284" text-anchor="middle" font-size="10" fill="#6E7280">4</text>
+<text x="227.8" y="284" text-anchor="middle" font-size="10" fill="#6E7280">5</text>
+<text x="273.3" y="284" text-anchor="middle" font-size="10" fill="#6E7280">6</text>
+<text x="318.7" y="284" text-anchor="middle" font-size="10" fill="#6E7280">7</text>
+<text x="364.2" y="284" text-anchor="middle" font-size="10" fill="#6E7280">8</text>
+<text x="409.6" y="284" text-anchor="middle" font-size="10" fill="#6E7280">9</text>
+<text x="455.1" y="284" text-anchor="middle" font-size="10" fill="#6E7280">10</text>
+<text x="500.5" y="284" text-anchor="middle" font-size="10" fill="#6E7280">11</text>
+<text x="546.0" y="284" text-anchor="middle" font-size="10" fill="#6E7280">12</text>
+<polyline points="46.0,246.7 91.5,246.1 136.9,229.8 182.4,236.2 227.8,261.0 273.3,250.3 318.7,184.9 364.2,215.1 409.6,235.3 455.1,215.3 500.5,242.4 546.0,230.4" fill="none" stroke="#C3C7CE" stroke-width="2.4"></polyline><circle cx="46.0" cy="246.7" r="2.6" fill="#C3C7CE"></circle><circle cx="91.5" cy="246.1" r="2.6" fill="#C3C7CE"></circle><circle cx="136.9" cy="229.8" r="2.6" fill="#C3C7CE"></circle><circle cx="182.4" cy="236.2" r="2.6" fill="#C3C7CE"></circle><circle cx="227.8" cy="261.0" r="2.6" fill="#C3C7CE"></circle><circle cx="273.3" cy="250.3" r="2.6" fill="#C3C7CE"></circle><circle cx="318.7" cy="184.9" r="2.6" fill="#C3C7CE"></circle><circle cx="364.2" cy="215.1" r="2.6" fill="#C3C7CE"></circle><circle cx="409.6" cy="235.3" r="2.6" fill="#C3C7CE"></circle><circle cx="455.1" cy="215.3" r="2.6" fill="#C3C7CE"></circle><circle cx="500.5" cy="242.4" r="2.6" fill="#C3C7CE"></circle><circle cx="546.0" cy="230.4" r="2.6" fill="#C3C7CE"></circle>
+<polyline points="46.0,207.2 91.5,223.4 136.9,231.5 182.4,235.7 227.8,184.5 273.3,129.1 318.7,242.5 364.2,141.1 409.6,172.0 455.1,110.9 500.5,52.0 546.0,149.7" fill="none" stroke="#282D3C" stroke-width="2.4"></polyline><circle cx="46.0" cy="207.2" r="2.6" fill="#282D3C"></circle><circle cx="91.5" cy="223.4" r="2.6" fill="#282D3C"></circle><circle cx="136.9" cy="231.5" r="2.6" fill="#282D3C"></circle><circle cx="182.4" cy="235.7" r="2.6" fill="#282D3C"></circle><circle cx="227.8" cy="184.5" r="2.6" fill="#282D3C"></circle><circle cx="273.3" cy="129.1" r="2.6" fill="#282D3C"></circle><circle cx="318.7" cy="242.5" r="2.6" fill="#282D3C"></circle><circle cx="364.2" cy="141.1" r="2.6" fill="#282D3C"></circle><circle cx="409.6" cy="172.0" r="2.6" fill="#282D3C"></circle><circle cx="455.1" cy="110.9" r="2.6" fill="#282D3C"></circle><circle cx="500.5" cy="52.0" r="2.6" fill="#282D3C"></circle><circle cx="546.0" cy="149.7" r="2.6" fill="#282D3C"></circle>
+<polyline points="46.0,133.2 91.5,201.0 136.9,206.8 182.4,161.8 227.8,159.4 273.3,111.5" fill="none" stroke="#E0A400" stroke-width="2.4"></polyline><circle cx="46.0" cy="133.2" r="2.6" fill="#E0A400"></circle><circle cx="91.5" cy="201.0" r="2.6" fill="#E0A400"></circle><circle cx="136.9" cy="206.8" r="2.6" fill="#E0A400"></circle><circle cx="182.4" cy="161.8" r="2.6" fill="#E0A400"></circle><circle cx="227.8" cy="159.4" r="2.6" fill="#E0A400"></circle><circle cx="273.3" cy="111.5" r="2.6" fill="#E0A400"></circle>
+<line id="ucChart4G" x1="0" y1="26" x2="0" y2="266" stroke="#282D3C" stroke-width="1" opacity="0"></line>
+<rect class="uchit" data-i="0" x="40.0" y="26" width="28.8" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="1" x="68.8" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="2" x="114.2" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="3" x="159.7" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="4" x="205.1" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="5" x="250.6" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="6" x="296.0" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="7" x="341.4" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="8" x="386.9" y="26" width="45.5" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="9" x="432.4" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="10" x="477.8" y="26" width="45.4" height="240" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="uchit" data-i="11" x="523.2" y="26" width="28.8" height="240" fill="transparent" style="cursor:crosshair"></rect>
+</svg><div class="chart-tip" id="ucTip4"></div></div>
+          </div>
+          <div class="note" style="margin-top:8px">Měsíční atribuovaný obrat (open/click, 24 h online / 14 d offline). 2026 do června. Oba behaviorální UC rostou meziročně i proti 2024.</div>
         </div>
         <p style="margin-top:12px"><b>UC24 Voucher management</b> — nízkonákladový asistent: připomněl voucher 23 000× v e-mailech a 14 000 unikátům na webu, měsíčně cca +100 využitých voucherů navíc.</p>
         <p class="note">RPE = tržby / doručené e-maily. Uplifty jsou meziroční na normalizovaném H1. UC1/UC16 vykazují OR &gt; 100 % (vícenásobná otevření na malém objemu) — brát orientačně. Zdroj: Bloomreach → BigQuery, 30. 6. 2026.</p>
@@ -732,23 +788,23 @@ body.editing{caret-color:var(--warn)}
       </div>
       <div class="chartsvg">
 <svg viewBox="0 0 980 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Statistická projekce inkrementu 2026 (50% interval spolehlivosti)" style="width:100%;height:auto;font-family:Poppins,sans-serif" id="incChart">
-<line x1="78" y1="416.0" x2="954" y2="416.0" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="416.0" x2="954" y2="416.0" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="420.0" text-anchor="end" font-size="12" fill="#6E7280">0</text>
-<line x1="78" y1="370.1" x2="954" y2="370.1" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="370.1" x2="954" y2="370.1" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="374.1" text-anchor="end" font-size="12" fill="#6E7280">1</text>
-<line x1="78" y1="324.2" x2="954" y2="324.2" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="324.2" x2="954" y2="324.2" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="328.2" text-anchor="end" font-size="12" fill="#6E7280">2</text>
-<line x1="78" y1="278.4" x2="954" y2="278.4" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="278.4" x2="954" y2="278.4" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="282.4" text-anchor="end" font-size="12" fill="#6E7280">3</text>
-<line x1="78" y1="232.5" x2="954" y2="232.5" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="232.5" x2="954" y2="232.5" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="236.5" text-anchor="end" font-size="12" fill="#6E7280">4</text>
-<line x1="78" y1="186.6" x2="954" y2="186.6" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="186.6" x2="954" y2="186.6" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="190.6" text-anchor="end" font-size="12" fill="#6E7280">5</text>
-<line x1="78" y1="140.7" x2="954" y2="140.7" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="140.7" x2="954" y2="140.7" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="144.7" text-anchor="end" font-size="12" fill="#6E7280">6</text>
-<line x1="78" y1="94.8" x2="954" y2="94.8" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="94.8" x2="954" y2="94.8" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="98.8" text-anchor="end" font-size="12" fill="#6E7280">7</text>
-<line x1="78" y1="48.9" x2="954" y2="48.9" stroke="#E3E3E3" stroke-width="1"/>
+<line x1="78" y1="48.9" x2="954" y2="48.9" stroke="#E3E3E3" stroke-width="1"></line>
 <text x="68" y="52.9" text-anchor="end" font-size="12" fill="#6E7280">8</text>
 <text x="68" y="16" text-anchor="end" font-size="10" fill="#6E7280">mil. €</text>
 <text x="78.0" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Led</text>
@@ -763,46 +819,46 @@ body.editing{caret-color:var(--warn)}
 <text x="794.7" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Říj</text>
 <text x="874.4" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Lis</text>
 <text x="954.0" y="438" text-anchor="middle" font-size="12" fill="#6E7280">Pro</text>
-<rect x="476.2" y="26" width="477.8" height="390" fill="#FAD232" opacity="0.04"/>
-<line x1="476.2" y1="26" x2="476.2" y2="416" stroke="#B9BdC7" stroke-width="1" stroke-dasharray="3 4"/>
+<rect x="476.2" y="26" width="477.8" height="390" fill="#FAD232" opacity="0.04"></rect>
+<line x1="476.2" y1="26" x2="476.2" y2="416" stroke="#B9BdC7" stroke-width="1" stroke-dasharray="3 4"></line>
 <text x="470.2" y="39" text-anchor="end" font-size="10" font-weight="700" fill="#8A8F9A" letter-spacing="1">SKUTEČNOST</text>
 <text x="482.2" y="39" text-anchor="start" font-size="10" font-weight="700" fill="#B08400" letter-spacing="1">PROJEKCE (50% CI)</text>
-<path d="M476.2,327.7 L555.8,292.5 L635.5,252.8 L715.1,198.2 L794.7,166.0 L874.4,98.1 L954.0,29.8 L954.0,191.7 L874.4,232.3 L794.7,272.8 L715.1,278.0 L635.5,305.7 L555.8,318.8 L476.2,327.7 Z" fill="#FAD232" opacity="0.18"/>
-<line x1="78" y1="204.1" x2="954" y2="204.1" stroke="#D17B00" stroke-width="1.6" stroke-dasharray="7 4"/>
+<path d="M476.2,327.7 L555.8,292.5 L635.5,252.8 L715.1,198.2 L794.7,166.0 L874.4,98.1 L954.0,29.8 L954.0,191.7 L874.4,232.3 L794.7,272.8 L715.1,278.0 L635.5,305.7 L555.8,318.8 L476.2,327.7 Z" fill="#FAD232" opacity="0.18"></path>
+<line x1="78" y1="204.1" x2="954" y2="204.1" stroke="#D17B00" stroke-width="1.6" stroke-dasharray="7 4"></line>
 <text x="84" y="198.1" font-size="11.5" font-weight="700" fill="#D17B00">Fail-fee práh · 4 618 719 €</text>
-<line x1="78" y1="134.5" x2="954" y2="134.5" stroke="#1FA971" stroke-width="1.6" stroke-dasharray="7 4"/>
+<line x1="78" y1="134.5" x2="954" y2="134.5" stroke="#1FA971" stroke-width="1.6" stroke-dasharray="7 4"></line>
 <text x="84" y="128.5" font-size="11.5" font-weight="700" fill="#1FA971">Success-fee / cíl · 6 135 134 €</text>
-<path d="M476.2,327.7 L555.8,305.6 L635.5,279.2 L715.1,238.1 L794.7,219.4 L874.4,165.2 L954.0,110.7" fill="none" stroke="#B08400" stroke-width="2.6" stroke-dasharray="7 4"/>
-<path d="M78.0,402.7 L157.6,386.0 L237.3,367.7 L316.9,357.3 L396.5,334.0 L476.2,327.7" fill="none" stroke="#282D3C" stroke-width="3.4"/>
-<circle cx="78.0" cy="402.7" r="3.4" fill="#282D3C"/>
-<circle cx="157.6" cy="386.0" r="3.4" fill="#282D3C"/>
-<circle cx="237.3" cy="367.7" r="3.4" fill="#282D3C"/>
-<circle cx="316.9" cy="357.3" r="3.4" fill="#282D3C"/>
-<circle cx="396.5" cy="334.0" r="3.4" fill="#282D3C"/>
-<circle cx="476.2" cy="327.7" r="3.4" fill="#282D3C"/>
-<circle cx="476.2" cy="327.7" r="5.5" fill="#FAD232" stroke="#282D3C" stroke-width="2"/>
-<circle cx="954.0" cy="110.7" r="4.5" fill="#B08400"/>
-<circle cx="954.0" cy="29.8" r="3" fill="#B08400" opacity="0.6"/>
-<circle cx="954.0" cy="191.7" r="3" fill="#B08400" opacity="0.6"/>
+<path d="M476.2,327.7 L555.8,305.6 L635.5,279.2 L715.1,238.1 L794.7,219.4 L874.4,165.2 L954.0,110.7" fill="none" stroke="#B08400" stroke-width="2.6" stroke-dasharray="7 4"></path>
+<path d="M78.0,402.7 L157.6,386.0 L237.3,367.7 L316.9,357.3 L396.5,334.0 L476.2,327.7" fill="none" stroke="#282D3C" stroke-width="3.4"></path>
+<circle cx="78.0" cy="402.7" r="3.4" fill="#282D3C"></circle>
+<circle cx="157.6" cy="386.0" r="3.4" fill="#282D3C"></circle>
+<circle cx="237.3" cy="367.7" r="3.4" fill="#282D3C"></circle>
+<circle cx="316.9" cy="357.3" r="3.4" fill="#282D3C"></circle>
+<circle cx="396.5" cy="334.0" r="3.4" fill="#282D3C"></circle>
+<circle cx="476.2" cy="327.7" r="3.4" fill="#282D3C"></circle>
+<circle cx="476.2" cy="327.7" r="5.5" fill="#FAD232" stroke="#282D3C" stroke-width="2"></circle>
+<circle cx="954.0" cy="110.7" r="4.5" fill="#B08400"></circle>
+<circle cx="954.0" cy="29.8" r="3" fill="#B08400" opacity="0.6"></circle>
+<circle cx="954.0" cy="191.7" r="3" fill="#B08400" opacity="0.6"></circle>
 <text x="946.0" y="114.7" text-anchor="end" font-size="12.5" font-weight="800" fill="#B08400">6,65 mil.</text>
 <text x="946.0" y="33.8" text-anchor="end" font-size="11" font-weight="700" fill="#9a7a00">8,42</text>
 <text x="946.0" y="205.7" text-anchor="end" font-size="11" font-weight="700" fill="#9a7a00">4,89</text>
 <text x="476.2" y="313.7" text-anchor="middle" font-size="12" font-weight="800" fill="#282D3C">1,92 mil. €</text>
-<line id="hovL" x1="0" y1="26" x2="0" y2="416" stroke="#282D3C" stroke-width="1" opacity="0"/>
-<rect class="hit" data-i="0" x="70.0" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="1" x="117.8" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="2" x="197.4" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="3" x="277.1" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="4" x="356.7" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="5" x="436.4" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="6" x="516.0" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="7" x="595.6" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="8" x="675.3" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="9" x="754.9" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="10" x="834.5" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"/>
-<rect class="hit" data-i="11" x="914.2" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"/>
+<line id="hovL" x1="0" y1="26" x2="0" y2="416" stroke="#282D3C" stroke-width="1" opacity="0"></line>
+<rect class="hit" data-i="0" x="70.0" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="1" x="117.8" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="2" x="197.4" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="3" x="277.1" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="4" x="356.7" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="5" x="436.4" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="6" x="516.0" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="7" x="595.6" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="8" x="675.3" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="9" x="754.9" y="26" width="79.6" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="10" x="834.5" y="26" width="79.7" height="390" fill="transparent" style="cursor:crosshair"></rect>
+<rect class="hit" data-i="11" x="914.2" y="26" width="47.8" height="390" fill="transparent" style="cursor:crosshair"></rect>
 </svg>
-        <div class="chart-tip" id="chartTip"></div>
+        <div class="chart-tip" id="chartTip" style="opacity: 0;"></div>
       </div>
     </div>
     <div class="scenbox">
@@ -917,10 +973,10 @@ body.editing{caret-color:var(--warn)}
 
 
 
-<div id="edTool" contenteditable="false">
+<div id="edTool" class="show">
   <span class="hint">Režim úprav textu</span>
-  <button class="on" id="edToggle">&#9998; Zapnout úpravy</button>
-  <button class="dl" id="edDownload">&#8595; Stáhnout HTML</button>
+  <button class="on" id="edToggle">✎ Zapnout úpravy</button>
+  <button class="dl" id="edDownload">↓ Stáhnout HTML</button>
 </div>
 <script>
 (function(){var CH={"D": [{"m": "Led", "t": 0, "v": 288900}, {"m": "Úno", "t": 0, "v": 653947}, {"m": "Bře", "t": 0, "v": 1052538}, {"m": "Dub", "t": 0, "v": 1278887}, {"m": "Kvě", "t": 0, "v": 1786449}, {"m": "Črv", "t": 0, "v": 1923852}, {"m": "Črc", "t": 1, "c": 2405558, "lo": 2118750, "hi": 2692365}, {"m": "Srp", "t": 1, "c": 2980885, "lo": 2404339, "hi": 3557431}, {"m": "Zář", "t": 1, "c": 3877831, "lo": 3008695, "hi": 4746966}, {"m": "Říj", "t": 1, "c": 4284553, "lo": 3120005, "hi": 5449102}, {"m": "Lis", "t": 1, "c": 5466273, "lo": 4003514, "hi": 6929031}, {"m": "Pro", "t": 1, "c": 6653269, "lo": 4889530, "hi": 8417008}], "X": [78.0, 157.6, 237.3, 316.9, 396.5, 476.2, 555.8, 635.5, 715.1, 794.7, 874.4, 954.0], "W": 980};var svg=document.getElementById('incChart');if(!svg)return;
@@ -956,6 +1012,27 @@ body.editing{caret-color:var(--warn)}
   var blob=new Blob([out],{type:'text/html;charset=utf-8'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='asko-crm-2026-bilance-h2.html';document.body.appendChild(a);a.click();a.remove();});
 })();
+
+(function(){
+ var CFG={"ucChart3": {"t": "UC3 · Opuštěná návštěva", "y24": [25009, 11250, 21980, 17196, 16908, 16988, 28842, 28205, 38013, 62208, 32198, 52991], "y25": [65499, 30377, 21456, 30952, 53340, 57319, 23035, 53645, 45027, 105659, 116780, 52303], "y26": [86138, 55881, 31126, 61274, 46799, 51960], "W": 560, "tip": "ucTip3"}, "ucChart4": {"t": "UC4 · Opuštěný košík", "y24": [4031, 4151, 7545, 6201, 1037, 3264, 16904, 10610, 6396, 10567, 4921, 7416], "y25": [12243, 8869, 7189, 6320, 16988, 28524, 4898, 26016, 19588, 32309, 44590, 24223], "y26": [27674, 13545, 12339, 21701, 22203, 32196], "W": 560, "tip": "ucTip4"}}; var X=[46.0, 91.5, 136.9, 182.4, 227.8, 273.3, 318.7, 364.2, 409.6, 455.1, 500.5, 546.0];
+ function fmt(v){return Math.round(v).toLocaleString('cs-CZ').replace(/\u00A0/g,' ')+' \u20AC';}
+ Object.keys(CFG).forEach(function(id){
+   var d=CFG[id]; var svg=document.getElementById(id); if(!svg)return;
+   var tip=document.getElementById(d.tip); var g=document.getElementById(id+'G');
+   function show(i){var x=X[i]; var pct=x/d.W*100;
+     g.setAttribute('x1',x); g.setAttribute('x2',x); g.setAttribute('opacity','0.3');
+     var h='<div class="h">M\u011bs\u00edc '+(i+1)+'</div>';
+     h+='<div class="r"><span><i class="sw" style="background:#C3C7CE"></i>2024</span><b>'+fmt(d.y24[i])+'</b></div>';
+     h+='<div class="r"><span><i class="sw" style="background:#282D3C"></i>2025</span><b>'+fmt(d.y25[i])+'</b></div>';
+     if(i<d.y26.length){h+='<div class="r"><span><i class="sw" style="background:#E0A400"></i>2026</span><b>'+fmt(d.y26[i])+'</b></div>';}
+     tip.innerHTML=h; tip.style.left=pct+'%';
+     tip.style.transform=pct>68?'translateX(-92%)':(pct<16?'translateX(-8%)':'translateX(-50%)');
+     tip.style.opacity='1';}
+   function hide(){tip.style.opacity='0'; g.setAttribute('opacity','0');}
+   svg.querySelectorAll('.uchit').forEach(function(r){r.addEventListener('mouseenter',function(){show(+r.dataset.i);});r.addEventListener('mousemove',function(){show(+r.dataset.i);});r.addEventListener('mouseleave',hide);});
+ });
+})();
+
 </script>
 
 
