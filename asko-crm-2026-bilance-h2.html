@@ -973,7 +973,7 @@ body.editing{caret-color:var(--warn)}
 
 
 
-<div id="edTool" class="show">
+<div id="edTool">
   <span class="hint">Režim úprav textu</span>
   <button class="on" id="edToggle">✎ Zapnout úpravy</button>
   <button class="dl" id="edDownload">↓ Stáhnout HTML</button>
@@ -1004,7 +1004,7 @@ body.editing{caret-color:var(--warn)}
   this.innerHTML=editing?'\u2713 \u00DApravy zapnut\u00E9':'\u270E Zapnout \u00FApravy';});
  document.getElementById('edDownload').addEventListener('click',function(){
   var clone=document.documentElement.cloneNode(true);
-  var b=clone.querySelector('body');if(b){b.removeAttribute('contenteditable');b.classList.remove('editing');}
+  var b=clone.querySelector('body');if(b){b.removeAttribute('contenteditable');b.classList.remove('editing');}var et=clone.querySelector('#edTool');if(et)et.classList.remove('show');
   clone.querySelectorAll('[contenteditable]').forEach(function(e){e.removeAttribute('contenteditable');});
   clone.querySelectorAll('details').forEach(function(x){x.removeAttribute('open');});
   var tp=clone.querySelector('#chartTip');if(tp)tp.style.opacity='0';
