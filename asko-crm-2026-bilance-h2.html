@@ -151,6 +151,17 @@ section.dark table.dt tbody tr:hover{background:rgba(255,255,255,.05)}
 .plan .item{background:#fff;border:1px solid var(--grey);border-radius:10px;padding:20px;position:relative}
 .plan .item .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:3px 8px;border-radius:3px;margin-bottom:10px}
 .tag.add{background:var(--good);color:#fff}.tag.change{background:var(--yellow);color:var(--ink)}.tag.cut{background:var(--slate);color:#fff}
+.tag.test{background:var(--link);color:#fff}.tag.prio{background:#fff;color:var(--slate);border:1.5px solid var(--yellow)}
+.h2per{margin-top:22px}
+.h2per-head{font-weight:800;font-size:15.5px;color:var(--slate);padding:8px 0 10px;border-bottom:2px solid var(--yellow);margin-bottom:16px;display:flex;align-items:baseline;gap:10px}
+.h2per-head .cnt{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.h2item{background:#fff;border:1px solid var(--grey);border-radius:10px;padding:15px 17px;position:relative}
+.h2item.prio{border-color:var(--yellow);box-shadow:0 4px 16px rgba(250,210,50,.16)}
+.h2item .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.h2item h4{margin:0 0 6px;font-size:14px;color:var(--ink);font-weight:700;line-height:1.3}
+.h2item p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5}
+.h2legend{display:flex;flex-wrap:wrap;gap:14px;margin:2px 0 4px;font-size:12px;color:#3a3f52}
+.h2legend .tag{margin-right:4px}
 .plan .item h3{margin:0 0 6px;font-size:15.5px;color:var(--ink);font-weight:700}
 .plan .item p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
 .plan .item ul{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--muted);line-height:1.55}
@@ -250,7 +261,7 @@ body.editing{caret-color:var(--warn)}
         <div class="label">podíl inkrementu na celkovém obratu ASKO v 2026/H1 — 5.40%&nbsp;→ 5.96 %</div>
       </div>
       <div class="hero-stat">
-        <div class="num neg">−179 <small>tis. €/měs</small></div>
+        <div class="num">−179 <small>tis. €/měs</small></div>
         <div class="label">odchylka od lineárního plánu 500 tis. €/měs → −1,07 mil. € za H1</div>
       </div>
     </div>
@@ -265,15 +276,15 @@ body.editing{caret-color:var(--warn)}
     <h2 style="margin-bottom:20px">Stav CRM projektu</h2>
     <div class="summary">
       <div class="tl">
-        Za H1 jsme udrželi <b>loňský inkrement (1,93 mil. €)</b> navzdory ~10% poklesu obratu ASKO — podíl CRM na obratu roste, ale vůči plánu 500 tis. €/měsíc <b>chybí ~1,07 mil. €</b>. Celý rok se rozhodne v H2: statistická projekce z 30 měsíců dat míří <b>nad success fee (medián ~6,65 mil. €)</b>, s 50% intervalem 4,9–8,4 mil. € — i jeho dolní hranice zůstává nad fail-fee prahem.
+        Za H1 jsme udrželi <b>loňský inkrement (1,93 mil. €)</b> navzdory ~10% poklesu obratu ASKO — podíl CRM na obratu roste, ale vůči plánu 500 tis. €/měsíc <b>chybí ~1,07 mil. €</b>. Celý rok se rozhodne v H2: statistická projekce z 30 měsíců dat míří <b>nad success fee (medián ~6,65 mil. €)</b>, s prostorem 4,9–8,4 mil. € — i méně příznivý vývoj zůstává nad fail-fee prahem.
       </div>
       <ul>
-        <li><b>Držíme úroveň 2025.</b> H1 inkrement 1,93 mil. € = přesně loňská hodnota, při poklesu obratu ASKO z 35,7 na 32,3 mil. €.</li>
-        <li class="warn"><b>Stav vůči lineárnímu plánu.</b> Plán 500 tis. €/měs (6,14 mio/rok = SF). Realita ~321 tis. €/měs → za H1 mezera ~1,07 mil. €.</li>
-        <li><b>Rok stojí na sezóně H2.</b> V roce 2025 bylo H2 2,2× silnější než H1. Statistická projekce z 30 měsíců dat míří nad success fee.</li>
-        <li class="warn"><b>Newslettery ztratily ~31 % atribuovaného revenue.</b> 2/3 únava báze (+12 % mailů, −27 % klikajících), 1/3 pokles trhu (prodejny −13 %).</li>
-        <li><b>Zdržení klíčových projektů proti plánu.</b> Velký nákup, rekomendace, login push — blokerů je víc, nejčastěji zpomaluje Inveo.</li>
+        <li class="good"><b>Držíme úroveň 2025.</b> H1 inkrement 1,93 mil. € = přesně loňská hodnota, při poklesu obratu ASKO z 35,7 na 32,3 mil. €.</li>
         <li class="good"><b>Máme plán pro H2.</b>&nbsp;Plán pro newslettery + věrnostní program + několik menších quick wins.</li>
+        <li><b>Rok stojí na sezóně H2.</b> V roce 2025 bylo H2 2,2× silnější než H1. Statistická projekce z 30 měsíců dat míří nad success fee.</li>
+        <li class="warn"><b>Stav vůči lineárnímu plánu.</b> Plán 500 tis. €/měs (6,14 mio/rok = SF). Realita ~321 tis. €/měs → za H1 mezera ~1,07 mil. €.</li>
+        <li class="warn"><b>Newslettery ztratily ~31 % atribuovaného revenue.</b> 2/3 únava báze (+12 % mailů, −27 % klikajících), 1/3 pokles trhu (prodejny −13 %).</li>
+        <li class="warn"><b>Zdržení klíčových projektů proti plánu.</b> Velký nákup, rekomendace, login push — blokerů je víc, nejčastěji zpomaluje Inveo.</li>
       </ul>
     </div>
   </div>
@@ -318,6 +329,27 @@ body.editing{caret-color:var(--warn)}
           </tbody>
         </table>
         <p style="margin-top:12px">Co je vidět: leden a únor 2026 startovaly pod loňskem, ale březen–květen 2026 byly nad loňskem a rozdíl dorovnaly. Červen je slabý (140 tis.).</p>
+      </div>
+    </details>
+
+    <details class="exp">
+      <summary><span class="plus"></span> Online vs. offline — kde se ASKO daří <span class="tag">on/off-line</span></summary>
+      <div class="body">
+        <p><b>Online</b> letos roste +6 % YoY — trend jsme zvrátili, i když jsme proti 2024/2023 stále níž; nárůst jde pravděpodobně z konverzního poměru, ne z trafficu ani AOV. <b>Offline</b> konzistentně klesá: footfall padá pomaleji (−6,7 %) než revenue, AOV zhruba stabilní → méně lidí přijde a méně z nich nakoupí.</p>
+        <div class="cards c2" style="margin:14px 0">
+          <div class="card"><div class="num pos">+6 %</div><div class="label">Online obrat YoY 2026</div><div class="help">Trend zvrácen. Proti 2024/2023 stále níž. Pravděpodobně vyšší konverzní poměr, ne traffic.</div></div>
+          <div class="card"><div class="num neg">−13 %</div><div class="label">Obrat prodejen (offline)</div><div class="help">Footfall −6,7 %, AOV stabilní. Méně návštěv i nižší konverze návštěvy na nákup.</div></div>
+        </div>
+        <table class="dt" style="max-width:520px">
+          <thead><tr><th>Obrat na návštěvníka 2026 (výběr)</th><th>€ / návštěvník</th></tr></thead>
+          <tbody>
+            <tr><td>Brno <span class="pill real" style="font-size:9px">nejlepší</span></td><td><b>64 €</b></td></tr>
+            <tr><td>Štěrboholy</td><td>53 €</td></tr>
+            <tr><td>Tábor</td><td class="neg">29 €</td></tr>
+            <tr><td>Olomouc</td><td class="neg">28 €</td></tr>
+            <tr><td>Plzeň</td><td class="neg">26 €</td></tr>
+          </tbody>
+        </table>
       </div>
     </details>
   </div>
@@ -502,7 +534,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Velký nákup (S6)</span><span class="st slip">skluz 6 měs.</span></div>
+        <div class="head"><span class="nm">Velký nákup (S6)</span><span class="st slip">Zpoždění 6 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 01</span><span class="pill real">realita 07</span><span class="pill loss">Klíčový projekt</span></div>
           Predikce velkého nákupu: 6 % báze ≈ 30 % obratu. Malý uplift = velký absolutní inkrement.
@@ -510,7 +542,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Rekomendace do mailu / košíku</span><span class="st slip">skluz 2 měs.</span></div>
+        <div class="head"><span class="nm">Rekomendace do mailu / košíku</span><span class="st slip">Zpoždění 2 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 03</span><span class="pill real">realita 05</span><span class="pill loss">Důležitý projekt</span></div>
           Zvedá AOV i konverzi. Reko blok nasazen do vybraných mailů i do košíku na webu.
@@ -518,7 +550,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Monetizace recenzí</span><span class="st slip">skluz 5 měs.</span></div>
+        <div class="head"><span class="nm">Monetizace recenzí</span><span class="st slip">Zpoždění 5 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 02</span><span class="pill real">realita 07</span></div>
           Spuštěno k 07/2026, zatím jen na online nákupy (~30 % zákazníků).
@@ -534,7 +566,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Login push / ztotožnění</span><span class="st slip">skluz 6 měs.</span></div>
+        <div class="head"><span class="nm">Login push / ztotožnění</span><span class="st slip">Zpoždění 6 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 03</span><span class="pill real">realita 09</span></div>
           Rozhodnuto o začlenění do startu věrnostního programu.
@@ -542,7 +574,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Automatizace rozesílky NL</span><span class="st slip">skluz 1 měs.</span></div>
+        <div class="head"><span class="nm">Automatizace rozesílky NL</span><span class="st slip">Zpoždění 1 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 05</span><span class="pill real">realita 06</span></div>
           Do A/B testu dodáno na konci června.
@@ -550,7 +582,7 @@ body.editing{caret-color:var(--warn)}
         </div>
       </div>
       <div class="biocard">
-        <div class="head"><span class="nm">Landing page</span><span class="st slip">skluz 8 měs.</span></div>
+        <div class="head"><span class="nm">Landing page</span><span class="st slip">Zpoždění 8 měs.</span></div>
         <div class="body2">
           <div class="tl2"><span class="pill plan">plán 04</span><span class="pill real">realita ~12</span></div>
           Zařazeno až do druhé fáze věrnostního programu.
@@ -606,22 +638,6 @@ body.editing{caret-color:var(--warn)}
       <div class="card"><div class="num pos">Ježíšek</div><div class="label">Sběr telefonů + retence</div><div class="help">Zájem o soutěž, ochota uvádět telefon (kanál pro SMS). Nutná investice do výher; zákazníci u ASKO zůstávají a nakupují.</div></div>
     </div>
 
-    <h3 style="font-size:19px;font-weight:700;color:var(--ink);margin:34px 0 8px"><span class="accent"></span>Online vs. offline — kde se ASKO daří</h3>
-    <p class="deck" style="margin-bottom:16px"><b>Online</b> letos roste +6 % YoY — došlo ke zvrácení trendu, i když jsme proti 2024/2023 stále níž; nárůst jde pravděpodobně z konverzního poměru, ne z trafficu ani AOV. <b>Offline</b> konzistentně klesá: footfall padá pomaleji (−6,7 %) než revenue, AOV zhruba stabilní → ukazuje nám to na kombinaci, kde se méně lidí rozhodne přijít a méně z nich pak nakoupí.</p>
-    <div class="cards c2" style="margin-bottom:18px">
-      <div class="card"><div class="num pos">+6 %</div><div class="label">Online obrat YoY 2026</div><div class="help">Trend zvrácen. Proti 2024/2023 stále níž. Pravděpodobně vyšší konverzní poměr, ne traffic.</div></div>
-      <div class="card"><div class="num neg">−13 %</div><div class="label">Obrat prodejen (offline)</div><div class="help">Footfall −6,7 %, AOV stabilní. Méně návštěv i nižší konverze návštěvy na nákup.</div></div>
-    </div>
-    <table class="dt" style="max-width:520px">
-      <thead><tr><th>Obrat na návštěvníka 2026 (výběr)</th><th>€ / návštěvník</th></tr></thead>
-      <tbody>
-        <tr><td>Brno <span class="pill real" style="font-size:9px">nejlepší</span></td><td><b>64 €</b></td></tr>
-        <tr><td>Štěrboholy</td><td>53 €</td></tr>
-        <tr><td>Tábor</td><td class="neg">29 €</td></tr>
-        <tr><td>Olomouc</td><td class="neg">28 €</td></tr>
-        <tr><td>Plzeň</td><td class="neg">26 €</td></tr>
-      </tbody>
-    </table>
 
     <details class="exp">
       <summary><span class="plus"></span> Co jsme navrhli a bylo zamítnuto <span class="tag">blockers</span></summary>
@@ -651,7 +667,7 @@ body.editing{caret-color:var(--warn)}
     <div class="eyebrow">Model · vývoj inkrementu</div>
     <h2>Inkrement do konce roku: statistická projekce</h2>
     <p class="deck">
-      Projekci jsme postavili na <b>30 měsících historických dat</b> — nejde o scénáře „od oka", ale o statistický model s <b>50% intervalem spolehlivosti</b>. Medián míří na <b>~6,65 mil. €</b>, tedy nad success fee. Padesátiprocentní interval sahá od 4,9 do 8,4 mil. € — i jeho dolní hranice zůstává nad fail-fee prahem. Rok tedy stojí dobře; H2 je nábytkově silné a nejistota je reálná, proto pracujeme s intervalem, ne s jedním číslem.
+      Projekci jsme postavili na <b>30 měsících historických dat</b> – statistický model predikuje rozptyl konečného inkrementu s ohledem na sezonalitu. Medián míří na <b>~6,65 mil. €</b>, tedy nad success fee; i méně příznivý vývoj zůstává nad fail-fee prahem. H2 je nábytkově silné a graf ukazuje pásmo pravděpodobného rozptylu kolem mediánu.
     </p>
     <div class="chartwrap">
       <div class="legend">
@@ -737,12 +753,12 @@ body.editing{caret-color:var(--warn)}
       </div>
     </div>
     <div class="scenbox">
-      <div class="scen p"><div class="tt">Dolní hranice (50% CI)</div><div class="vv">4,89 mil. €</div><div class="ss">Spodní okraj 50% intervalu. <b>Stále nad fail-fee prahem</b> (4,62 mil. €).</div></div>
+      <div class="scen p"><div class="tt">Méně příznivý vývoj</div><div class="vv">4,89 mil. €</div><div class="ss">Slabší průběh sezóny. <b>Stále nad fail-fee prahem</b> (4,62 mil. €).</div></div>
       <div class="scen r"><div class="tt">Medián projekce</div><div class="vv">6,65 mil. €</div><div class="ss">Nejpravděpodobnější výsledek dle 30 měsíců dat — <b>nad success fee</b> (6,14 mil. €).</div></div>
-      <div class="scen o"><div class="tt">Horní hranice (50% CI)</div><div class="vv">8,42 mil. €</div><div class="ss">Horní okraj 50% intervalu — silná sezóna a úspěšné nasazení pák.</div></div>
+      <div class="scen o"><div class="tt">Příznivější vývoj</div><div class="vv">8,42 mil. €</div><div class="ss">Silná sezóna a úspěšné nasazení pák.</div></div>
     </div>
     <div class="keyline">
-      Statisticky (medián z 30 měsíců dat) míříme <b>nad success fee</b> a i dolní hranice 50% intervalu je nad fail-fee prahem. Nejistota je ale reálná — proto v H2 tlačíme na exekuci, ať skončíme v horní části intervalu.
+      Statisticky (medián z 30 měsíců dat) míříme <b>nad success fee</b> a i méně příznivý vývoj zůstává nad fail-fee prahem. Nejistota je reálná — proto v H2 tlačíme na exekuci, ať skončíme v horní části rozpětí.
     </div>
     <details class="exp">
       <summary><span class="plus"></span> Jak je model postavený <span class="tag">metodika</span></summary>
@@ -771,32 +787,19 @@ body.editing{caret-color:var(--warn)}
     <div class="eyebrow">Část B · H2 — akční plán</div>
     <h2><span class="accent"></span>Navrhované změny plánu</h2>
     <p class="deck">
-      Priority H2: dotlačit tři nejlépe doložené páky do plného výkonu, opravit emailing, přitlačit na Q4 — a naopak ubrat tam, kde kapacita mizí bez dopadu na inkrement. Cílem je se co nejvíc přiblížit success fee.
+      Priority H2: dotlačit tři nejlépe doložené páky do plného výkonu, opravit emailing (dlouhodobě, ne na jeden měsíc), přitlačit na Q4 — a ubrat tam, kde kapacita mizí bez dopadu na inkrement. Níže rozpad po projektech a obdobích: co přidáváme, měníme a ubíráme, včetně priorit. Cílem je se co nejvíc přiblížit success fee.
     </p>
-    <div class="plan">
-      <div class="item"><span class="tag add">PŘIDAT</span><h3>Tři páky na plný výkon</h3><ul><li><b>Segmentace</b> na 100 % báze a 11 rodin</li><li><b>Rekomendace</b> všude (web, mail, košík) — dotáhnout nápočty</li><li><b>Velký nákup (S6)</b> — odblokovat přes Inveo</li></ul></div>
-      <div class="item"><span class="tag change">ZMĚNIT</span><h3>Emailing</h3><ul><li>Opravit obsah segmentovaných rozesílek (dnes působí jako běžné NL)</li><li>Zavést frequency policy</li><li>Vyřešit timing rozesílek + nové odesílací domény</li></ul></div>
-      <div class="item"><span class="tag add">PŘIDAT</span><h3>Věrnostní program „s přínosem“</h3><ul><li>Landing page + jednoduchý welcome scénář</li><li>Stránka zájmu zákazníka pro prodejce</li><li>Early access ke slevovým akcím</li></ul></div>
-      <div class="item"><span class="tag add">TESTOVAT</span><h3>Drobné UC v MVP módu</h3><ul><li>Web push, Exit intent</li><li><b>ROPO intent</b>: vysoká CHS bez add-to-cart + closest_shop → SMS reaktivační voucher</li><li>Falling asleep reaktivace, Social proof, Friend-get-friend</li></ul></div>
-      <div class="item"><span class="tag change">ZMĚNIT</span><h3>Vylepšit páteřní UC</h3><ul><li><b>Audit UC1 welcome</b> (dlouhodobě neměnný, −36 %)</li><li>UC1 test: sleva 150 / 250 / 500 Kč dle min. objednávky</li><li>Rozšířit zásah UC14 / UC30 / UC32</li></ul></div>
-      <div class="item"><span class="tag cut">UBRAT</span><h3>Uvolnit kapacitu</h3><ul><li>Snížit náročnost obsluhy NL (změna flow, AI do tvorby) — nebo předat režii ASKO týmu</li><li>Minimalizovat dopad ASKO Plus na in-scope</li><li>Omezit ad hoc datové tasky bez dopadu na SF</li></ul></div>
+    <div class="h2legend">
+      <span><span class="tag add">Přidat</span> nové do plánu</span>
+      <span><span class="tag change">Změnit</span> úprava stávajícího</span>
+      <span><span class="tag test">Testovat</span> nový UC v MVP</span>
+      <span><span class="tag cut">Ubrat</span> uvolnit kapacitu</span>
+      <span><span class="tag prio">Priorita</span> klíčový projekt</span>
     </div>
+    <div class="h2per"><div class="h2per-head">Červenec–srpen <span class="cnt">9 aktivit</span></div><div class="cards c3"><div class="h2item prio"><div class="tags"><span class="tag change">Změnit</span><span class="tag prio">Priorita</span></div><h4>E-mailing: frekvence + content</h4><p>Dlouhodobé řízení frekvence — holdout ~30 % báze, ne jednorázový měsíc. Cílem je bázi trvale odlehčit, aby zase klikala; souběžně nové šablony a obsah pro vyšší proklikovost.</p></div><div class="h2item prio"><div class="tags"><span class="tag add">Přidat</span><span class="tag prio">Priorita</span></div><h4>ASKO Plus — Fáze 0</h4><p>Realizace Fáze 0 věrnostního programu dle dokumentace UC29.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>Projekt domény</h4><p>Zahřátí nových odesílacích domén na podporu doručitelnosti emailingu.</p></div><div class="h2item"><div class="tags"><span class="tag change">Změnit</span></div><h4>Test incentivy UC1</h4><p>Sleva 150 / 250 / 500 Kč podle minimální hodnoty objednávky (dnes jen 150 Kč na nákup 1 500 Kč+).</p></div><div class="h2item"><div class="tags"><span class="tag change">Změnit</span></div><h4>Velký nákup: optimalizace</h4><p>Sledování výkonu a ladění scénáře po prvotním spuštění.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>SMS: dokončení testů</h4><p>SMS pro high-CLTV v UC2, zapojení do UC12 a UC4. Finalizace ongoing strategie — už teď profitabilní.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>Automatizované NL šňůry</h4><p>Sekvence pro uživatele nově vstupující do segmentu. Teď testujeme Family, rozšíříme na víc segmentů s atraktivním obsahem.</p></div><div class="h2item"><div class="tags"><span class="tag cut">Ubrat</span></div><h4>Snížit pracnost obsluhy</h4><p>Snížit pracnost newsletterů, datových prací a projektového řízení (změna flow, AI do tvorby).</p></div><div class="h2item"><div class="tags"><span class="tag cut">Ubrat</span></div><h4>Vyhodnocení Zahrady</h4><p>Uzavřít a vyhodnotit ad hoc projekt.</p></div></div></div>
+    <div class="h2per"><div class="h2per-head">Září–říjen <span class="cnt">8 aktivit</span></div><div class="cards c3"><div class="h2item prio"><div class="tags"><span class="tag add">Přidat</span><span class="tag prio">Priorita</span></div><h4>ASKO Plus: aktivace pro inkrement</h4><p>Welcome flow, landing page a stránka pro prodejce — aktivace věrnostního programu směrem k inkrementu.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>Web Push: zadání na Inveo</h4><p>Zadání projektu + business scope pro zapojení nového kanálu do komunikace.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>Vyhodnocení Web Push</h4><p>Vyhodnocení výkonu web push notifikací po spuštění.</p></div><div class="h2item"><div class="tags"><span class="tag change">Změnit</span></div><h4>Rozšíření UC14 / UC30 / UC32</h4><p>Test širších podmínek pro větší zásah cross-sell, price drop a back-in-stock.</p></div><div class="h2item"><div class="tags"><span class="tag change">Změnit</span></div><h4>Test timingu rozesílek</h4><p>Test načasování newsletterových rozesílek.</p></div><div class="h2item"><div class="tags"><span class="tag test">Testovat</span></div><h4>UC Exit Intent</h4><p>Chytání kontaktů při odchodu ze stránky.</p></div><div class="h2item"><div class="tags"><span class="tag test">Testovat</span></div><h4>UC Closest Shop (ROPO)</h4><p>Reaktivační SMS voucher pro zákazníky s closest_shop — ROPO intent.</p></div><div class="h2item"><div class="tags"><span class="tag add">Přidat</span></div><h4>Příprava Ježíška 2026</h4><p>Příprava vánoční sezónní kampaně.</p></div></div></div>
+    <div class="h2per"><div class="h2per-head">Listopad–prosinec <span class="cnt">4 aktivit</span></div><div class="cards c3"><div class="h2item"><div class="tags"><span class="tag change">Změnit</span></div><h4>Personalizace UC2 a UC25</h4><p>Relevantnější a personalizovaná nabídka a produktová doporučení v masových UC.</p></div><div class="h2item"><div class="tags"><span class="tag test">Testovat</span></div><h4>UC Falling Asleep</h4><p>Reaktivace usínajících segmentů kaskádou e-mail → SMS podle CLTV a délky neaktivity vůči zájmu zákazníka.</p></div><div class="h2item"><div class="tags"><span class="tag test">Testovat</span></div><h4>Social Proof</h4><p>Sociální důkaz v komunikaci (Bloomreach use case).</p></div><div class="h2item"><div class="tags"><span class="tag test">Testovat</span></div><h4>Friend get Friend (design)</h4><p>Návrh doporučovacího use casu — přiveď přítele.</p></div></div></div>
 
-    <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:34px 0 4px"><span class="accent"></span>Harmonogram H2 — co, kdy a proč</h3>
-    <p class="deck" style="margin-bottom:14px">Konkrétní aktivity rozložené do tří období. Najeďte myší na dlaždici pro popis. <span style="color:var(--slate);font-weight:600">Prioritní projekty</span> jsou zvýrazněné.</p>
-    <div class="tl">
-      <div class="tlrow"><div class="per">Červenec–srpen</div><div class="acts"><span class="tlchip prio" data-tip="Holdout skupiny (~30 % báze) s přísně řízenou frekvencí + úprava contentu a šablon pro vyšší proklikovost."><span class="pr">Priorita</span> E-mailing: frekvence + content</span><span class="tlchip" data-tip="Zahřátí nových odesílacích domén na podporu doručitelnosti emailingu.">Projekt domény</span><span class="tlchip" data-tip="150 / 250 / 500 Kč podle minimální hodnoty objednávky. Dnes jen 150 Kč na nákup 1 500 Kč+.">Test incentivy UC1</span><span class="tlchip prio" data-tip="Realizace Fáze 0 věrnostního programu dle dokumentace UC29."><span class="pr">Priorita</span> ASKO Plus — Fáze 0</span><span class="tlchip" data-tip="Sledování výkonu a ladění scénáře po prvotním spuštění.">Velký nákup: optimalizace</span><span class="tlchip" data-tip="Dokončení testů: SMS pro high-CLTV v UC2, zapojení do UC12 a UC4. Finalizace ongoing SMS strategie (už teď profitabilní).">SMS testy UC2 / UC12 / UC4</span><span class="tlchip" data-tip="Sekvence pro uživatele nově vstupující do segmentu. Teď testujeme Family, rozšíříme na víc segmentů s atraktivním obsahem.">Automatizované NL šňůry</span><span class="tlchip" data-tip="Projekt na snížení pracnosti newsletterů, datových prací a projektového řízení.">Snížení pracnosti obsluhy</span><span class="tlchip" data-tip="Vyhodnocení projektu Zahrady.">Vyhodnocení Zahrady</span></div></div>
-      <div class="tlrow"><div class="per">Září–říjen</div><div class="acts"><span class="tlchip" data-tip="Zadání projektu Web Push na Inveo + business scope pro zapojení nového kanálu do komunikace.">Web Push: zadání na Inveo</span><span class="tlchip" data-tip="Vyhodnocení výkonu web push notifikací po spuštění.">Vyhodnocení Web Push</span><span class="tlchip" data-tip="Test rozšíření podmínek pro větší zásah cross-sell, price drop a back-in-stock.">Rozšíření UC14 / UC30 / UC32</span><span class="tlchip prio" data-tip="Welcome flow, landing page a případně stránka pro prodejce — aktivace věrnostního programu směrem k inkrementu."><span class="pr">Priorita</span> ASKO Plus: aktivace pro inkrement</span><span class="tlchip" data-tip="Test načasování newsletterových rozesílek.">Test timingu rozesílek</span><span class="tlchip" data-tip="Chytání kontaktů při odchodu ze stránky.">Spuštění UC Exit Intent</span><span class="tlchip" data-tip="Příprava vánoční sezónní kampaně.">Příprava Ježíška 2026</span><span class="tlchip" data-tip="Reaktivační SMS voucher pro zákazníky s closest_shop — ROPO intent.">Design Closest Shop (ROPO)</span></div></div>
-      <div class="tlrow"><div class="per">Listopad–prosinec</div><div class="acts"><span class="tlchip" data-tip="Relevantnější a personalizovaná nabídka a produktová doporučení v masových UC (svátky, výročí).">Personalizace UC2 a UC25</span><span class="tlchip" data-tip="Reaktivace usínajících segmentů kaskádou e-mail → SMS podle CLTV a délky neaktivity vůči zájmu zákazníka.">UC Falling Asleep</span><span class="tlchip" data-tip="Sociální důkaz v komunikaci (Bloomreach use case).">Social Proof</span><span class="tlchip" data-tip="Návrh doporučovacího use casu — přiveď přítele.">Design Friend get Friend</span></div></div>
-    </div>
-
-    <details class="exp">
-      <summary><span class="plus"></span> Návrh: měsíc, kdy emailing převezmeme my <span class="tag">test contentu + frekvence</span></summary>
-      <div class="body">
-        <p>Navrhujeme test, kde <b>dočasně převezmeme práci nad emailingem</b> (cca mid-červenec – mid-srpen, klidně jen 1 měsíc) a získáme možnost lépe ovlivnit content i timing. Na vstupu si vezmeme jen seznam akcí, které se odehrají, případně overstock produkty k odpromování.</p>
-        <p>V rámci testu <b>propojíme segmentaci, frekvenci i obsah</b> — podobně jako u A/B testu segmentace. Cílem je otestovat nové šablony a interaktivnější content a změřit dopad na prokliky, kde dnes ztrácíme.</p>
-      </div>
-    </details>
 
     <details class="exp">
       <summary><span class="plus"></span> Restart UC14 a rekomendace do dalších kanálů <span class="tag">z interní revize</span></summary>
