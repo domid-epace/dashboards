@@ -472,7 +472,7 @@ body.editing{caret-color:var(--warn)}
   <div class="container">
     <h2><span class="accent"></span>Páteřní use casy: kdo táhne, kdo brzdí</h2>
     <p class="deck">
-      Páteřní automatizované UC meziročně posílily objem i revenue - zkoušeli jsme 2 atribuční modely, oba ukázaly pozitivní vývoj YoY (+13 %/+ 17%). Odeslaných mailů:&nbsp;<b>+87,7 %</b>, tržby&nbsp;<b>+13,9 %</b>, tržba na e-mail vzhledem k objemu&nbsp;<b>−39,3 %</b>. Přidali jsme hlavně remindery s nižší hodnotou na e-mail a širší zásah. Novým use casům se relativně daří. Datově se rozcházíme se zaslaným ASKO reportem revenue UCs.</p>
+      Páteřní automatizované UC meziročně posílily objem i revenue - zkoušeli jsme 2 atribuční modely, oba ukázaly pozitivní vývoj YoY (+13 %/+ 17%). Odeslaných mailů:&nbsp;<b>+87,7 %</b>, tržby&nbsp;<b>+13,9 %</b>, tržba na e-mail vzhledem k objemu&nbsp;<b>−39,3 %</b>. Přidali jsme hlavně remindery s nižší hodnotou na e-mail a širší zásah. Novým use casům se relativně daří. Datový rozdíl vůči ASKO reportu revenue UCs je nyní vysvětlen a srovnán — viz druhý sloupec tržeb (voucher + e-mail) v tabulce níže.</p>
     <div style="background:var(--slate);color:#fff;border-radius:14px;padding:20px 26px;margin:4px 0 20px;display:flex;align-items:center;gap:24px;border-left:5px solid var(--good)">
       <div style="font-size:44px;font-weight:900;color:#fff;line-height:1;white-space:nowrap">+14&nbsp;%</div>
       <div style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.85)">tržeb automatizovaných UC meziročně (H1 ≈ 1,13 → 1,29 mil. €, +157 tis. €). <b style="color:var(--yellow)">V roce klesajících newsletterů jsou automaty motorem e-mailového revenue.</b></div>
@@ -490,18 +490,19 @@ body.editing{caret-color:var(--warn)}
       <summary><span class="plus"></span> Kompletní žebříček 10 UC — H1 2026 <span class="tag">tržby &amp; RPE</span></summary>
       <div class="body">
         <table class="dt">
-          <thead><tr><th>Use case</th><th>Doručeno</th><th>CTOR</th><th>Nákupy</th><th>Tržby</th><th>Δ '26/'25</th><th>RPE €</th></tr></thead>
+          <thead><tr><th>Use case</th><th>Doručeno</th><th>CTOR</th><th>Nákupy</th><th>Tržby<br><span style="font-weight:400;font-size:10px;color:var(--muted)">e-mail (model H1)</span></th><th style="background:#FBF3D9;font-weight:600">Tržby<br><span style="font-weight:400;font-size:10px;color:var(--muted)">voucher + e-mail</span></th><th>Δ '26/'25</th><th>RPE €</th></tr></thead>
           <tbody>
-            <tr><td>UC3 · Opuštěná návštěva</td><td>180 373</td><td>18,7 %</td><td>717</td><td>327 849 €</td><td class="pos">+28,6 %</td><td>1,82</td></tr>
-            <tr><td>UC1 · Welcome (double opt-in)</td><td>79 313</td><td>47,5 %</td><td>720</td><td>293 752 €</td><td class="neg">−36,4 %</td><td>3,70</td></tr>
-            <tr><td>UC12 · Narozeniny</td><td>152 428</td><td>20,1 %</td><td>495</td><td>207 918 €</td><td class="neg">−17,2 %</td><td>1,36</td></tr>
-            <tr><td>UC4 · Opuštěný košík</td><td>55 237</td><td>25,6 %</td><td>387</td><td>128 050 €</td><td class="pos">+60,3 %</td><td>2,32</td></tr>
-            <tr><td>UC2 · Svátky</td><td>489 580</td><td>9,6 %</td><td>211</td><td>86 175 €</td><td class="pos">+113,3 %</td><td>0,18</td></tr>
-            <tr><td>UC16 · Odměna za kontakt</td><td>1 806</td><td>13,4 %</td><td>53</td><td>75 096 €</td><td class="pos">+85,0 %</td><td><b>41,58</b></td></tr>
-            <tr><td>UC14 · Cross-sell <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>13 719</td><td>7,8 %</td><td>1 174</td><td><b>61 006 €</b></td><td>nový</td><td>4,45</td></tr>
-            <tr><td>UC30 · Price drop <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>17 928</td><td>16,2 %</td><td>142</td><td><b>45 409 €</b></td><td>nový</td><td>2,53</td></tr>
-            <tr><td>UC32 · Back in stock <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>14 886</td><td>23,3 %</td><td>61</td><td><b>41 110 €</b></td><td>nový</td><td>2,76</td></tr>
-            <tr><td>UC25 · Výročí nákupu</td><td>161 115</td><td>3,7 %</td><td>39</td><td>23 013 €</td><td class="pos">+573 %</td><td>0,14</td></tr>
+            <tr><td>UC3 · Opuštěná návštěva</td><td>180 373</td><td>18,7 %</td><td>717</td><td>327 849 €</td><td style="background:#FBF3D9;font-weight:600">264 838 €</td><td class="pos">+28,6 %</td><td>1,82</td></tr>
+            <tr><td>UC1 · Welcome (double opt-in)</td><td>79 313</td><td>47,5 %</td><td>720</td><td>293 752 €</td><td style="background:#FBF3D9;font-weight:600">83 582 €</td><td class="neg">−36,4 %</td><td>3,70</td></tr>
+            <tr><td>UC12 · Narozeniny</td><td>152 428</td><td>20,1 %</td><td>495</td><td>207 918 €</td><td style="background:#FBF3D9;font-weight:600">364 888 €</td><td class="neg">−17,2 %</td><td>1,36</td></tr>
+            <tr><td>UC4 · Opuštěný košík</td><td>55 237</td><td>25,6 %</td><td>387</td><td>128 050 €</td><td style="background:#FBF3D9;font-weight:600">183 184 €</td><td class="pos">+60,3 %</td><td>2,32</td></tr>
+            <tr><td>UC2 · Svátky</td><td>489 580</td><td>9,6 %</td><td>211</td><td>86 175 €</td><td style="background:#FBF3D9;font-weight:600">45 061 €</td><td class="pos">+113,3 %</td><td>0,18</td></tr>
+            <tr><td>UC16 · Odměna za kontakt</td><td>1 806</td><td>13,4 %</td><td>53</td><td>75 096 €</td><td style="background:#FBF3D9;font-weight:600">874 652 €</td><td class="pos">+85,0 %</td><td><b>41,58</b></td></tr>
+            <tr><td>UC14 · Cross-sell <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>13 719</td><td>7,8 %</td><td>1 174</td><td><b>61 006 €</b></td><td style="background:#FBF3D9;font-weight:600">38 089 €</td><td>nový</td><td>4,45</td></tr>
+            <tr><td>UC30 · Price drop <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>17 928</td><td>16,2 %</td><td>142</td><td><b>45 409 €</b></td><td style="background:#FBF3D9;font-weight:600">18 997 €</td><td>nový</td><td>2,53</td></tr>
+            <tr><td>UC32 · Back in stock <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>14 886</td><td>23,3 %</td><td>61</td><td><b>41 110 €</b></td><td style="background:#FBF3D9;font-weight:600">25 439 €</td><td>nový</td><td>2,76</td></tr>
+            <tr><td>UC25 · Výročí nákupu</td><td>161 115</td><td>3,7 %</td><td>39</td><td>23 013 €</td><td style="background:#FBF3D9;font-weight:600">11 412 €</td><td class="pos">+573 %</td><td>0,14</td></tr>
+            <tr style="border-top:2px solid var(--line);font-weight:700"><td>Celkem (10 UC)</td><td>—</td><td>—</td><td>—</td><td>1 289 378 €</td><td style="background:#FBF3D9;font-weight:600">1 910 142 €</td><td>—</td><td>—</td></tr>
           </tbody>
         </table>
         <div style="margin-top:18px">
@@ -595,7 +596,7 @@ body.editing{caret-color:var(--warn)}
           <div class="note" style="margin-top:8px">Měsíční atribuovaný obrat (open/click, 24 h online / 14 d offline). 2026 do června. Oba behaviorální UC rostou meziročně i proti 2024.</div>
         </div>
         <p style="margin-top:12px"><b>UC24 Voucher management</b> — nízkonákladový asistent: připomněl voucher 23 000× v e-mailech a 14 000 unikátům na webu, měsíčně cca +100 využitých voucherů navíc.</p>
-        <p class="note">RPE = tržby / doručené e-maily. Uplifty jsou meziroční na normalizovaném H1. UC1/UC16 vykazují OR &gt; 100 % (vícenásobná otevření na malém objemu) — brát orientačně. Zdroj: Bloomreach → BigQuery, 30. 6. 2026.</p>
+        <p class="note">RPE = tržby / doručené e-maily. Uplifty jsou meziroční na normalizovaném H1. UC1/UC16 vykazují OR &gt; 100 % (vícenásobná otevření na malém objemu) — brát orientačně. <b>Dva atribuční modely tržeb (H1 2026):</b> sloupec „e-mail“ = otevření/proklik e-mailu (24 h online / 14 d offline) — model použitý pro historická data a meziroční Δ (+13,9 %). Sloupec „voucher + e-mail“ přidává offline uplatnění voucherů/letáků a odpovídá opravené atribuci v ASKO Use-Cases reportu (Looker); právě proto se u UC16 (A5 leták) revenue zvyšuje z 75 tis. € na 875 tis. € a absolutní čísla stránky a Lookeru se nyní shodují. UC32 pochází z BigQuery (Looker ho zatím netrackuje). Zdroj: Bloomreach → BigQuery / Looker Use-Cases, 30. 6. 2026.</p>
       </div>
     </details>
 
