@@ -502,9 +502,17 @@ body.editing{caret-color:var(--warn)}
             <tr><td>UC30 · Price drop <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>17 928</td><td>16,2 %</td><td>142</td><td><b>45 409 €</b></td><td style="background:#FBF3D9;font-weight:600">18 997 €</td><td>nový</td><td>2,53</td></tr>
             <tr><td>UC32 · Back in stock <span class="pill real" style="font-size:9px">NOVÝ</span></td><td>14 886</td><td>23,3 %</td><td>61</td><td><b>41 110 €</b></td><td style="background:#FBF3D9;font-weight:600">25 439 €</td><td>nový</td><td>2,76</td></tr>
             <tr><td>UC25 · Výročí nákupu</td><td>161 115</td><td>3,7 %</td><td>39</td><td>23 013 €</td><td style="background:#FBF3D9;font-weight:600">11 412 €</td><td class="pos">+573 %</td><td>0,14</td></tr>
-            <tr style="border-top:2px solid var(--line);font-weight:700"><td>Celkem (10 UC)</td><td>—</td><td>—</td><td>—</td><td>1 289 378 €</td><td style="background:#FBF3D9;font-weight:600">1 910 142 €</td><td>—</td><td>—</td></tr>
+            <tr style="border-top:2px solid var(--grey);font-weight:700"><td>Celkem (10 UC)</td><td>—</td><td>—</td><td>—</td><td>1 289 378 €</td><td style="background:#FBF3D9;font-weight:600">1 910 142 €</td><td>—</td><td>—</td></tr>
           </tbody>
         </table>
+        <div style="margin-top:16px;padding:14px 18px;background:#FBF9F2;border:1px solid var(--grey);border-left:4px solid var(--yellow);border-radius:10px;font-size:12.5px;line-height:1.6;color:var(--ink)">
+          <div style="font-weight:700;margin-bottom:8px">Proč se oba sloupce tržeb liší</div>
+          <p style="margin:0 0 8px">Sloupce nejsou „e-mail“ a „e-mail navíc“ — jsou to dva různé způsoby přiřazení tržby k use casu. Mezi nimi působí dvě protichůdné síly:</p>
+          <p style="margin:0 0 8px"><b>1) Vouchery přidávají tržbu, ale jen tam, kde voucher existuje.</b> Voucher vydává pouze pět UC (UC1, UC2, UC12, UC16, UC17). Proto UC16 (A5 leták) roste ze 75 tis.&nbsp;€ na 875 tis.&nbsp;€ — model nově zachytí i offline uplatnění voucherů na prodejnách. UC bez voucheru (UC14, UC30, UC32) touto silou nezískají nic.</p>
+          <p style="margin:0 0 8px"><b>2) Model reportu (Looker) přiřazuje každý nákup jen jednou.</b> Sloupec „e-mail“ je multi-touch: jeden nákup započítá ke každému UC, jehož e-mail zákazník otevřel nebo proklikl. Stejný nákup se tak objeví u více UC a čísla se nafukují. Looker nákup deduplikuje (jeden nákup = jeden vlastník) a tento překryv každému UC odečte.</p>
+          <p style="margin:0 0 8px">U UC bez voucheru působí jen síla 2, proto tržba klesá (UC14 61 → 38 tis.&nbsp;€, UC30 45 → 19 tis.&nbsp;€, UC32 41 → 25 tis.&nbsp;€). U voucherových UC převáží síla 1 (UC16 nahoru).</p>
+          <p style="margin:0"><b>Souhrn:</b> „voucher + e-mail“ = deduplikovaný e-mail + vouchery tam, kde existují. Sloupce proto nelze porovnávat po jednotlivých UC jako „e-mail“ vs „e-mail plus“. Sloupec „e-mail“ jednotlivé UC nadhodnocuje vícenásobným započtením mezi UC; sloupec „voucher + e-mail“ odpovídá opravené atribuci v ASKO Use-Cases reportu (Looker).</p>
+        </div>
         <div style="margin-top:18px">
           <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Vývoj tržeb UC3 a UC4 v čase — měsíčně (dohodnutá atribuce)</div>
           <div class="ucgrid">
