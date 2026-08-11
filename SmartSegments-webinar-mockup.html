@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GreenMedica — SmartSegments Demo</title>
+<style>
+/* =====================================================================
+   SmartSegments Webinar Mock-up — GreenMedica (fictional pharmacy)
+   Two demos in one page:
+     (1) Exit-intent weblayer over a fake pharmacy homepage   [Slide 5]
+     (2) Unsubscribe-prevention preference page                [Slide 6]
+   Fictional brand only. No real client branding. All copy generic + English.
+   Palette mirrors the real implementation: green #00a651 / navy #2C2B55
+   / orange CTA #F98341.
+   ===================================================================== */
+
+:root{
+  --green:#00a651;
+  --green-d:#008a43;
+  --navy:#2C2B55;
+  --navy-soft:#2B2C5A;
+  --orange:#F98341;
+  --orange-d:#ec7631;
+  --ink:#2c3e50;
+  --muted:#A1A1A1;
+  --line:#e8e8e8;
+  --bg:#f4f4f4;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+header,nav,section,footer,main,article,aside{display:block}
+html{font-size:16px}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ============================ CONTROL BAR ============================ */
+/* This bar is for the presenter only — keep it OUT of the recording frame,
+   or press "H" to hide it entirely. */
+#demo-bar{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:#15161f;color:#fff;display:flex;align-items:center;gap:14px;
+  padding:8px 16px;font-size:13px;box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+#demo-bar .db-title{font-weight:700;letter-spacing:.3px;color:#fff;display:flex;align-items:center;gap:6px}
+#demo-bar .db-title .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+#demo-bar .db-spacer{flex:1}
+#demo-bar button{
+  font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;
+  border:1px solid #3a3c4a;background:#23252f;color:#e8e8ee;
+  padding:7px 13px;border-radius:7px;transition:.15s;
+}
+#demo-bar button:hover{background:#2e313d;border-color:#4a4d5c}
+#demo-bar button.active{background:var(--green);border-color:var(--green);color:#fff}
+#demo-bar .db-hint{color:#9a9cae;font-size:11.5px}
+#demo-bar.hidden{transform:translateY(-110%)}
+#demo-bar{transition:transform .25s ease}
+body.bar-hidden{padding-top:0}
+body{padding-top:46px;transition:padding-top .25s ease}
+
+/* ============================ SCENES ============================ */
+.scene{display:none}
+.scene.show{display:block}
+
+/* =====================================================================
+   SCENE 1 — FAKE PHARMACY HOMEPAGE (backdrop for exit-intent weblayer)
+   ===================================================================== */
+#scene-home{background:#fff}
+.gm-topbar{background:var(--navy);color:#fff;font-size:12.5px}
+.gm-topbar .wrap{max-width:1180px;margin:0 auto;padding:7px 24px;display:flex;align-items:center;gap:20px}
+.gm-topbar .spacer{flex:1}
+.gm-topbar a{color:#d7d7e6;text-decoration:none}
+.gm-topbar a:hover{color:#fff}
+
+.gm-header{background:#fff;border-bottom:1px solid #ececec}
+.gm-header .wrap{max-width:1180px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:24px}
+.gm-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.gm-logo .mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--green-d));display:flex;align-items:center;justify-content:center}
+.gm-logo .mark svg{width:22px;height:22px}
+.gm-logo .name{font-size:21px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
+.gm-logo .name b{color:var(--green)}
+.gm-search{flex:1;display:flex;border:2px solid #e3e3e3;border-radius:10px;overflow:hidden;max-width:560px}
+.gm-search input{flex:1;border:0;outline:none;padding:11px 16px;font-size:14.5px;font-family:var(--font);color:var(--ink)}
+.gm-search button{border:0;background:var(--green);color:#fff;padding:0 18px;cursor:pointer;display:flex;align-items:center}
+.gm-search button svg{width:18px;height:18px}
+.gm-actions{display:flex;align-items:center;gap:18px;flex-shrink:0;color:var(--navy)}
+.gm-actions .ico{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#6a6a7a;cursor:pointer}
+.gm-actions .ico svg{width:22px;height:22px;stroke:var(--navy)}
+.gm-actions .cart-badge{position:relative}
+.gm-actions .cart-badge .b{position:absolute;top:-6px;right:-9px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center}
+
+.gm-nav{background:#fff;border-bottom:1px solid #ececec}
+.gm-nav .wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;gap:26px}
+.gm-nav a{padding:13px 0;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:3px solid transparent;cursor:pointer}
+.gm-nav a:hover{color:var(--green)}
+.gm-nav a.on{color:var(--green);border-bottom-color:var(--green)}
+
+/* hero */
+.gm-hero{max-width:1180px;margin:24px auto 0;padding:0 24px}
+.gm-hero .banner{background:linear-gradient(120deg,#eafaf1 0%,#e6f3ff 100%);border-radius:18px;padding:40px 44px;display:flex;align-items:center;gap:30px;position:relative;overflow:hidden}
+.gm-hero .banner .txt{flex:1;z-index:1}
+.gm-hero .banner h1{font-size:32px;color:var(--navy);font-weight:800;letter-spacing:-.6px;margin-bottom:10px;line-height:1.15}
+.gm-hero .banner h1 span{color:var(--green)}
+.gm-hero .banner p{font-size:16px;color:#5b6172;max-width:430px;margin-bottom:20px}
+.gm-hero .banner .cta{background:var(--green);color:#fff;border:0;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font)}
+.gm-hero .banner .deco{font-size:150px;line-height:1;opacity:.9;z-index:1}
+
+/* pills row */
+.gm-cats{max-width:1180px;margin:22px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.gm-cat{background:#fff;border:1.5px solid #ececec;border-radius:14px;padding:18px 10px;text-align:center;cursor:pointer;transition:.18s}
+.gm-cat:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,166,81,.1)}
+.gm-cat .emo{font-size:30px;display:block;margin-bottom:8px}
+.gm-cat .lbl{font-size:12.5px;font-weight:600;color:var(--navy)}
+
+/* product grid */
+.gm-section{max-width:1180px;margin:34px auto 0;padding:0 24px}
+.gm-section .head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+.gm-section .head h2{font-size:22px;color:var(--navy);font-weight:800;letter-spacing:-.3px}
+.gm-section .head a{font-size:13.5px;color:var(--green);font-weight:600;text-decoration:none;cursor:pointer}
+.gm-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.gm-card{background:#fff;border:1.5px solid #ececec;border-radius:14px;padding:16px;position:relative;transition:.18s;cursor:pointer}
+.gm-card:hover{border-color:var(--green);box-shadow:0 8px 24px rgba(0,0,0,.07);transform:translateY(-3px)}
+.gm-card .tag{position:absolute;top:12px;left:12px;background:var(--orange);color:#fff;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.3px}
+.gm-card .pic{height:120px;border-radius:10px;background:#f3f6f4;display:flex;align-items:center;justify-content:center;font-size:54px;margin-bottom:13px}
+.gm-card .pname{font-size:13.5px;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:6px;min-height:35px}
+.gm-card .stars{color:var(--orange);font-size:12px;margin-bottom:8px;letter-spacing:1px}
+.gm-card .stars span{color:#bbb}
+.gm-card .price{display:flex;align-items:baseline;gap:8px;margin-bottom:11px}
+.gm-card .price .now{font-size:18px;font-weight:800;color:var(--navy)}
+.gm-card .price .old{font-size:13px;color:#b3b3b3;text-decoration:line-through}
+.gm-card .add{width:100%;border:0;background:#eafaf1;color:var(--green-d);font-weight:700;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;font-family:var(--font);transition:.15s}
+.gm-card .add:hover{background:var(--green);color:#fff}
+
+.gm-trust{max-width:1180px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gm-trust .t{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:12px;padding:16px 18px}
+.gm-trust .t .ic{font-size:26px}
+.gm-trust .t .tt{font-size:13px;font-weight:700;color:var(--navy)}
+.gm-trust .t .ts{font-size:12px;color:#8a8a98}
+
+.gm-footer{max-width:1180px;margin:44px auto 0;padding:30px 24px 60px;border-top:1px solid #ececec;color:#8a8a98;font-size:12.5px;display:flex;gap:28px;flex-wrap:wrap}
+.gm-footer a{color:#8a8a98;text-decoration:none;cursor:pointer}
+.gm-footer a:hover{color:var(--green)}
+
+@media(max-width:980px){
+  .gm-cats{grid-template-columns:repeat(3,1fr)}
+  .gm-grid{grid-template-columns:repeat(3,1fr)}
+  .gm-trust{grid-template-columns:repeat(2,1fr)}
+  .gm-search{display:none}
+}
+
+/* =====================================================================
+   EXIT-INTENT WEBLAYER  (overlay that pops on mouse-leave)
+   ===================================================================== */
+#exit-weblayer{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(20,20,30,.55);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+#exit-weblayer.open{display:flex;animation:wlfade .25s ease}
+@keyframes wlfade{from{opacity:0}to{opacity:1}}
+#exit-weblayer .wl-wrap{
+  position:relative;display:flex;width:860px;max-width:100%;min-height:500px;
+  background:#fff;border-radius:28px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);animation:wlpop .3s cubic-bezier(.2,.8,.3,1.2);
+}
+@keyframes wlpop{from{transform:scale(.92) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+#exit-weblayer .wl-left{
+  position:relative;flex:0 0 430px;min-height:500px;background:#fff;overflow:visible;z-index:3;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+#exit-weblayer .wl-mascot{width:330px;margin-bottom:-6px;z-index:8;pointer-events:none;user-select:none}
+#exit-weblayer .wl-right{
+  position:relative;flex:1;background:#F3F3F3;display:flex;align-items:center;justify-content:center;
+  padding:34px 30px 28px;z-index:1;
+}
+#exit-weblayer .wl-close{
+  position:absolute;top:16px;right:18px;width:28px;height:28px;border:0;background:transparent;
+  color:var(--navy-soft);font-size:34px;line-height:1;font-weight:700;cursor:pointer;z-index:30;
+  display:flex;align-items:center;justify-content:center;padding:0;
+}
+#exit-weblayer .wl-close:hover{opacity:.78}
+#exit-weblayer .wl-content{width:100%;max-width:347px;text-align:center;position:relative;z-index:2}
+#exit-weblayer .wl-headline{margin:0 0 6px;color:var(--navy-soft);font-size:25px;line-height:30px;font-weight:700}
+#exit-weblayer .wl-discount{
+  margin:0 0 4px;color:#1FA73F;font-size:120px;line-height:.88;font-weight:800;
+  display:inline-flex;align-items:flex-start;justify-content:center;gap:2px;letter-spacing:-.075em;
+}
+#exit-weblayer .wl-subtitle{margin:0 0 18px;color:var(--navy-soft);font-size:18px;line-height:22px;font-weight:500}
+#exit-weblayer .wl-form{width:100%}
+#exit-weblayer .wl-input{
+  width:100%;height:42px;border:1.1px solid var(--navy-soft);border-radius:6px;background:#fff;
+  padding:0 12px;font-size:17px;font-weight:500;color:var(--navy-soft);outline:none;font-family:var(--font);
+}
+#exit-weblayer .wl-input::placeholder{color:#B2B2B2;opacity:1}
+#exit-weblayer .wl-input:focus{border-color:var(--orange)}
+#exit-weblayer .wl-error{display:none;margin:6px 0 0;color:#d14343;font-size:12px;line-height:1.35;text-align:left}
+#exit-weblayer .wl-error.show{display:block}
+#exit-weblayer .wl-gender{display:flex;align-items:center;justify-content:center;gap:18px;margin:12px 0 0}
+#exit-weblayer .wl-gender-label{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--navy-soft);font-size:15px;font-weight:500;line-height:1;user-select:none}
+#exit-weblayer .wl-gender-label input[type=radio]{
+  appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid #B2B2B2;border-radius:50%;
+  background:#fff;cursor:pointer;flex-shrink:0;position:relative;transition:border-color .15s;
+}
+#exit-weblayer .wl-gender-label input[type=radio]:checked{border-color:var(--orange)}
+#exit-weblayer .wl-gender-label input[type=radio]:checked::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--orange);
+}
+#exit-weblayer .wl-gender-error{display:none;margin:6px 0 0;color:#d14343;font-size:12px;text-align:center}
+#exit-weblayer .wl-gender-error.show{display:block}
+#exit-weblayer .wl-submit{
+  display:block;width:249px;max-width:100%;height:54px;margin:16px auto 0;border:1.1px solid var(--orange);
+  border-radius:10px;background:var(--orange);color:#fff;font-size:22px;line-height:28px;font-weight:500;
+  cursor:pointer;font-family:var(--font);
+}
+#exit-weblayer .wl-submit:hover{background:var(--orange-d);border-color:var(--orange-d)}
+#exit-weblayer .wl-submit:active{transform:translateY(1px)}
+#exit-weblayer .wl-legal{margin:14px auto 0;width:100%;max-width:347px;color:#727272;font-size:11px;line-height:14px;text-align:center}
+#exit-weblayer .wl-legal a{color:#727272;text-decoration:underline}
+#exit-weblayer .wl-success{
+  display:none;flex:1;background:#F3F3F3;padding:34px 30px;text-align:center;
+  align-items:center;justify-content:center;flex-direction:column;z-index:1;
+}
+#exit-weblayer .wl-success h3{margin:0 0 20px;color:#21A63F;font-size:34px;line-height:1.2;font-weight:700}
+#exit-weblayer .wl-success p{margin:0;color:var(--navy-soft);font-size:22px;line-height:1.3;font-weight:700}
+#exit-weblayer.is-success .wl-right{display:none}
+#exit-weblayer.is-success .wl-success{display:flex}
+
+@media(max-width:720px){
+  #exit-weblayer .wl-wrap{flex-direction:column;width:330px;min-height:auto;border-radius:34px}
+  #exit-weblayer .wl-left{flex:0 0 auto;width:100%;height:170px;min-height:170px;overflow:hidden}
+  #exit-weblayer .wl-mascot{width:190px;margin-bottom:-20px}
+  #exit-weblayer .wl-discount{font-size:96px}
+  #exit-weblayer .wl-headline{font-size:20px;line-height:24px}
+}
+
+/* =====================================================================
+   SCENE 2 — UNSUBSCRIBE / PREFERENCE PAGE
+   ===================================================================== */
+#scene-unsub{background:var(--bg);min-height:100vh;padding-bottom:120px}
+.up-container{max-width:860px;margin:0 auto;padding:40px 20px 0}
+.up-content{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.08);padding:50px;animation:upfade .6s ease-out}
+@keyframes upfade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.up-logo{text-align:center;margin-bottom:40px}
+.up-logo .gm-logo{justify-content:center}
+.up-logo .gm-logo .name{font-size:26px}
+.up-header{text-align:center;margin-bottom:40px;padding-bottom:30px;border-bottom:2px solid #f0f0f0}
+.up-header h1{font-size:32px;color:var(--navy);font-weight:700;margin-bottom:12px;letter-spacing:-.5px;line-height:1.2}
+.up-header .subtitle{font-size:18px;color:var(--muted);margin-bottom:20px}
+.up-email-badge{display:inline-flex;align-items:center;padding:8px 20px 10px;border-radius:25px;font-weight:500;color:var(--navy);border:2px solid var(--navy)}
+
+.options-container{display:flex;flex-direction:column;gap:22px;margin-bottom:40px}
+.option-card{border:2px solid var(--line);border-radius:8px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);background:#fff}
+.option-card:hover{border-color:var(--green);box-shadow:0 4px 20px rgba(0,166,81,.1)}
+.option-card.active{border-color:var(--green);box-shadow:0 6px 30px rgba(0,166,81,.15)}
+.option-header{display:flex;align-items:center;gap:20px;padding:22px 24px;cursor:pointer;user-select:none}
+.option-icon{flex-shrink:0;width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green-d));display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .3s}
+.option-card:hover .option-icon{transform:scale(1.05)}
+.option-content{flex:1}
+.option-content h3{font-size:20px;color:var(--ink);font-weight:700}
+.option-content p{font-size:15px;color:var(--muted);line-height:1.4}
+.option-radio{flex-shrink:0;position:relative}
+.option-radio input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+.radio-custom{display:block;width:28px;height:28px;border:3px solid #d0d0d0;border-radius:50%;position:relative;transition:all .3s}
+.option-radio input[type=radio]:checked+.radio-custom{border-color:var(--green)}
+.radio-custom::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:14px;height:14px;border-radius:50%;background:var(--green);transition:transform .2s}
+.option-radio input[type=radio]:checked+.radio-custom::after{transform:translate(-50%,-50%) scale(1)}
+.option-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);background:#fafafa}
+.option-card.active .option-body{max-height:2000px}
+
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:24px}
+.topic-item{cursor:pointer}
+.topic-item input[type=checkbox]{display:none}
+.topic-label{display:flex;align-items:center;gap:8px;padding:14px 16px;background:#fff;border:2.2px solid #e0e0e0;border-radius:10px;transition:all .3s;font-size:15px;font-weight:500;color:var(--ink)}
+.topic-item:hover .topic-label{border-color:var(--green);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,166,81,.1)}
+.topic-item input[type=checkbox]:checked+.topic-label{background:linear-gradient(135deg,var(--green),#00863f);border-color:var(--green);color:#fff}
+.topic-text{flex:1;line-height:1.3}
+
+.frequency-options,.pause-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;padding:24px}
+.frequency-item,.pause-item{cursor:pointer}
+.frequency-item input,.pause-item input{display:none}
+.frequency-label{display:block;padding:14px 20px;background:#fff;border:2px solid #e0e0e0;border-radius:8px;text-align:center;transition:all .3s;font-weight:600;font-size:15px}
+.frequency-item:hover .frequency-label,.pause-item:hover .pause-label{border-color:var(--green);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,166,81,.1)}
+.frequency-item input:checked+.frequency-label{background:linear-gradient(135deg,var(--green),#00863f);border-color:var(--green);color:#fff}
+.pause-label{display:flex;align-items:center;gap:16px;padding:12px 20px;background:#fff;border:2px solid #e0e0e0;border-radius:10px;transition:all .3s}
+.pause-item input:checked+.pause-label{background:linear-gradient(135deg,var(--green),#00863f);border-color:var(--green);color:#fff}
+.pause-title{display:block;font-weight:700;font-size:15px}
+.pause-desc{display:block;font-size:13px;opacity:.8}
+
+.option-danger .unsubscribe-warning{padding:24px}
+.unsubscribe-warning .warning-text{font-size:14.5px;color:#7a5252;background:#fdf3f3;border:1px solid #f3d7d7;border-radius:8px;padding:16px;line-height:1.5}
+
+.form-footer{text-align:center}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border:0;border-radius:10px;padding:16px 44px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--font);box-shadow:0 6px 20px rgba(0,166,81,.25);transition:.2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,166,81,.3)}
+.btn-primary svg{width:20px;height:20px}
+
+.page-footer{text-align:center;color:#9a9a9a;font-size:13px;margin-top:36px}
+
+.success-page{display:none;text-align:center;padding:20px 0 10px}
+.success-page.show{display:block;animation:upfade .5s ease}
+.success-icon{margin:0 auto 24px;width:96px;height:96px;border-radius:50%;background:#eafaf1;display:flex;align-items:center;justify-content:center}
+.success-page h2{color:var(--green);font-size:32px;margin-bottom:16px;line-height:1.2}
+.success-page p{font-size:18px;color:#7f8c8d;margin-bottom:14px;line-height:1.4}
+.success-page p.sub{font-size:16px;color:#95a5a6}
+.email-info{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:10px 18px;border-radius:10px;background:#f5f7f6;color:#5b6b62;font-size:15px;font-weight:500}
+#unsub-form-wrap.hide{display:none}
+</style>
+</head>
+<body>
+
+<!-- ===================== PRESENTER CONTROL BAR ===================== -->
+<div id="demo-bar">
+  <span class="db-title"><span class="dot"></span>GreenMedica · SmartSegments demo</span>
+  <button id="btn-home" class="active" onclick="showScene('home')">① Homepage + Exit-intent</button>
+  <button id="btn-unsub" onclick="showScene('unsub')">② Unsubscribe prevention</button>
+  <span style="width:1px;height:22px;background:#3a3c4a"></span>
+  <button onclick="triggerExit()">▶ Trigger pop-up</button>
+  <button onclick="resetAll()">↺ Reset</button>
+  <span class="db-spacer"></span>
+  <span class="db-hint">Move cursor above the window to trigger · press <b>H</b> to hide this bar</span>
+</div>
+
+<!-- ===================== SCENE 1: HOMEPAGE ===================== -->
+<div id="scene-home" class="scene show">
+
+  <div class="gm-topbar"><div class="wrap">
+    <span>🚚 Free delivery over €40</span>
+    <span class="spacer"></span>
+    <a>Track order</a><a>Pharmacist advice</a><a>Sign in</a>
+  </div></div>
+
+  <header class="gm-header"><div class="wrap">
+    <div class="gm-logo">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4 5-6 7.5-6 11a6 6 0 0012 0c0-3.5-2-6-6-11z" fill="#fff"/></svg></span>
+      <span class="name">Green<b>Medica</b></span>
+    </div>
+    <div class="gm-search">
+      <input placeholder="Search medicines, vitamins, cosmetics…">
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+    </div>
+    <div class="gm-actions">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account</span>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A4.5 4.5 0 0 0 12 5 4.5 4.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg>Wishlist</span>
+      <span class="ico cart-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Cart<span class="b">3</span></span>
+    </div>
+  </div></header>
+
+  <nav class="gm-nav"><div class="wrap">
+    <a class="on">Home</a><a>Medicines</a><a>Vitamins</a><a>Cosmetics</a><a>Mother &amp; baby</a><a>Sport</a><a>Pet care</a><a>Sale</a>
+  </div></nav>
+
+  <section class="gm-hero"><div class="banner">
+    <div class="txt">
+      <h1>Your health, <span>delivered fast.</span></h1>
+      <p>Over 30,000 pharmacy products with expert advice and next-day delivery across the country.</p>
+      <button class="cta">Shop best-sellers</button>
+    </div>
+    <div class="deco">💊</div>
+  </div></section>
+
+  <section class="gm-cats">
+    <div class="gm-cat"><span class="emo">💊</span><span class="lbl">Vitamins</span></div>
+    <div class="gm-cat"><span class="emo">🤧</span><span class="lbl">Cold &amp; flu</span></div>
+    <div class="gm-cat"><span class="emo">💄</span><span class="lbl">Cosmetics</span></div>
+    <div class="gm-cat"><span class="emo">👶</span><span class="lbl">Mother &amp; baby</span></div>
+    <div class="gm-cat"><span class="emo">🏃</span><span class="lbl">Sport</span></div>
+    <div class="gm-cat"><span class="emo">🐾</span><span class="lbl">Pet care</span></div>
+  </section>
+
+  <section class="gm-section">
+    <div class="head"><h2>Recommended for you</h2><a>See all →</a></div>
+    <div class="gm-grid" id="gm-grid"></div>
+  </section>
+
+  <section class="gm-trust">
+    <div class="t"><span class="ic">🚚</span><div><div class="tt">Next-day delivery</div><div class="ts">Order before 4pm</div></div></div>
+    <div class="t"><span class="ic">💬</span><div><div class="tt">Pharmacist advice</div><div class="ts">7 days a week</div></div></div>
+    <div class="t"><span class="ic">🔒</span><div><div class="tt">Secure checkout</div><div class="ts">Verified payments</div></div></div>
+    <div class="t"><span class="ic">↩️</span><div><div class="tt">Easy returns</div><div class="ts">Within 30 days</div></div></div>
+  </section>
+
+  <footer class="gm-footer">
+    <a>About GreenMedica</a><a>Delivery &amp; returns</a><a>Privacy policy</a><a>Terms</a><a>Contact</a>
+    <span style="flex:1"></span><span>© 2026 GreenMedica — your online pharmacy</span>
+  </footer>
+</div>
+
+<!-- ===================== EXIT-INTENT WEBLAYER ===================== -->
+<div id="exit-weblayer" aria-modal="true" role="dialog" aria-label="Don't leave without 10% off">
+  <div class="wl-wrap">
+    <button class="wl-close" type="button" aria-label="Close" onclick="closeExit()">&times;</button>
+
+    <div class="wl-left">
+      <!-- friendly generic pharmacy mascot (inline SVG, no real branding) -->
+      <svg class="wl-mascot" viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="120" cy="288" rx="70" ry="9" fill="#000" opacity=".06"/>
+        <!-- body / capsule -->
+        <rect x="62" y="120" width="116" height="150" rx="58" fill="#fff" stroke="#e3e7e4" stroke-width="3"/>
+        <path d="M62 178a58 58 0 0 0 116 0v-20H62z" fill="#00a651" opacity=".12"/>
+        <!-- arms -->
+        <rect x="40" y="150" width="34" height="16" rx="8" fill="#00a651" transform="rotate(18 57 158)"/>
+        <rect x="166" y="150" width="34" height="16" rx="8" fill="#00a651" transform="rotate(-18 183 158)"/>
+        <!-- head -->
+        <circle cx="120" cy="86" r="62" fill="#00a651"/>
+        <circle cx="120" cy="86" r="62" fill="url(#g)"/>
+        <defs><radialGradient id="g" cx="40%" cy="35%" r="75%"><stop offset="0%" stop-color="#2ecf7a"/><stop offset="100%" stop-color="#00a651"/></radialGradient></defs>
+        <!-- cross on forehead -->
+        <g transform="translate(120 64)"><rect x="-7" y="-18" width="14" height="36" rx="3" fill="#fff"/><rect x="-18" y="-7" width="36" height="14" rx="3" fill="#fff"/></g>
+        <!-- eyes -->
+        <circle cx="100" cy="96" r="9" fill="#fff"/><circle cx="140" cy="96" r="9" fill="#fff"/>
+        <circle cx="102" cy="98" r="4.5" fill="#23304a"/><circle cx="142" cy="98" r="4.5" fill="#23304a"/>
+        <!-- smile -->
+        <path d="M104 116q16 14 32 0" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="wl-right">
+      <div class="wl-content">
+        <p class="wl-headline">Don't leave<br>without your</p>
+        <div class="wl-discount"><span>10</span><span>%</span></div>
+        <p class="wl-subtitle">off your first order</p>
+        <form id="wl-form" class="wl-form" novalidate onsubmit="submitExit(event)">
+          <input type="email" id="wl-email" class="wl-input" placeholder="Email address" autocomplete="email" inputmode="email">
+          <p id="wl-email-err" class="wl-error">Please enter a valid email address.</p>
+          <div class="wl-gender" role="group">
+            <label class="wl-gender-label"><input type="radio" name="wl-gender" value="male">I'm male</label>
+            <label class="wl-gender-label"><input type="radio" name="wl-gender" value="female">I'm female</label>
+          </div>
+          <p id="wl-gender-err" class="wl-gender-error">Please select an option.</p>
+          <button type="submit" class="wl-submit">Get 10% off</button>
+        </form>
+        <p class="wl-legal">I agree to the processing of my personal data for marketing purposes.
+          <a href="#" onclick="return false">Privacy policy.</a></p>
+      </div>
+    </div>
+
+    <div class="wl-success">
+      <h3>Thanks for subscribing!</h3>
+      <div>
+        <p>Since you're not yet subscribed<br>to our newsletter, we've sent you<br>a confirmation email.</p>
+        <br>
+        <p>Just confirm your address<br>and your 10% off your<br>first order is yours!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCENE 2: UNSUBSCRIBE PAGE ===================== -->
+<div id="scene-unsub" class="scene">
+  <div class="up-container">
+    <div class="up-content">
+
+      <div class="up-logo">
+        <div class="gm-logo">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4 5-6 7.5-6 11a6 6 0 0012 0c0-3.5-2-6-6-11z" fill="#fff"/></svg></span>
+          <span class="name">Green<b>Medica</b></span>
+        </div>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div id="unsub-success" class="success-page">
+        <div class="success-icon">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="11" fill="#00a651" opacity="0.12"/>
+            <circle cx="12" cy="12" r="9" stroke="#00a651" stroke-width="2" fill="none"/>
+            <path d="M8 12.5l2.5 2.5 5.5-5.5" stroke="#00a651" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2>Settings saved successfully</h2>
+        <p>Your communication preferences have been updated.</p>
+        <p class="sub"><strong>Changes will take effect within 24 hours.</strong></p>
+        <div class="email-info">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#00a651"><path d="M2 4L10 10L18 4V16H2V4Z M2 2H18C19.1 2 20 2.9 20 4V16C20 17.1 19.1 18 18 18H2C0.9 18 0 17.1 0 16V4C0 2.9 0.9 2 2 2Z"/></svg>
+          customer@example.com
+        </div>
+      </div>
+
+      <!-- FORM STATE -->
+      <div id="unsub-form-wrap">
+        <div class="up-header">
+          <h1>We care about <br>what we send you</h1>
+          <p class="subtitle">Adjust how we communicate with you</p>
+          <div class="up-email-badge">customer@example.com</div>
+        </div>
+
+        <div class="options-container">
+
+          <!-- Option 1: Topics -->
+          <div class="option-card" data-option="topics">
+            <div class="option-header" onclick="toggleOption(this)">
+              <div class="option-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+              <div class="option-content"><h3>Choose topics I care about</h3><p>Pick only the categories you're genuinely interested in</p></div>
+              <div class="option-radio"><input type="radio" name="main_option" value="topics"><span class="radio-custom"></span></div>
+            </div>
+            <div class="option-body"><div class="topics-grid">
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>💊</span><span class="topic-text">Vitamins &amp; supplements</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🏃</span><span class="topic-text">Sport &amp; recovery</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🥗</span><span class="topic-text">Healthy nutrition</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>⚖️</span><span class="topic-text">Diet &amp; weight loss</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>💄</span><span class="topic-text">Cosmetics &amp; drugstore</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>👶</span><span class="topic-text">Mother &amp; baby</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🧘</span><span class="topic-text">Mental wellbeing</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🌿</span><span class="topic-text">Homeopathy &amp; herbal</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🐾</span><span class="topic-text">Pet care</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>🩺</span><span class="topic-text">Medical aids</span></span></label>
+              <label class="topic-item"><input type="checkbox"><span class="topic-label"><span>⚕️</span><span class="topic-text">Health &amp; medicines</span></span></label>
+            </div></div>
+          </div>
+
+          <!-- Option 2: Reduce frequency -->
+          <div class="option-card" data-option="frequency">
+            <div class="option-header" onclick="toggleOption(this)">
+              <div class="option-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+              <div class="option-content"><h3>Reduce message frequency</h3><p>Set how often you'd like to hear from us</p></div>
+              <div class="option-radio"><input type="radio" name="main_option" value="frequency"><span class="radio-custom"></span></div>
+            </div>
+            <div class="option-body"><div class="frequency-options">
+              <label class="frequency-item"><input type="radio" name="frequency_select"><span class="frequency-label">Once a week</span></label>
+              <label class="frequency-item"><input type="radio" name="frequency_select"><span class="frequency-label">Once every 2 weeks</span></label>
+              <label class="frequency-item"><input type="radio" name="frequency_select"><span class="frequency-label">Once a month</span></label>
+              <label class="frequency-item"><input type="radio" name="frequency_select"><span class="frequency-label">Once every 2 months</span></label>
+            </div></div>
+          </div>
+
+          <!-- Option 3: Pause -->
+          <div class="option-card" data-option="pause">
+            <div class="option-header" onclick="toggleOption(this)">
+              <div class="option-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></div>
+              <div class="option-content"><h3>Take a break from messages</h3><p>Pause communication for a set period</p></div>
+              <div class="option-radio"><input type="radio" name="main_option" value="pause"><span class="radio-custom"></span></div>
+            </div>
+            <div class="option-body"><div class="pause-options">
+              <label class="pause-item"><input type="radio" name="pause_select"><span class="pause-label"><span class="pause-info"><span class="pause-title">1 week</span><span class="pause-desc">Pause for 7 days</span></span></span></label>
+              <label class="pause-item"><input type="radio" name="pause_select"><span class="pause-label"><span class="pause-info"><span class="pause-title">2 weeks</span><span class="pause-desc">Pause for 14 days</span></span></span></label>
+              <label class="pause-item"><input type="radio" name="pause_select"><span class="pause-label"><span class="pause-info"><span class="pause-title">1 month</span><span class="pause-desc">Pause for 30 days</span></span></span></label>
+              <label class="pause-item"><input type="radio" name="pause_select"><span class="pause-label"><span class="pause-info"><span class="pause-title">2 months</span><span class="pause-desc">Pause for 60 days</span></span></span></label>
+            </div></div>
+          </div>
+
+          <!-- Option 4: Unsubscribe -->
+          <div class="option-card option-danger" data-option="unsubscribe">
+            <div class="option-header" onclick="toggleOption(this)">
+              <div class="option-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+              <div class="option-content"><h3>Unsubscribe from all messages</h3><p>You'll no longer receive any marketing communication from GreenMedica</p></div>
+              <div class="option-radio"><input type="radio" name="main_option" value="unsubscribe"><span class="radio-custom"></span></div>
+            </div>
+            <div class="option-body"><div class="unsubscribe-warning">
+              <p class="warning-text"><strong>Important:</strong><br>Once unsubscribed you'll no longer receive any marketing messages — including exclusive offers, discounts, pharmacy news and useful health tips.</p>
+            </div></div>
+          </div>
+
+        </div>
+
+        <div class="form-footer">
+          <button type="button" class="btn-primary" onclick="saveUnsub()">Save
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="page-footer">GreenMedica.com | Your online pharmacy</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====================== PRODUCT GRID (homepage) ====================== */
+var PRODUCTS=[
+  {tag:'-20%',emo:'💊',name:'Vitamin C 1000mg · 60 tablets',stars:5,now:'€7.90',old:'€9.90'},
+  {tag:'',emo:'🧴',name:'Daily moisturiser SPF30 · 50ml',stars:4,now:'€12.40',old:''},
+  {tag:'-15%',emo:'🤧',name:'Cold &amp; flu relief · day &amp; night',stars:5,now:'€6.20',old:'€7.30'},
+  {tag:'',emo:'🦠',name:'Probiotic complex · 30 caps',stars:4,now:'€14.90',old:''},
+  {tag:'NEW',emo:'🌙',name:'Magnesium + B6 sleep support',stars:5,now:'€9.50',old:''},
+  {tag:'',emo:'👶',name:'Baby gentle wash · 400ml',stars:5,now:'€5.80',old:''},
+  {tag:'-10%',emo:'💧',name:'Hydrating eye drops · 10ml',stars:4,now:'€4.30',old:'€4.80'},
+  {tag:'',emo:'🦷',name:'Whitening toothpaste · 2-pack',stars:4,now:'€6.60',old:''},
+  {tag:'',emo:'🏃',name:'Magnesium muscle recovery gel',stars:5,now:'€11.20',old:''},
+  {tag:'-25%',emo:'☀️',name:'Vitamin D3 2000 IU · 90 caps',stars:5,now:'€8.10',old:'€10.80'}
+];
+(function(){
+  var g=document.getElementById('gm-grid');
+  g.innerHTML=PRODUCTS.map(function(p){
+    var stars='';for(var i=0;i<5;i++)stars+= i<p.stars?'★':'<span>★</span>';
+    return '<div class="gm-card">'+
+      (p.tag?'<span class="tag">'+p.tag+'</span>':'')+
+      '<div class="pic">'+p.emo+'</div>'+
+      '<div class="pname">'+p.name+'</div>'+
+      '<div class="stars">'+stars+'</div>'+
+      '<div class="price"><span class="now">'+p.now+'</span>'+(p.old?'<span class="old">'+p.old+'</span>':'')+'</div>'+
+      '<button class="add">Add to cart</button></div>';
+  }).join('');
+})();
+
+/* ====================== SCENE SWITCHING ====================== */
+function showScene(name){
+  document.getElementById('scene-home').classList.toggle('show',name==='home');
+  document.getElementById('scene-unsub').classList.toggle('show',name==='unsub');
+  document.getElementById('btn-home').classList.toggle('active',name==='home');
+  document.getElementById('btn-unsub').classList.toggle('active',name==='unsub');
+  closeExit();
+  window.scrollTo(0,0);
+}
+
+/* ====================== EXIT-INTENT LOGIC ====================== */
+var exitShown=false;            // once per "session" (per page load), like the real cooldown
+var MIN_TIME_MS=1500;           // small guard so it doesn't fire instantly
+var pageReadyAt=Date.now();
+var wl=document.getElementById('exit-weblayer');
+
+function canTrigger(){
+  return !exitShown
+    && document.getElementById('scene-home').classList.contains('show')
+    && (Date.now()-pageReadyAt)>MIN_TIME_MS;
+}
+function triggerExit(){            // manual button — always shows (for rehearsal)
+  exitShown=true; wl.classList.remove('is-success'); wl.classList.add('open');
+}
+function openExit(){
+  if(!canTrigger())return;
+  exitShown=true; wl.classList.remove('is-success'); wl.classList.add('open');
+}
+function closeExit(){ wl.classList.remove('open'); }
+
+/* Desktop mouse-leave toward the top = exit intent (mirrors real Y<=5 logic) */
+document.addEventListener('mouseout',function(e){
+  if(e.clientY<=5 && !e.relatedTarget && !e.toElement){ openExit(); }
+});
+
+/* email + gender validation, then success state (mirrors real flow) */
+function submitExit(ev){
+  ev.preventDefault();
+  var email=document.getElementById('wl-email').value.trim();
+  var emailErr=document.getElementById('wl-email-err');
+  var genderErr=document.getElementById('wl-gender-err');
+  var gender=wl.querySelector('input[name="wl-gender"]:checked');
+  var ok=true;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){emailErr.classList.add('show');ok=false;}else{emailErr.classList.remove('show');}
+  if(!gender){genderErr.classList.add('show');ok=false;}else{genderErr.classList.remove('show');}
+  if(!ok)return;
+  wl.classList.add('is-success');   // swap form -> thank-you
+}
+
+/* ====================== UNSUBSCRIBE PAGE LOGIC ====================== */
+function toggleOption(headerEl){
+  var card=headerEl.closest('.option-card');
+  var wasActive=card.classList.contains('active');
+  document.querySelectorAll('#scene-unsub .option-card').forEach(function(c){
+    c.classList.remove('active');
+    var r=c.querySelector('input[name="main_option"]'); if(r)r.checked=false;
+  });
+  if(!wasActive){
+    card.classList.add('active');
+    var radio=card.querySelector('input[name="main_option"]'); if(radio)radio.checked=true;
+  }
+}
+function saveUnsub(){
+  document.getElementById('unsub-form-wrap').classList.add('hide');
+  document.getElementById('unsub-success').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ====================== RESET (for re-recording takes) ====================== */
+function resetAll(){
+  // weblayer
+  exitShown=false; pageReadyAt=Date.now();
+  wl.classList.remove('open','is-success');
+  document.getElementById('wl-form').reset();
+  document.getElementById('wl-email-err').classList.remove('show');
+  document.getElementById('wl-gender-err').classList.remove('show');
+  // unsub page
+  document.getElementById('unsub-form-wrap').classList.remove('hide');
+  document.getElementById('unsub-success').classList.remove('show');
+  document.querySelectorAll('#scene-unsub .option-card').forEach(function(c){
+    c.classList.remove('active');
+    c.querySelectorAll('input').forEach(function(i){i.checked=false;});
+  });
+  showScene('home');
+}
+
+/* ====================== PRESENTER SHORTCUTS ====================== */
+document.addEventListener('keydown',function(e){
+  if(e.key==='h'||e.key==='H'){
+    document.getElementById('demo-bar').classList.toggle('hidden');
+    document.body.classList.toggle('bar-hidden');
+  }
+  if(e.key==='Escape')closeExit();
+});
+</script>
+</body>
+</html>
