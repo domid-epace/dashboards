@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unipharma / eTabletka — Rebranding 2026: přehled hodin a víceprací</title>
+<style>
+:root{
+  color-scheme: light;
+  --surface-1:#fcfcfb; --plane:#f4f3f0;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --s-scope:#2a78d6; --s-bill:#eb6834; --s-free:#1baf7a; --warn:#d03b3b;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --surface-1:#1a1a19; --plane:#0d0d0d;
+    --ink:#fff; --ink-2:#c3c2b7; --ink-3:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+    --s-scope:#3987e5; --s-bill:#d95926; --s-free:#199e70; --warn:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface-1:#1a1a19; --plane:#0d0d0d;
+  --ink:#fff; --ink-2:#c3c2b7; --ink-3:#898781;
+  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+  --s-scope:#3987e5; --s-bill:#d95926; --s-free:#199e70; --warn:#e66767;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 22px 80px}
+h1{font-size:25px;line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:17px;margin:38px 0 12px;letter-spacing:-.005em}
+h2 .n{color:var(--ink-3);font-weight:400;margin-right:8px}
+p{margin:0 0 10px}
+.sub{color:var(--ink-2);font-size:14px;margin:0}
+.meta{color:var(--ink-3);font-size:12.5px;margin-top:10px;line-height:1.7}
+.card{background:var(--surface-1);border:1px solid var(--ring);border-radius:10px}
+header.card{padding:22px 24px;margin-bottom:22px;border-left:4px solid var(--s-bill)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.kpi{padding:16px 16px}
+.kpi .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.055em;color:var(--ink-3);margin-bottom:7px;min-height:28px}
+.kpi .val{font-size:28px;font-weight:650;letter-spacing:-.02em;line-height:1}
+.kpi .val small{font-size:13px;font-weight:500;color:var(--ink-2);letter-spacing:0}
+.kpi .note{font-size:12px;color:var(--ink-2);margin-top:7px}
+.kpi.b{border-top:3px solid var(--s-bill)}
+.kpi.f{border-top:3px solid var(--s-free)}
+.kpi.s{border-top:3px solid var(--s-scope)}
+
+.rules{padding:16px 20px}
+.rules ol{margin:6px 0 0;padding-left:20px}
+.rules li{margin-bottom:8px;color:var(--ink-2)}
+.rules li b{color:var(--ink)}
+
+.tl{padding:18px 20px}
+.tl-item{display:grid;grid-template-columns:94px 14px 1fr;position:relative}
+.tl-item .d{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:2px;text-align:right;padding-right:12px;white-space:nowrap}
+.tl-item .ax{position:relative}
+.tl-item .ax::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:1px;background:var(--grid)}
+.tl-item:last-child .ax::before{bottom:auto;height:9px}
+.tl-item .dot{position:absolute;left:1px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--ink-3);box-shadow:0 0 0 2px var(--surface-1)}
+.tl-item.k .dot{background:var(--s-bill);width:11px;height:11px;left:0}
+.tl-item.g .dot{background:var(--s-free);width:11px;height:11px;left:0}
+.tl-item .c{padding:0 0 14px 12px;font-size:13.5px;color:var(--ink-2)}
+.tl-item .c b{color:var(--ink);font-weight:600}
+.tl-item.k .c b:first-child{color:var(--s-bill)}
+.tl-item.g .c b:first-child{color:var(--s-free)}
+
+.items{display:flex;flex-direction:column;gap:12px}
+details.item{background:var(--surface-1);border:1px solid var(--ring);border-radius:10px;overflow:hidden}
+details.item>summary{list-style:none;cursor:pointer;padding:13px 18px;display:grid;grid-template-columns:1fr 210px;gap:16px;align-items:center}
+details.item>summary::-webkit-details-marker{display:none}
+details.item>summary:hover{background:color-mix(in oklab,var(--surface-1) 92%, var(--ink))}
+.it-h{display:flex;align-items:baseline;gap:9px;min-width:0;flex-wrap:wrap}
+.it-h .key{font-size:11px;font-variant-numeric:tabular-nums;color:var(--ink-3);background:var(--plane);border:1px solid var(--ring);border-radius:4px;padding:1px 6px;flex:none}
+.it-h .ttl{font-weight:620;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it-h .caret{color:var(--ink-3);font-size:11px;flex:none;display:inline-block;transition:transform .15s}
+details.item[open] .caret{transform:rotate(90deg)}
+.badge{font-size:10.5px;font-weight:650;padding:1px 6px;border-radius:4px;flex:none;white-space:nowrap}
+.badge.ok{background:color-mix(in oklab,var(--s-free) 16%,transparent);color:var(--s-free)}
+.badge.op{background:color-mix(in oklab,var(--warn) 14%,transparent);color:var(--warn)}
+.badge.rd{background:var(--plane);color:var(--ink-3);border:1px solid var(--ring)}
+.badge.info{background:color-mix(in oklab,var(--s-scope) 15%,transparent);color:var(--s-scope)}
+.sent{font-size:12px;color:var(--ink-2);text-align:right;white-space:nowrap}
+.sent b{color:var(--ink);font-variant-numeric:tabular-nums}
+.body{padding:4px 18px 20px;border-top:1px solid var(--grid);display:grid;grid-template-columns:1.15fr 1fr;gap:26px}
+@media(max-width:900px){.body{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}details.item>summary{grid-template-columns:1fr}}
+.body h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.055em;color:var(--ink-3);margin:16px 0 8px;font-weight:600}
+ul.why{margin:0;padding-left:17px}
+ul.why li{margin-bottom:7px;font-size:13.5px;color:var(--ink-2)}
+ul.why li b{color:var(--ink)}
+.tag{display:inline-block;font-size:10.5px;font-weight:650;letter-spacing:.03em;text-transform:uppercase;padding:1px 6px;border-radius:4px;vertical-align:1px}
+.tag.bill{background:color-mix(in oklab,var(--s-bill) 16%,transparent);color:var(--s-bill)}
+.tag.free{background:color-mix(in oklab,var(--s-free) 16%,transparent);color:var(--s-free)}
+.ev{display:grid;grid-template-columns:64px 1fr;gap:0 10px;font-size:13px}
+.ev .d{color:var(--ink-3);font-variant-numeric:tabular-nums;padding:3px 0;white-space:nowrap}
+.ev .t{padding:3px 0 3px 12px;border-left:2px solid var(--grid);color:var(--ink-2)}
+.ev .t.dl{border-left-color:var(--s-scope)}
+.ev .t.ch{border-left-color:var(--s-bill)}
+.ev .t.fx{border-left-color:var(--s-free)}
+.ev .t b{color:var(--ink);font-weight:600}
+.ev .t q{quotes:"„" "“";color:var(--ink);font-style:normal}
+
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--grid)}
+th:first-child,td:first-child{text-align:left;font-variant-numeric:normal}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--axis)}
+tbody tr:hover{background:var(--plane)}
+tfoot td{font-weight:700;border-top:2px solid var(--axis);border-bottom:none;padding-top:10px}
+td.dim{color:var(--ink-3)}
+.tblwrap{padding:14px 18px;overflow-x:auto}
+.splitband{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.splitband .sb{padding:12px 14px;border-radius:9px;background:var(--plane);border:1px solid var(--ring)}
+.splitband .sb .l{font-size:11px;color:var(--ink-3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.splitband .sb .v{font-size:20px;font-weight:650;font-variant-numeric:tabular-nums}
+.splitband .sc .v{color:var(--s-scope)} .splitband .bi .v{color:var(--s-bill)} .splitband .fr .v{color:var(--s-free)}
+@media(max-width:900px){.splitband{grid-template-columns:1fr}}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:0 0 12px;font-size:13px;color:var(--ink-2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-1px}
+
+.fig{display:grid;grid-template-columns:290px 1fr;gap:0}
+.hero{padding:22px 24px;border-right:1px solid var(--grid)}
+.hero .big{font-size:52px;font-weight:680;letter-spacing:-.03em;line-height:1;color:var(--s-bill)}
+.hero .cap{font-size:13.5px;color:var(--ink-2);margin-top:10px;line-height:1.45}
+.hero .cap b{color:var(--ink)}
+.fchart{padding:18px 22px}
+.frow{display:grid;grid-template-columns:150px 1fr 74px;gap:12px;align-items:center;margin-bottom:9px}
+.frow .fn{font-size:13px;text-align:right;color:var(--ink)}
+.frow .fn em{display:block;font-style:normal;font-size:11px;color:var(--ink-3)}
+.frow .pct{font-size:13px;font-variant-numeric:tabular-nums;font-weight:600;color:var(--s-bill)}
+.bar{display:flex;height:19px;position:relative}
+.seg{height:100%;position:relative;box-shadow:0 0 0 2px var(--surface-1)}
+.seg:first-child{border-radius:4px 0 0 4px}.seg:last-child{border-radius:0 4px 4px 0}.seg:only-child{border-radius:4px}
+.seg span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:650;color:#fff;font-variant-numeric:tabular-nums}
+@media(max-width:900px){.fig{grid-template-columns:1fr}.hero{border-right:none;border-bottom:1px solid var(--grid)}.frow{grid-template-columns:110px 1fr 62px}}
+.foot{margin-top:34px;font-size:12px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--grid);padding-top:14px}
+@media print{body{background:#fff}details.item{break-inside:avoid}details.item>summary{cursor:default}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="card">
+  <h1>Unipharma / eTabletka — Rebranding 2026</h1>
+  <p class="sub">Přehled odpracovaných hodin, rozsahu objednávky a víceprací, které vznikly v průběhu projektu.</p>
+  <p class="meta">
+    <b>Podklady:</b> evidence hodin (Tempo) k 13. 8. 2026 · nacenění — list „Rebranding“ · e-mailová komunikace s klientem (31. 7. – 13. 8. 2026) · porovnání dvou exportů Figmy (stav při zahájení prací a k 13. 8. 2026) · komentáře ve Figmě<br>
+    <b>Stav k:</b> 13. 8. 2026 · <b>Připravil:</b> ePACE
+  </p>
+</header>
+
+<div class="kpis">
+  <div class="kpi card"><div class="lab">Naceněno<br>(objednávka)</div><div class="val">107 <small>h</small></div><div class="note">86 DEV + 20 PM + 1 SA = <b>10 000 €</b></div></div>
+  <div class="kpi card"><div class="lab">Skutečně odpracováno</div><div class="val">240 <small>h</small></div><div class="note">+133 h nad rozpočtem = <b>+124 %</b></div></div>
+  <div class="kpi card f"><div class="lab">Odpracováno, neúčtujeme</div><div class="val">43,25 <small>h</small></div><div class="note">naše korekce a část koordinace — <b>nefakturujeme</b></div></div>
+  <div class="kpi card b"><div class="lab">Vícepráce</div><div class="val">89,75 <small>h</small></div><div class="note">práce nad rámec objednávky<br>(240 − 107 − 43,25 h)</div></div>
+</div>
+
+<h2><span class="n">01</span>Pravidlo, podle kterého jsou hodiny rozdělené</h2>
+<div class="card rules">
+  <p style="color:var(--ink-2);margin-bottom:4px">Z 240 odpracovaných hodin patří 107 h do rozsahu schváleného v objednávce, 43,25 h neseme sami a klientovi je nefakturujeme, a zbytek jsou vícepráce vzniklé změnou zadání po předání. Rozdělení platí stejně pro všechny položky.</p>
+  <ol>
+    <li><b>V rozsahu objednávky — 107 h.</b> První dodávka a první revizní kolo, tedy doladění proti Figmě předané 24. 7. Na to je nacenění. I když jsme rozpočet přečerpali, účtujeme jen naceněnou částku.</li>
+    <li><b>Vícepráce — 89,75 h.</b> Práce, která vznikla <b>změnou zadání po předání</b>: úprava Figmy na straně klienta, přidání prvku, který v původní Figmě nebyl, nebo úprava, která si vynutila překódování. Ke každé položce je datum, zdroj a kdo změnu zadal (sekce 04 a 05).</li>
+    <li><b>Neúčtujeme — 43,25 h.</b> Naše odchylky od schválené Figmy, naše korekce v implementaci, čas na vysvětlení technických limitů e-mailového HTML a část projektové koordinace. Tyto hodiny neseme na svoje náklady.</li>
+    <li><b>Výpočet víceprací:</b> 240 h odpracováno − 107 h v objednávce − 43,25 h neúčtováno = <b>89,75 h</b>.</li>
+  </ol>
+</div>
+
+<h2><span class="n">02</span>Změny ve Figmě od zahájení prací</h2>
+<p class="sub" style="margin-bottom:12px">Grafické podklady ve Figmě se v průběhu prací upravovaly. Níže je porovnání dvou exportů souboru „EMAILING – new 2026 ORANGE“ — stavu při zahájení prací a stavu k 13. 8. 2026. Porovnává se obsah snímků se stejným názvem; 87 souborů je bajt po bajtu shodných, takže rozdíly nejsou artefaktem exportu, ale skutečnou úpravou návrhu.</p>
+<div class="card fig">
+  <div class="hero">
+    <div class="big">41 / 41</div>
+    <div class="cap"><b>Všechny snímky use casů se od zahájení prací změnily.</b> Žádný ze 41 rámců UC1–UC13, které jsou v obou exportech, nezůstal stejný. Naopak 56 z 68 ikon a komponent zůstalo beze změny — tam, kde se do návrhu nezasahovalo, jsou soubory identické.</div>
+    <div class="cap" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--grid)">Souvislost, která z porovnání vychází: <b>weblayery</b> se změnily nejméně (43 %) a jako jediná položka <b>skončily přesně v rozpočtu</b>. Use casy se změnily ze 100 % a jsou v průměru zhruba 3× nad rozpočtem.</div>
+  </div>
+  <div class="fchart" id="fchart"></div>
+</div>
+
+<h2><span class="n">03</span>Průběh projektu</h2>
+<p class="sub" style="margin-bottom:12px">Klíčové momenty od zadání po stav k 13. 8. 2026. Oranžově jsou zvýrazněné body, kde se měnilo zadání.</p>
+<div class="card tl" id="ptl"></div>
+
+<h2><span class="n">04</span>Detail po položkách</h2>
+<p class="sub" style="margin-bottom:12px">U každé položky je datum prvního odeslání ke schválení, průběh připomínek a dodávek, a přehled toho, co bylo vícepráce a co neseme jako naši korekci. Rozklikni položku pro detail.</p>
+<div class="items" id="items"></div>
+
+<h2><span class="n">05</span>Souhrnná tabulka</h2>
+<div class="card tblwrap">
+  <table id="tbl"></table>
+  <div class="splitband">
+    <div class="sb sc"><div class="l">V rozsahu objednávky</div><div class="v">107 h</div></div>
+    <div class="sb bi"><div class="l">Vícepráce</div><div class="v">89,75 h</div></div>
+    <div class="sb fr"><div class="l">Neúčtujeme</div><div class="v">43,25 h</div></div>
+  </div>
+</div>
+
+<p class="foot">
+Sazby podle listu „Rebranding“ v naceněné a odeslané nabídce: DEV 100 €/h, SA 120 €/h, PM 64 €/h (86 h DEV + 20 h PM + 1 h SA = 10 000 €).<br>
+Hodinové součty vycházejí z evidence času (Tempo); celkem 240,0 h. Rozdělení do kategorií odpovídá pravidlu v sekci 01. Porovnání Figmy je založené na kontrolních součtech souborů se shodným názvem; položky přítomné jen v jednom z exportů se pro porovnání nepoužívají.
+</p>
+</div>
+
+<script>
+const F = n => (Math.round(n*100)/100).toString().replace('.', ',');
+
+// ---- Figma diff chart ----
+const FIG=[
+ ['Use casy','snímky UC1–UC13',41,0],
+ ['Masteršablona','desktop + mobil + bloky',11,10],
+ ['Weblayery','desktop + mobil',16,21],
+ ['Komponenty a ikony','sdílené prvky',12,56]
+];
+const FMAX=Math.max(...FIG.map(f=>f[2]+f[3]));
+const fch=document.getElementById('fchart');
+fch.innerHTML=`<div style="display:flex;gap:18px;font-size:12.5px;color:var(--ink-2);margin-bottom:14px">
+ <span><i style="width:11px;height:11px;border-radius:3px;display:inline-block;background:var(--s-bill);margin-right:6px;vertical-align:-1px"></i>změněno od zahájení prací</span>
+ <span><i style="width:11px;height:11px;border-radius:3px;display:inline-block;background:var(--s-scope);margin-right:6px;vertical-align:-1px"></i>beze změny</span></div>`;
+FIG.forEach(([n,sub,ch,ok])=>{
+  const row=document.createElement('div'); row.className='frow';
+  row.innerHTML=`<div class="fn">${n}<em>${sub}</em></div>`;
+  const cell=document.createElement('div');
+  const b=document.createElement('div'); b.className='bar'; b.style.height='19px';
+  [[ch,'var(--s-bill)'],[ok,'var(--s-scope)']].forEach(([v,c])=>{
+    if(v<=0) return;
+    const s=document.createElement('div'); s.className='seg'; s.style.width=(v/FMAX*100)+'%'; s.style.background=c;
+    if(v/FMAX*100>5){const sp=document.createElement('span');sp.textContent=v;s.appendChild(sp);}
+    b.appendChild(s);
+  });
+  cell.appendChild(b); row.appendChild(cell);
+  const p=document.createElement('div'); p.className='pct'; p.textContent=Math.round(100*ch/(ch+ok))+' %';
+  row.appendChild(p); fch.appendChild(row);
+});
+fch.insertAdjacentHTML('beforeend','<div style="font-size:12px;color:var(--ink-3);margin-top:12px;padding-top:10px;border-top:1px solid var(--grid);line-height:1.6">Celkem 167 snímků se stejným názvem v obou exportech, z toho 80 změněných. Navíc se změnily i PDF exporty jednotlivých e-mailů — u uc5, uc7, uc8, uc9 a uc11 shodně o cca +580 kB, což ukazuje na zásah do sdílené komponenty.</div>');
+
+// ---- project timeline (zkráceno) ----
+const PTL=[
+ ['24. 7.',0,'<b>Zadání.</b> Figma „EMAILING – new 2026 ORANGE“, naceněno <b>107 h / 10 000 €</b> na jednu dodávku a jedno revizní kolo na položku.'],
+ ['28.–29. 7.',0,'Zahájení prací. U šesti use casů vývojáři zaznamenávají, co v podkladech chybí — hlavičky, patičky, tři různí maskoti, bannery. Podklady nebyly při předání kompletní.'],
+ ['31. 7.',1,'První dodávka klientovi (UC1). Téhož dne <b>úprava Figmy během prací</b> — produktové bloky na mobilu ze 2 sloupců na 1 blok na řádek.'],
+ ['4. 8.',1,'Šest dodávek v jednom dni a první vlna komentářů ve Figmě (UC1, UC10, masteršablona). Klient písemně: <q>boli sme nútení urobiť vo figme ešte zmenu vo vykreslení veľkosti produktov</q>.'],
+ ['6. 8. 11:43',1,'<b>Písemné upozornění na vícepráce.</b> Label „Tento produkt si pozerá…“ = cca 10 h vývoje mimo nacenění; nabídnuto samostatné nacenění. Klient ve 14:38 prvek potvrdil.'],
+ ['10. 8.',2,'<b>Online schůzka s klientem.</b> Představen alternativní návrh zobrazení voucher bloku na mobilu — klient návrh přijal. Téhož dne centrální překódování produktových bloků pro všechny use casy.'],
+ ['11.–12. 8.',1,'Další revizní kola. Klient upravuje zadání voucheru (jiná textace desktop/mobil) a mění kód timeru v šabloně. 12. 8. písemné upozornění na změnu barvy pozadí masteršablony, o které jsme nebyli informováni.'],
+ ['12.–13. 8.',2,'<b>Vlna schválení</b> — UC2, UC3, UC8 (12. 8.), UC4, UC5, UC6, UC9, UC12 (13. 8.), UC13 telefonicky (7. 8.). Naše korekce z tohoto období (timer, voucher, odkaz v patičce) opraveny a neúčtovány.'],
+ ['13. 8. 9:44',1,'Masteršablona — poslední kolo s dalšími požadavky mimo původní zadání (produktové bloky ručně i přes ID, dynamický voucher a bloky). Zůstává otevřená.']
+];
+const ptl=document.getElementById('ptl');
+PTL.forEach(([d,k,c])=>{
+  const el=document.createElement('div'); el.className='tl-item'+(k===1?' k':k===2?' g':'');
+  el.innerHTML=`<div class="d">${d}</div><div class="ax"><div class="dot"></div></div><div class="c">${c}</div>`;
+  ptl.appendChild(el);
+});
+
+// ---- items ----
+const ITEMS = [
+{key:'UNP-459', name:'UC7 + UC9 — reaktivace + RFM', sent:'7. 8.', tot:50.5, bud:8, rounds:5, state:'schváleno 13. 8.',
+ events:[
+  ['24. 7.','','Zadání, 12 šablon (8× UC7, 4× UC9). Naceněno 8 h na oba use casy dohromady.'],
+  ['31. 7.','ch','<b>Úprava Figmy během prací.</b> Produktové bloky na mobilu: ze dvou produktů vedle sebe na jeden produkt na řádek. Bez upozornění předem.'],
+  ['7. 8.','dl','Dodávka UC7 (8 šablon) a UC9 (4 šablony).'],
+  ['~5. 8.','ch','Komentář klientova grafika ve Figmě: <q>Zmenené kupóny v celej UC9</q>.'],
+  ['7.–10. 8.','','Připomínky UC7 a UC9 — produktové bloky, vouchery a buttony na mobilu, velikost e-mailů 101–106 kB.'],
+  ['10. 8.','ch','<b>Centrální překódování produktových bloků</b> pro všechny use casy. Klientovi písemně vysvětleno, že ořezání textu jako ve Figmě v e-mailu není možné — pouze limit počtem znaků (45 nadpis, 66 popis).'],
+  ['10. 8.','g','<b>Online schůzka</b> — představen alternativní návrh voucher bloku (vertikální zarovnání na mobilu), <b>klient jej přijal.</b>'],
+  ['11. 8. 13:13','ch','Klient mění zadání voucheru — jiná textace na desktopu a na mobilu, což vyžaduje úpravu kódu.'],
+  ['12. 8. 13:34','ch','Dodávka a <b>druhé písemné upozornění na vícepráce:</b> <q>Podle Figmy je formát 2 řádky pro název produktu a 3 řádky popis. Pokud si přejete změnu, budeme to zpracovávat v rámci víceprací.</q>'],
+  ['13. 8.','fx','Naše korekce: voucher byl nejprve upraven jen v rfm_r1, poté roztažen do všech e-mailů UC9. Klient: <q>tak je to v poriadku</q> — <b>UC9 schváleno.</b>']],
+ change:[
+  'Přepracování produktových bloků ze 2 sloupců na 1 — úprava Figmy 31. 7., devět dní po zahájení prací.',
+  'Centrální překódování produktových bloků 10.–11. 8., vynucené kumulací změn. Provedeno jednou pro všechny use casy.',
+  'Voucher blok — rozdílná textace desktop / mobil (požadavek klienta 11. 8.).'],
+ mine:[
+  'Naše korekce voucheru (nejprve jen rfm_r1) a čas na vysvětlení technických limitů e-mailového HTML.',
+  'Optimalizaci velikosti e-mailů pod 100 kB nefakturujeme — jde o oborový standard, který jsme měli zahrnout do nacenění.']},
+
+{key:'UNP-460', name:'UC10 — pricedrop', sent:'4. 8.', tot:24.25, bud:4, rounds:3, state:'schváleno 7. 8.',
+ events:[
+  ['29. 7.','','Zaznamenány chybějící podklady: maskot s prasátkem a penězi, banner se sníženými cenami, banner s výhodami nákupu, známka udržitelnosti v patičce.'],
+  ['4. 8. 10:15','dl','Dodávka #1.'],
+  ['4. 8. 14:09','ch','Připomínky #1. <b>Klient ve Figmě smazal</b> nadpisy <q>Pozrieť akčnú ponuku</q> a <q>Mohlo by Vás zaujímať</q> a <b>přidal nový prvek</b> — label <q>Tento produkt si pozerá 48 ľudí</q>.'],
+  ['6. 8. 11:43','ch','<b>Písemné upozornění předem:</b> <q>Ve Figmě nově přibyl prvek „tento produkt si pozerá…“ — tento prvek obnáší vývoj cca 10 hodin a není součástí nacenění rebrandu.</q> Klient ve 14:38 prvek potvrdil.'],
+  ['7. 8. 9:26','dl','Dodáno s labelem.'],
+  ['7. 8.','g','<b>UC10 schváleno</b> (pátek).']],
+ change:[
+  'Label „Tento produkt si pozerá…“ — nový prvek mimo nacenění, na který jsme písemně upozornili předem (6. 8. 11:43) a klient si jej vyžádal (6. 8. 14:38).',
+  'Smazání buttonu a nadpisů ve Figmě po předání (4. 8.) a jejich zapracování do šablony.'],
+ mine:[
+  'Zaznamenání chybějících podkladů (29. 7.) a naše doladění spacerů, zarovnání a drop shadow po prvním kole.']},
+
+{key:'UNP-452', name:'Masteršablona — kód šablony newsletterů', sent:'3. 8.', tot:24.0, bud:20, rounds:5, state:'otevřeno — body z 13. 8.',
+ events:[
+  ['28.–30. 7.','','Vývoj z Figmy předané 24. 7.'],
+  ['31. 7.','ch','<b>Úprava Figmy během vývoje</b> — z 2 produktových bloků na 1 blok na řádek.'],
+  ['3. 8. 14:33','dl','Dodávka v2. Písemně: grafická úprava countdown timeru je limitovaná bezplatnou verzí nástroje.'],
+  ['4.–6. 8.','','Připomínky #1–#3 a <b>tři nové požadavky mimo zadání:</b> všechny maily pod 100 kB, automatické dotahování produktu z feedu podle ID, prolinkování na web i z obrázku a nadpisu.'],
+  ['6. 8. 20:17','dl','Dodávka v4 + písemné vysvětlení limitů (timer je serverem generovaný GIF, zaoblené rohy u 1 produktu v editoru technicky nelze, rozpad na Galaxy S20 = zvětšený systémový font).'],
+  ['10. 8. 15:39','dl','Dodávka v5 — přepracovaný voucher blok pro mobil.'],
+  ['11. 8. 14:02','ch','<b>Klient sám změnil kód timeru</b> (size small → large), šablona nyní 96 kB.'],
+  ['12. 8. 11:14','ch','Dodávka v6 + písemné upozornění na neohlášenou <b>změnu barvy pozadí masteršablony</b> se screeny stavu z předchozího týdne.'],
+  ['13. 8. 9:44','ch','Připomínky #5 — 8 bodů, z toho čtyři nové požadavky mimo zadání: produktové bloky ručně i přes ID, úprava kódu pro přehlednost editoru, dynamický voucher a dynamické produktové bloky.']],
+ change:[
+  'Kola 3–4: automatické dotahování z produktového feedu, prolinkování obrázku a nadpisu, přepracování voucher bloku pro mobil — nic z toho nebylo v zadání.',
+  'Body z 13. 8. (produktové bloky ručně i přes ID, dynamický voucher a bloky) — zatím neodhadnuté, položka zůstává otevřená.'],
+ mine:[
+  'Podbarvení textu „Ušetríte“, které se ze šablony ztratilo naší chybou, a nastavení timeru na špatnou velikost — obojí opraveno v rámci rozpočtu.']},
+
+{key:'UNP-462', name:'UC12 — lowstock', sent:'4. 8.', tot:13.25, bud:4, rounds:4, state:'schváleno 13. 8.',
+ events:[
+  ['29. 7.','','Zaznamenány chybějící podklady: hlavička, patička, doprava zdarma, další jiný maskot než v UC6 a UC8, banner.'],
+  ['4. 8. 20:32','dl','Dodávka #1.'],
+  ['5. 8. 14:35','ch','Připomínky #1. <b>Klient vyměnil banner ve Figmě po předání:</b> <q>banner – menili sme ho, bol tam ešte starý maskot – poznámka aj vo figme</q>.'],
+  ['7. 8.','dl','Dodávka #2.'],
+  ['7. 8. 12:33','ch','Klient ohlašuje další změnu: <q>na mobile máme až priveľmi veľké labely, robíme ešte úpravu. Budem Vás informovať.</q>'],
+  ['13. 8.','ch','Po šesti dnech klient: <q>nakoniec sme to nechali tak ako je vo figme</q> — změna se nakonec nekonala. Nový požadavek: odsadit produktový blok podle Figmy.'],
+  ['13. 8. 10:55','dl','Odsazení hotové. Klient: <q>OK, v poriadku</q> — <b>schváleno.</b>']],
+ change:[
+  'Výměna banneru s novým maskotem — provedena klientem ve Figmě 5. 8., po předání šablony.',
+  'Přepracování produktových bloků na mobilu a odsazení podle Figmy (13. 8.), plus kolo navíc kvůli šestidennímu čekání na ohlášenou změnu, která se nakonec nekonala.'],
+ mine:[
+  'Zaznamenání chybějících podkladů (29. 7.) a naše doladění spacerů a buttonů v prvním kole.']},
+
+{key:'UNP-463', name:'UC13 — restock', sent:'4. 8.', tot:13.25, bud:4, rounds:1, state:'schváleno telefonicky 7. 8.',
+ events:[
+  ['29. 7.','','Zaznamenán chybějící podklad: opět jiný maskot, nedodaný.'],
+  ['4. 8. 20:38','dl','Dodávka #1.'],
+  ['5. 8. 14:56','ch','Připomínky #1. Dvě změny provedl klient ve Figmě sám: <q>banner s novým maskotom – upravené aj vo figme</q> a <q>v hlavičke iný text – Váš obľúbený produkt je opäť SKLADOM – chyba na našej strane, upravené aj vo figme s poznámkou</q>.'],
+  ['7. 8. 9:08','dl','Dodávka #2.'],
+  ['7. 8.','g','<b>UC13 schváleno telefonicky.</b>']],
+ change:[
+  'Výměna banneru s novým maskotem ve Figmě po předání.',
+  'Změna textu v hlavičce — klient v e-mailu 5. 8. uvádí, že šlo o úpravu na jeho straně, kterou zanesl do Figmy až po naší dodávce.'],
+ mine:[
+  'Zaznamenání chybějícího podkladu a naše doladění produktového bloku, spaceru a patičky.']},
+
+{key:'UNP-453', name:'UC1 — abandoned cart', sent:'31. 7.', tot:12.5, bud:4, rounds:3, state:'schváleno 11. 8.',
+ events:[
+  ['31. 7. 14:07','dl','<b>První dodávka celého projektu.</b> Šablona ND – UC1, žádost o kontrolu.'],
+  ['3. 8. 8:34','','Připomínky #1 — zarovnání „Cena“, velikosti ikon a textů, velikost loga v patičce. Zároveň: <q>cenovky – vyznačené aj ako aktualizácia vo figme, aby korešpondoval mobil aj desktop</q> — klient Figmu aktualizoval.'],
+  ['4. 8. 12:30','ch','Připomínky #2. Klient doslova: <q>boli sme nútení urobiť vo figme ešte zmenu vo vykreslení veľkosti produktov, nakoľko to bolo príliš malé</q>.'],
+  ['5. 8.','dl','Dodávka #3.'],
+  ['7. 8. 9:11','dl','Dodávka #4. UC1 dále bez připomínek; 11. 8. se na něj klient odkazuje jako na schválený vzor pro UC3.']],
+ change:[
+  'Tučné cenovky a názvy produktů na mobilu — klient aktualizoval Figmu 3. 8., aby mobil odpovídal desktopu.',
+  'Zvětšení vykreslení prohlížených produktů — úprava Figmy klientem 4. 8.'],
+ mine:[
+  'Celé první revizní kolo 3. 8. (nadpis pod logem, zarovnání „Cena“, velikosti ikon a loga) neseme jako naši korekci — jde o naše odchylky od předané Figmy.']},
+
+{key:'UNP-457', name:'UC6 — welcome', sent:'4. 8.', tot:8.0, bud:4, rounds:5, state:'schváleno 13. 8.',
+ events:[
+  ['28. 7.','','Zaznamenáno 8 bodů, co ve Figmě chybí: hlavičky, maskot, patičky, recommendation blok, doprava zdarma.'],
+  ['4. 8. 20:16','dl','Dodávka #1 — 4 šablony.'],
+  ['5. 8. 10:45','ch','Připomínky #1. Dvě položky si klient opravil sám ve Figmě: <q>odstránené z NL odhlásenie z odberu, bolo to tam 2×</q> a <q>upraviť nadpis – nekorešpondoval s pôvodným, chyba na našej strane, upravené aj vo figme s komentárom</q>.'],
+  ['7.–12. 8.','dl','Dodávky #2 a #3, další připomínky k voucheru a drop shadow.'],
+  ['13. 8. 8:51','dl','Voucher upraven. Klient: <q>ok, super, ďakujem</q> — <b>UC6 schváleno.</b> Celkem 5 kol.']],
+ change:[
+  'Odstranění duplicitního odhlášení z newsletteru, oprava nadpisu a opakované přepracování voucheru — změny, které klient provedl ve Figmě až po naší dodávce (u nadpisu si úpravu na své straně v e-mailu 5. 8. sám uvádí).'],
+ mine:[
+  'Zarovnání nadpisu na střed a velikost loga v patičce — naše odchylky od Figmy.']},
+
+{key:'UNP-458', name:'UC8 — retention', sent:'4. 8.', tot:7.75, bud:4, rounds:3, state:'schváleno 12. 8.',
+ events:[
+  ['29. 7.','','Zaznamenány chybějící podklady: hlavička, patička, bullet pointy, designy pro tři řádky, opět jiný maskot.'],
+  ['4. 8. 20:19','dl','Dodávka #1 — 3 nody.'],
+  ['5.–10. 8.','','Připomínky #1 a #2 — buttony, produktové bloky, drop shadow, velikost 102 kB.'],
+  ['12. 8. 10:38','dl','Dodávka #3. Klient: všechny tři e-maily <q>mobil + desktop – OK</q> — <b>schváleno.</b>'],
+  ['13. 8.','ch','Porovnání exportů: všechny tři snímky UC8 se od zahájení prací změnily, přestože změna nebyla samostatně ohlášena — kolo 2 tedy porovnávalo naši dodávku proti posunutému zadání.']],
+ change:[
+  'Snímky uc8_retention_50d, _80d a _110d se ve Figmě od zahájení prací změnily (doloženo porovnáním exportů); klient podle nich v kole 2 připomínkoval.'],
+ mine:[
+  'Zaznamenání chybějících podkladů a naše doladění buttonů a mezer.']},
+
+{key:'UNP-461', name:'UC11 — friend get friend', sent:'—', tot:8.75, bud:4, rounds:0, state:'připraveno ke kontrole — doposud nepředáno',
+ events:[
+  ['29. 7.','','Zaznamenány chybějící podklady: hlavička, banner s výhodami nákupu chybí pro desktop i mobil, patička.'],
+  ['~5. 8.','ch','Komentář klientova grafika ve Figmě: <q>Zmenené zľavové kupóny v celom UC11</q>.'],
+  ['7.–10. 8.','','Vývoj.'],
+  ['13. 8.','ch','Porovnání exportů: všech 6 snímků UC11 se od zahájení prací změnilo. Use case zatím nebyl klientovi předán ke kontrole.']],
+ change:[
+  'Změna slevových kupónů v celém UC11 — komentář klienta ve Figmě ~5. 8., potvrzeno porovnáním exportů (6 ze 6 snímků změněno).'],
+ mine:[
+  'Chybějící podklady ve Figmě a naše doladění.']},
+
+{key:'UNP-456', name:'UC4 + UC5 — cross sell a up sell', sent:'UC4 7. 8. / UC5 11. 8.', tot:5.0, bud:8, rounds:4, state:'schváleno 13. 8.',
+ events:[
+  ['7. 8. 16:05','dl','Dodávka UC4 #1 — 5 variant.'],
+  ['10. 8. 11:14','ch','Připomínky #1. <b>Klient znovu měnil Figmu:</b> <q>toto sme vymenili, nakoľko to bola blbosť v zobrazení – grafik to nezmenil, je to už zmenené vo figme</q> a <q>opäť sme menili kruhy – zobrazenie produktov – označené vo figme</q>.'],
+  ['11. 8.','dl','Dodávka UC4 #2 a UC5 #1 (5 šablon).'],
+  ['11. 8. 15:06','ch','Nový požadavek mimo Figmu: personalizace oslovení podle rodu v předmětu i preheaderu; sjednocení barvy pozadí na #FFF9F5 u všech UC5.'],
+  ['13. 8.','fx','Naše korekce: ořezaná patička a odkaz na YouTube v patičce vedoucí na 404 — opraveno globálně. Klient: <q>ok v poriadku</q> a <q>je to ok</q> — <b>UC4 i UC5 schváleno.</b>']],
+ change:[
+  'Změny provedené klientem ve Figmě po předání (kruhy, ikony, zobrazení produktů) a nový požadavek na personalizaci oslovení podle rodu. Část těchto hodin zatím není v evidenci a doplní se.'],
+ mine:[
+  'Ořezaná patička a nefunkční odkaz na YouTube ve všech šablonách — naše chyby, opravené 13. 8.']},
+
+{key:'UNP-455', name:'UC3 — shopping intention', sent:'6. 8.', tot:2.5, bud:4, rounds:3, state:'schváleno 12. 8.',
+ events:[
+  ['6. 8. 20:24','dl','Dodávka #1.'],
+  ['7.–11. 8.','','Připomínky — dělení názvu do řádků na mobilu, řádkování, spacer, poloha maskota.'],
+  ['12. 8. 11:37','dl','Dodávka #3. Klient: <q>mobil + desktop – OK</q> — <b>schváleno.</b>']],
+ change:[],
+ mine:[
+  'Položka skončila pod rozpočtem. Změna „cenovky na mobilu tučně“ z 3. 8. byla vyřešena společně s UC1.']},
+
+{key:'UNP-454', name:'UC2 — svátek', sent:'6. 8.', tot:2.0, bud:4, rounds:3, state:'schváleno 12. 8.',
+ events:[
+  ['6. 8. 20:18','dl','Dodávka #1 — initial a reminder_6d.'],
+  ['7.–11. 8.','','Připomínky — zarovnání, mezery, velikost 2 €, kupón, barva pozadí, půlkruh na mobilu.'],
+  ['~7. 8.','ch','Komentář klientova grafika ve Figmě: tečka na konci oslovení.'],
+  ['12. 8. 11:28','dl','Dodávka #3. Klient: <q>desktop + mobil – OK</q> — <b>schváleno.</b>']],
+ change:[],
+ mine:[
+  'Nejlevnější use case projektu, skončil pod rozpočtem i po třech revizních kolech.']},
+
+{key:'UNP-478', name:'Unsubscribe page', sent:'3. 8.', tot:4.25, bud:0, rounds:0, state:'dodáno 3. 8.',
+ events:[
+  ['31. 7.','ch','Zadání od klienta: změna barevnosti Unsubscribe page. <b>Položka není v naceněném rozsahu rebrandu.</b>'],
+  ['3. 8.','dl','Design změněn a předán k otestování.'],
+  ['13. 8. 9:36','ch','Změny byly ve Figmě aktualizovány, ale <b>bez komentáře</b> — vyžádali jsme si upřesnění: <q>Zatím nevidím ve Figmě žádný nový komentář nebo změnu — mohu poprosit o update?</q>']],
+ change:[
+  'Celá položka je mimo naceněný rozsah — v objednávce („Rebranding“) není.'],
+ mine:[]},
+
+{key:'UNP-518', name:'Unsubscribe prevention — dodatečná úprava', sent:'13. 8.', tot:5.0, bud:0, rounds:0, state:'realizováno 13. 8.',
+ events:[
+  ['12. 8.','ch','Požadavek klienta telefonicky a e-mailem — zvětšení písma na bannerech, až po schválení dodávky.'],
+  ['13. 8.','dl','Realizováno. Figma byla aktualizována, ale <b>bez komentáře</b>; požádali jsme o upřesnění, jak se má písmo měnit a zda pro mobil i desktop.']],
+ change:[
+  'Dodatečná změna vyžádaná po schválení, mimo naceněný rozsah.'],
+ mine:[]},
+
+{key:'UNP-464', name:'Weblayery — 6 ks', sent:'4. 8.', tot:12.0, bud:12, rounds:0, state:'uzavřeno 6. 8.',
+ events:[
+  ['31. 7.–4. 8.','','Vývoj a ukázky: opuštěný košík, opuštěná návštěva, price drop, exit intent — desktop i mobil.'],
+  ['5. 8.','dl','Doplněn subscribe to newsletter (weblayer + thank you).'],
+  ['6. 8.','dl','Odesláno klientovi. <b>Uzavřeno — jediná položka projektu v termínu i v rozpočtu.</b>']],
+ change:[],
+ mine:[
+  'Přesně v rozpočtu (12 z 12 h). Následné požadavky klienta na změny barev se teprve nacení.']},
+
+{key:'UNP-484', name:'Projektové řízení', sent:'—', tot:47.0, bud:20, rounds:48, state:'48 kol místo 15 naceněných',
+ events:[
+  ['24. 7.','','Naceněno 20 h. Rozsah: jedna dodávka a jedno revizní kolo na položku — tedy zhruba 15 kol.'],
+  ['3.–13. 8.','ch','Reálně proběhlo <b>48 revizních kol</b>. Masteršablona 5, UC6 5, UC9 5, UC4 4, UC12 4, produktové bloky 4.'],
+  ['6. 8.','','<b>Návrh a organizace online statusu</b> místo e-mailové komunikace.'],
+  ['13. 8.','ch','Opakovaně: změny vyžádané telefonicky, ale nezanesené do Figmy (unsubscribe, UC12) — což prodlužovalo koordinaci.']],
+ change:[
+  'Koordinace revizních kol vyvolaných změnou zadání a briefing týmu na neohlášené změny Figmy. Naceněno bylo 15 kol, proběhlo 48.'],
+ mine:[
+  'Část přesahu koordinace neseme sami — nevynutili jsme dřívější zafixování Figmy.']}
+];
+
+const items=document.getElementById('items');
+ITEMS.forEach((it,idx)=>{
+  const d=document.createElement('details'); d.className='item'; if(idx<3) d.open=true;
+  const sum=document.createElement('summary');
+  const bcls=it.state.includes('připraveno ke kontrole')?'info':it.state.includes('schváleno')?'ok':(it.state.includes('otevřeno')||it.state.includes('bez finálního')||it.state.includes('nepředáno'))?'op':'rd';
+  sum.innerHTML=`<div class="it-h"><span class="caret">▶</span><span class="key">${it.key}</span><span class="ttl">${it.name}</span><span class="badge ${bcls}">${it.state}</span></div>
+    <div class="sent">Poprvé ke schválení<br><b>${it.sent}</b></div>`;
+  d.appendChild(sum);
+
+  const body=document.createElement('div'); body.className='body';
+  let ev='<h4>Časová osa</h4><div class="ev">';
+  it.events.forEach(([dt,cls,txt])=>{ ev+=`<div class="d">${dt}</div><div class="t ${cls}">${txt}</div>`; });
+  ev+='</div>';
+  const left=document.createElement('div'); left.innerHTML=ev;
+
+  let rt='';
+  if(it.change && it.change.length){ rt+='<h4><span class="tag bill">vícepráce</span></h4><ul class="why">';
+    it.change.forEach(t=>{ rt+=`<li>${t}</li>`; }); rt+='</ul>'; }
+  if(it.mine && it.mine.length){ rt+='<h4><span class="tag free">neúčtujeme / naše korekce</span></h4><ul class="why">';
+    it.mine.forEach(t=>{ rt+=`<li>${t}</li>`; }); rt+='</ul>'; }
+  const right=document.createElement('div'); right.innerHTML=rt;
+  body.appendChild(left); body.appendChild(right); d.appendChild(body); items.appendChild(d);
+});
+
+// ---- summary table ----
+const tbl=document.getElementById('tbl');
+let th=`<thead><tr><th>Položka</th><th>Kol</th><th>Naceněno</th><th>Skutečnost</th><th>Rozdíl</th><th>Stav</th></tr></thead><tbody>`;
+let tbud=0,tact=0;
+[...ITEMS].sort((a,b)=>a.key.localeCompare(b.key)).forEach(it=>{
+  const diff=it.tot-it.bud; tbud+=it.bud; tact+=it.tot;
+  th+=`<tr><td><span style="color:var(--ink-3);font-size:11px">${it.key}</span> &nbsp;${it.name}</td>
+   <td class="dim">${it.rounds||'—'}</td>
+   <td class="dim">${it.bud?F(it.bud):'—'}</td><td>${F(it.tot)}</td>
+   <td style="color:${diff>0?'var(--s-bill)':diff<0?'var(--s-free)':'var(--ink-3)'}">${diff>0?'+':''}${F(diff)}</td>
+   <td style="text-align:left;font-size:12px;color:var(--ink-2)">${it.state}</td></tr>`;
+});
+// QA řádek (naceněno, nerealizováno samostatně)
+tbud+=3;
+th+=`<tr><td><span style="color:var(--ink-3);font-size:11px">UNP-473</span> &nbsp;Kontrola šablon / QA</td><td class="dim">—</td><td class="dim">3</td><td>0</td><td style="color:var(--s-free)">−3</td><td style="text-align:left;font-size:12px;color:var(--ink-2)">v rámci use casů</td></tr>`;
+th+=`</tbody><tfoot><tr><td>Celkem</td><td>48</td><td>${F(tbud)}</td><td>${F(tact)}</td><td style="color:var(--s-bill)">+${F(tact-tbud)}</td><td></td></tr></tfoot>`;
+tbl.innerHTML=th;
+</script>
+</body>
+</html>
