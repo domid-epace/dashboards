@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="cs"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<title>CDP pro Ambis Univerzitu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F7F7F6; --surface-3:#E3E3E3;
+  --ink:#15181F; --ink-2:#4E5764; --ink-3:#79828F;
+  --rule:#E3E3E3; --rule-strong:#C7C9CC;
+  --accent:#282D3C; --accent-2:#454C5E; --accent-soft:#FFF3C4;
+  --link:#0075C4; --yellow:#FAD232;
+  --ok:#0E7C57; --warn:#B87A05; --fail:#B3253C; --na:#6C757F;
+  --ok-soft:#E4F1EC; --warn-soft:#F7EFDD; --fail-soft:#F8E7EA; --na-soft:#EDEFF1;
+  --serif:"Poppins","Segoe UI",Helvetica,Arial,sans-serif;
+  --sans:"Poppins","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  --measure:74ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#20242F; --surface:#282D3C; --surface-2:#313747; --surface-3:#3B4254;
+    --ink:#F2F3F5; --ink-2:#BEC3CC; --ink-3:#8D93A0;
+    --rule:#3B4254; --rule-strong:#4E566B;
+    --accent:#FAD232; --accent-2:#FFE066; --accent-soft:#3A3423;
+    --link:#7EC4F5; --yellow:#FAD232;
+    --ok:#31A57E; --warn:#A57D14; --fail:#CE4A72; --na:#8A939E;
+    --ok-soft:#152A23; --warn-soft:#2A2415; --fail-soft:#2C1A21; --na-soft:#20252C;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#20242F; --surface:#282D3C; --surface-2:#313747; --surface-3:#3B4254;
+  --ink:#F2F3F5; --ink-2:#BEC3CC; --ink-3:#8D93A0;
+  --rule:#3B4254; --rule-strong:#4E566B;
+  --accent:#FAD232; --accent-2:#FFE066; --accent-soft:#3A3423;
+  --link:#7EC4F5; --yellow:#FAD232;
+  --ok:#31A57E; --warn:#A57D14; --fail:#CE4A72; --na:#8A939E;
+  --ok-soft:#152A23; --warn-soft:#2A2415; --fail-soft:#2C1A21; --na-soft:#20252C;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px 96px}
+.col{max-width:var(--measure)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;text-wrap:balance;margin:0}
+h1{font-weight:700}
+h2{font-weight:600}
+a{color:var(--link);text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.masthead{border-bottom:2px solid var(--ink);padding:36px 0 22px}
+.mhead-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px 28px;flex-wrap:wrap-reverse}
+.logo{flex:none;line-height:0}
+.logo svg{display:block;height:38px;width:auto}
+.logo .logo-ondark{display:none}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .logo .logo-onlight{display:none}
+  :root:not([data-theme="light"]) .logo .logo-ondark{display:block}
+}
+:root[data-theme="dark"] .logo .logo-onlight{display:none}
+:root[data-theme="dark"] .logo .logo-ondark{display:block}
+.stamp{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:26px}
+.stamp b{color:var(--accent);font-weight:600}
+h1{font-size:clamp(2.1rem,4.4vw,3.15rem);line-height:1.08;letter-spacing:-.018em;max-width:22ch}
+.dek{font-family:var(--serif);font-size:clamp(1.05rem,1.9vw,1.3rem);line-height:1.45;
+  color:var(--ink-2);margin:14px 0 0;max-width:48ch;font-style:italic}
+.parties{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px 30px;
+  margin-top:30px;padding-top:20px;border-top:1px solid var(--rule)}
+.party dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:3px}
+.party dd{margin:0;font-size:14px;color:var(--ink-2)}
+.party dd strong{color:var(--ink);font-weight:600}
+
+section{padding-top:52px}
+.shead{display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--rule-strong);
+  padding-top:14px;margin-bottom:22px}
+.snum{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+  letter-spacing:.06em;padding-top:6px;flex:none;min-width:2.2ch}
+h2{font-size:clamp(1.35rem,2.5vw,1.75rem);letter-spacing:-.012em}
+.sub{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:30px 0 12px}
+p{margin:0 0 14px}
+.col>p:last-child{margin-bottom:0}
+.lede{font-size:16.5px;color:var(--ink-2)}
+strong{font-weight:600}
+ul{margin:0 0 14px;padding-left:1.15em}
+li{margin-bottom:7px}
+.num{font-variant-numeric:tabular-nums}
+code,.m{font-family:var(--mono);font-size:.9em;font-variant-numeric:tabular-nums}
+
+.p{display:inline-flex;align-items:center;gap:.42em;font-family:var(--mono);font-size:10.5px;
+  font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px 2px 5px;
+  border-radius:3px;white-space:nowrap;flex:none}
+.p i{font-style:normal;font-size:11px;line-height:1}
+.p-ok{color:var(--ok);background:var(--ok-soft)}
+.p-mid{color:var(--warn);background:var(--warn-soft)}
+.p-no{color:var(--fail);background:var(--fail-soft)}
+.p-na{color:var(--na);background:var(--na-soft)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:10px 26px;
+  background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  padding:18px 20px}
+.legend div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2)}
+.legend .p{margin-top:2px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule)}
+.card{background:var(--surface);padding:20px 20px 22px;display:flex;flex-direction:column;gap:9px}
+.card .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;font-weight:600;
+  color:var(--accent);text-transform:uppercase}
+.card h3{font-size:1.12rem;line-height:1.25}
+.card .what{font-size:13.5px;color:var(--ink-2);margin:0}
+.card dl{margin:auto 0 0;padding-top:12px;border-top:1px solid var(--rule);display:grid;
+  grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px}
+.card dt{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);padding-top:2px}
+.card dd{margin:0;color:var(--ink-2)}
+
+.tbar{display:flex;justify-content:flex-end;margin-bottom:8px}
+button.tg{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  font-weight:600;color:var(--accent);background:var(--surface);border:1px solid var(--rule-strong);
+  border-radius:3px;padding:6px 12px;cursor:pointer}
+button.tg:hover{background:var(--accent-soft)}
+
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surface);
+  margin:0 0 10px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:10px 13px;border-bottom:1px solid var(--rule)}
+tbody tr:last-child td{border-bottom:0}
+thead th{position:sticky;top:0;z-index:2;background:var(--surface-2);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  font-weight:600;color:var(--ink);border-bottom:2px solid var(--rule-strong);white-space:nowrap}
+thead th span{display:block;font-family:var(--sans);font-size:11px;letter-spacing:0;
+  text-transform:none;font-weight:400;color:var(--ink-3);margin-top:2px}
+th.k,td.k{background:var(--surface-2);border-right:1px solid var(--rule);min-width:180px}
+thead th.k{z-index:3}
+td.k{font-weight:500;color:var(--ink)}
+td.k .id{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--accent);
+  display:block;letter-spacing:.06em;margin-bottom:1px}
+td.k .src{font-size:11.5px;font-weight:400;color:var(--ink-3);display:block;margin-top:3px;font-style:italic}
+.matrix td:not(.k){min-width:212px}
+
+details.d{margin:0}
+details.d>summary{list-style:none;cursor:pointer;display:flex;gap:7px;align-items:baseline;
+  padding:2px 4px 3px 3px;margin:-2px -4px -3px -3px;border-radius:3px}
+details.d>summary::-webkit-details-marker{display:none}
+details.d>summary::marker{content:""}
+details.d>summary:hover{background:var(--surface-3)}
+.tl{font-size:12.5px;line-height:1.42;color:var(--ink-2)}
+.tl::after{content:" ▸";font-family:var(--mono);font-size:9px;color:var(--ink-3);white-space:nowrap}
+details.d[open]>summary .tl::after{content:" ▾"}
+details.d .body{padding-top:7px;margin-top:7px;border-top:1px dotted var(--rule-strong)}
+details.d .body p{margin:0 0 8px;font-size:12.8px;line-height:1.52;color:var(--ink-2)}
+details.d .body p:last-child{margin-bottom:0}
+.fig{font-family:var(--mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
+  margin-bottom:5px;color:var(--ink)}
+.fig.q{font-size:13px;color:var(--ink-2);font-weight:500}
+.money td:not(.k){min-width:196px}
+.hint{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 22px}
+
+.chart{background:var(--surface);border:1px solid var(--rule);padding:22px 24px 18px;margin:0 0 12px}
+.chart .row{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--rule)}
+.chart .row:last-of-type{border-bottom:0}
+.chart .rl{font-size:13px;line-height:1.3}
+.chart .rl b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  color:var(--accent);font-weight:600}
+.bar{display:flex;height:26px;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.bar span{display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-size:11px;font-weight:600;color:#fff;border-right:2px solid var(--surface);min-width:0}
+.bar span:last-child{border-right:0}
+.s-ok{background:var(--ok)}.s-mid{background:var(--warn)}.s-no{background:var(--fail)}
+.readout{grid-column:2;font-family:var(--mono);font-size:11px;color:var(--ink-2);
+  display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.readout b{font-weight:600}
+.readout .ro{color:var(--ok)}.readout .rm{color:var(--warn)}.readout .rn{color:var(--fail)}
+.chart .key{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;padding-top:14px;
+  border-top:1px solid var(--rule);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.chart .key i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:7px;
+  vertical-align:-1px}
+
+.note{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--rule-strong);
+  padding:16px 20px}
+.note.stop{border-left-color:var(--fail)}
+.note.gap{border-left-color:var(--warn)}
+.note.ok{border-left-color:var(--ok)}
+.note h3{font-size:1.02rem;margin-bottom:6px;line-height:1.3}
+.note p{font-size:13.8px;color:var(--ink-2);margin-bottom:0}
+.note p+p{margin-top:9px}
+.note .why{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:7px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.fix{margin-top:10px;padding-top:10px;border-top:1px dashed var(--rule-strong)}
+.fix b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:4px}
+
+.crit{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.crit>div{background:var(--surface);padding:18px 20px;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 26px}
+.crit .if{font-size:14.5px}
+.crit .if b{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:4px}
+.crit .then{font-size:13.8px;color:var(--ink-2);border-left:2px solid var(--accent-soft);padding-left:18px}
+.crit .then b{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:4px}
+@media(max-width:640px){.crit>div{grid-template-columns:1fr}.crit .then{border-left:0;padding-left:0;
+  border-top:1px solid var(--rule);padding-top:10px}}
+
+.srcs{columns:2 260px;column-gap:34px;font-size:12.5px;color:var(--ink-2);
+  border-top:1px solid var(--rule);padding-top:18px;margin-top:8px}
+.srcs p{margin:0 0 7px;break-inside:avoid}
+footer{margin-top:56px;padding-top:20px;border-top:2px solid var(--ink);
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="mhead-top">
+    <div class="stamp">
+      <span><b>Důvěrné</b></span>
+      <span>Podklad k rozhodnutí</span>
+      <span>Září 2026</span>
+      <span>ePACE, s. r. o.</span>
+    </div>
+    <div class="logo"><svg class="logo-onlight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 91.84" role="img" aria-label="ePACE"><g><path fill="#FAD232" d="M57.02,59.83c-7.82,0-14.17-6.36-14.17-14.17s6.36-14.17,14.17-14.17c3.53,0,6.87,1.28,9.47,3.63l-1.17,1.17 c-2.29-2.04-5.21-3.16-8.3-3.16c-6.91,0-12.53,5.62-12.53,12.53s5.62,12.53,12.53,12.53c3.35,0,6.49-1.3,8.86-3.67l-1.07-1.07 c-2.08,2.08-4.85,3.23-7.79,3.23C50.94,56.67,46,51.73,46,45.65s4.94-11.02,11.02-11.02c2.69,0,5.22,0.97,7.23,2.72l-1.16,1.16 c-1.69-1.44-3.82-2.24-6.07-2.24c-5.17,0-9.38,4.21-9.38,9.38s4.21,9.38,9.38,9.38c2.5,0,4.86-0.98,6.63-2.75l-1.07-1.07 c-1.48,1.48-3.46,2.3-5.56,2.3c-1.89,0-3.63-0.67-4.99-1.79L68.65,35.1l-0.54-0.54c-2.96-2.96-6.9-4.6-11.09-4.6 c-8.65,0-15.69,7.04-15.69,15.69s7.04,15.69,15.69,15.69c4.19,0,8.13-1.63,11.09-4.6l-1.07-1.07 C64.36,58.35,60.81,59.83,57.02,59.83z M57.02,37.79c1.84,0,3.59,0.63,4.99,1.79L50.95,50.65c-1.12-1.36-1.79-3.1-1.79-4.99 C49.16,41.32,52.69,37.79,57.02,37.79z"/><path fill="#282D3C" d="M84.52,31.85c0,0,10.69,0,10.69,9.88c0,9.84-10.69,9.84-10.69,9.84h-4.66v7.79H73.5V31.85H84.52z M84.38,37.56h-4.51v8.32h4.51c2.19,0,3.94-1.14,3.94-4.13C88.33,38.7,86.57,37.56,84.38,37.56z M112.94,54.76h-9.98l-1.66,4.61 h-7.08l10.03-27.51h7.41l10.03,27.51h-7.08L112.94,54.76z M110.99,48.91L108,39.98l-3.04,8.93H110.99z M143.27,50.43 c-1.44,2.17-3.85,3.62-6.63,3.62c-4.52,0-8.08-3.85-8.08-8.41c0-4.66,3.56-8.41,8.08-8.41c2.79,0,5.2,1.45,6.67,3.62l4.5-4.5 c-2.68-3.04-6.67-4.97-11.17-4.97c-8.17,0-14.68,6.37-14.68,14.26c0,7.84,6.51,14.26,14.68,14.26c4.48,0,8.46-1.93,11.14-4.96 L143.27,50.43z M170.66,53.52v5.84h-19.2V31.85h19.2v5.84h-12.83v5.23h11.83v5.85h-11.83v4.75H170.66z"/></g></svg><svg class="logo-ondark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 91.84" role="img" aria-label="ePACE"><g><path fill="#FAD232" d="M57.02,59.83c-7.82,0-14.17-6.36-14.17-14.17s6.36-14.17,14.17-14.17c3.53,0,6.87,1.28,9.47,3.63l-1.17,1.17 c-2.29-2.04-5.21-3.16-8.3-3.16c-6.91,0-12.53,5.62-12.53,12.53s5.62,12.53,12.53,12.53c3.35,0,6.49-1.3,8.86-3.67l-1.07-1.07 c-2.08,2.08-4.85,3.23-7.79,3.23C50.94,56.67,46,51.73,46,45.65s4.94-11.02,11.02-11.02c2.69,0,5.22,0.97,7.23,2.72l-1.16,1.16 c-1.69-1.44-3.82-2.24-6.07-2.24c-5.17,0-9.38,4.21-9.38,9.38s4.21,9.38,9.38,9.38c2.5,0,4.86-0.98,6.63-2.75l-1.07-1.07 c-1.48,1.48-3.46,2.3-5.56,2.3c-1.89,0-3.63-0.67-4.99-1.79L68.65,35.1l-0.54-0.54c-2.96-2.96-6.9-4.6-11.09-4.6 c-8.65,0-15.69,7.04-15.69,15.69s7.04,15.69,15.69,15.69c4.19,0,8.13-1.63,11.09-4.6l-1.07-1.07 C64.36,58.35,60.81,59.83,57.02,59.83z M57.02,37.79c1.84,0,3.59,0.63,4.99,1.79L50.95,50.65c-1.12-1.36-1.79-3.1-1.79-4.99 C49.16,41.32,52.69,37.79,57.02,37.79z"/><path fill="#FFFFFF" d="M84.52,31.85c0,0,10.69,0,10.69,9.88c0,9.84-10.69,9.84-10.69,9.84h-4.66v7.79H73.5V31.85H84.52z M84.38,37.56h-4.51v8.32h4.51c2.19,0,3.94-1.14,3.94-4.13C88.33,38.7,86.57,37.56,84.38,37.56z M112.94,54.76h-9.98l-1.66,4.61 h-7.08l10.03-27.51h7.41l10.03,27.51h-7.08L112.94,54.76z M110.99,48.91L108,39.98l-3.04,8.93H110.99z M143.27,50.43 c-1.44,2.17-3.85,3.62-6.63,3.62c-4.52,0-8.08-3.85-8.08-8.41c0-4.66,3.56-8.41,8.08-8.41c2.79,0,5.2,1.45,6.67,3.62l4.5-4.5 c-2.68-3.04-6.67-4.97-11.17-4.97c-8.17,0-14.68,6.37-14.68,14.26c0,7.84,6.51,14.26,14.68,14.26c4.48,0,8.46-1.93,11.14-4.96 L143.27,50.43z M170.66,53.52v5.84h-19.2V31.85h19.2v5.84h-12.83v5.23h11.83v5.85h-11.83v4.75H170.66z"/></g></svg></div>
+  </div>
+  <h1>CDP pro Ambis Univerzitu</h1>
+  <p class="dek">Srovnání čtyř variant na kritériích, která definovala business analýza — s vyznačením toho, co je ověřené, co je odhad a co se z veřejných zdrojů zjistit nedá.</p>
+  <dl class="parties">
+    <div class="party">
+      <dt>Objednatel</dt>
+      <dd><strong>Ambis Univerzita, a. s.</strong><br>do 12.&nbsp;5.&nbsp;2026 AMBIS vysoká škola, a.s.<br>Lindnerova 575/1, Praha 8</dd>
+    </div>
+    <div class="party">
+      <dt>Dodavatel</dt>
+      <dd><strong>ePACE, s. r. o.</strong><br>Na Pankráci 1618/30, Praha 4<br>Bloomreach Gold Certified Partner</dd>
+    </div>
+    <div class="party">
+      <dt>Navazuje na</dt>
+      <dd><strong>Business analýza</strong><br>Projekt CDP pro VŠ AMBIS<br>fáze Discovery a Design</dd>
+    </div>
+  </dl>
+</header>
+
+<section>
+  <div class="shead"><div class="snum">01</div><h2>Co tento dokument je a co není</h2></div>
+  <div class="col">
+    <p class="lede">Business analýza popsala výzvy současného customer lifecyclu a navrhla datovou architekturu, datový profil studenta, pilotní scope use casů a finanční rámec. Tento dokument na ni navazuje jediným úkolem: srovnat čtyři technologické varianty <strong>na požadavcích, které z analýzy vyplynuly</strong> — ne na obecných vlastnostech nástrojů.</p>
+    <p>Dokument <strong>nekončí doporučením</strong>, ale rozhodovacími kritérii — volba mezi variantami závisí na tom, čemu dá vedení AMBIS přednost. Kde má naše vlastní varianta ověřenou mezeru, je uvedena. Každý funkční údaj pochází z dokumentace výrobce, z veřejného registru nebo z kódu produktu, ne z marketingového webu; kde se marketingové tvrzení rozchází s provozní dokumentací téhož výrobce, je to poznamenáno.</p>
+  </div>
+
+  <p class="sub">Značení v matici</p>
+  <div class="legend">
+    <div><span class="p p-ok"><i>✓</i>Splňuje</span><span>Ověřeno v dokumentaci výrobce, registru nebo kódu produktu.</span></div>
+    <div><span class="p p-mid"><i>◐</i>S podmínkou</span><span>Splní, ale za cenu vyšší licence, custom buildu, dalšího nástroje nebo s omezením, které je třeba znát.</span></div>
+    <div><span class="p p-no"><i>✕</i>Nesplňuje</span><span>Ověřeno, že funkce neexistuje nebo je pro prostředí AMBIS nedostupná.</span></div>
+    <div><span class="p p-na"><i>?</i>Nezjištěno</span><span>Z veřejných zdrojů nelze potvrdit ani vyvrátit. Nutno ověřit u dodavatele.</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">02</div><h2>Čtyři varianty</h2></div>
+  <div class="col"><p>Pořadí sloupců je v celém dokumentu stejné, aby se dala matice čtenářsky sledovat napříč bloky.</p></div>
+  <div class="cards">
+    <div class="card">
+      <span class="tag">Varianta 1</span>
+      <h3>MailKit&nbsp;+&nbsp;Keboola</h3>
+      <p class="what">Český e-mailingový nástroj s automatizací, doplněný českou datovou platformou pro ETL a orchestraci datových toků.</p>
+      <dl>
+        <dt>Vrstvy</dt><dd>2 nástroje + integrační vrstva</dd>
+        <dt>MailKit</dt><dd>Mailkit s.r.o., Praha 8, od 2001, 10–19 zaměstnanců, ISO 27001</dd>
+        <dt>Keboola</dt><dd>Keboola Czech s.r.o., Praha 7, Series A 32 mil. USD (2023)</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <span class="tag">Varianta 2</span>
+      <h3>Svépomocí: Mailchimp&nbsp;+&nbsp;AutoCRM</h3>
+      <p class="what">Akvizice přes Mailchimp, retence přes AutoCRM, bez externího dodavatele. Oba nástroje už v AMBIS existují — Mailchimp je nasazený na webu, AutoCRM je zavedené s desítkami studentů.</p>
+      <dl>
+        <dt>Vrstvy</dt><dd>2 nástroje bez společné datové vrstvy</dd>
+        <dt>Mailchimp</dt><dd>The Rocket Science Group LLC (Intuit), USA</dd>
+        <dt>AutoCRM</dt><dd>Apertia Tech s.r.o., Praha 6; nadstavba nad open-source EspoCRM (GPL v3)</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <span class="tag">Varianta 3</span>
+      <h3>ePACE&nbsp;+&nbsp;Targito</h3>
+      <p class="what">Česká komunikační platforma s webovým trackingem, weblayery a e-mailovou automatizací nad datovým backendem Snowflake. Integraci a use casy dodává ePACE.</p>
+      <dl>
+        <dt>Vrstvy</dt><dd>1 nástroj + middleware pro CRM</dd>
+        <dt>Targito</dt><dd>Targito.com, s.r.o., Praha 1, holding VIV Digital a.s.; vlastní vývoj od 2015</dd>
+        <dt>Dodání</dt><dd>ePACE — 740 h, seniorní PM</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <span class="tag">Varianta 4</span>
+      <h3>ePACE&nbsp;+&nbsp;Bloomreach</h3>
+      <p class="what">Původní návrh business analýzy. Globální zákaznická datová platforma s nativním eventovým modelem, na kterou je celá navržená architektura postavená.</p>
+      <dl>
+        <dt>Vrstvy</dt><dd>1 nástroj + middleware pro IS</dd>
+        <dt>Bloomreach</dt><dd>Bloomreach Engagement; partnerské ceny, break-up klauzule po 6 měsících</dd>
+        <dt>Dodání</dt><dd>ePACE — 740 h, stejný rozsah</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">03</div><h2>Kritéria a jejich zdroj v analýze</h2></div>
+  <div class="col">
+    <p>Matice nehodnotí obecnou zralost platforem. Hodnotí sedmnáct požadavků, které má každý svou adresu v business analýze. Nejdůležitější z nich je&nbsp;<span class="m">A1</span>: identifikace anonymní návštěvnosti nese <strong>30,4 z 36,8&nbsp;mil.&nbsp;Kč</strong> předpokládaného ročního přínosu, tedy 83&nbsp;% celého business case. Varianta, která&nbsp;<span class="m">A1</span> nesplní, nedoručí většinu ekonomiky projektu bez ohledu na to, jak si stojí ve zbytku matice.</p>
+  </div>
+  <p class="sub">Sedmnáct hodnocených požadavků</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th class="k">Kritérium</th><th>Zdroj v business analýze</th><th>Proč je v matici</th></tr></thead>
+      <tbody>
+        <tr><td class="k"><span class="id">A1</span>Ztotožnění anonymní návštěvnosti webu</td><td>Manažerské shrnutí — Web&nbsp;→&nbsp;Lead <span class="num">0,76&nbsp;%</span> vs. benchmark <span class="num">2,8&nbsp;%</span></td><td>Nese 83&nbsp;% předpokládaného přínosu. Bez trackingu na webu Solidpixels nevznikne identifikovaný kontakt.</td></tr>
+        <tr><td class="k"><span class="id">A2a</span>Profil s 32 atributy</td><td>Datový profil studenta v CDP — tabulka <em>Properties</em></td><td>Analýza specifikovala 32 properties včetně <span class="m">student_phase</span>, <span class="m">at_risk</span>, <span class="m">credits</span>.</td></tr>
+        <tr><td class="k"><span class="id">A2b</span>19 eventů v čase</td><td>Datový profil studenta v CDP — tabulka <em>Events</em></td><td>Od <span class="m">first_session</span> po <span class="m">study_dropout</span>. Churn use casy potřebují historii v řádu semestrů, ne dnů.</td></tr>
+        <tr><td class="k"><span class="id">A3</span>Identity resolution, telefon jako hlavní ID</td><td>„Telefonní číslo je ideálním hlavním ID pro CDP“</td><td>Telefon a soukromý e-mail jsou jediné spolehlivé identifikátory napříč cestou od uchazeče k absolventovi.</td></tr>
+        <tr><td class="k"><span class="id">A4a</span>Napojení CRM Raynet (→ Daktela)</td><td>Seznam zdrojů — webhook automatizace z Raynetu</td><td>Zákaznické oddělení je vlastníkem profilu ve fázi přihlášky. Bez CRM chybí polovina cesty.</td></tr>
+        <tr><td class="k"><span class="id">A4b</span>Napojení IS AMBIS</td><td>Seznam zdrojů — import module, URL feed</td><td>Studijní data jsou jediným zdrojem signálů o průběhu studia. Analýza počítá s exporty.</td></tr>
+        <tr><td class="k"><span class="id">A5</span>Produktový feed studijních oborů</td><td>Studijní obory jako produktové feedy</td><td>Doporučování oborů a dashboard obsazenosti oborů.</td></tr>
+        <tr><td class="k"><span class="id">A6</span>Centrální consent, preference a expirace</td><td>Celá kapitola <em>Consenty, preference a expirace</em></td><td>Analýza to označuje za provozní nutnost i právní riziko. Cross-sell doplňkových služeb je obchodní sdělení.</td></tr>
+        <tr><td class="k"><span class="id">B1a</span>Weblayery na webu</td><td>Use case <em>FOMO Weblayer</em>, priorita 1</td><td>Hlavní nástroj zvýšení konverze Web&nbsp;→&nbsp;Lead.</td></tr>
+        <tr><td class="k"><span class="id">B1b</span>A/B test weblayerů</td><td>Use casy <em>FOMO</em> vs. <em>Nezávislá konzultace</em>, oba priorita 1</td><td>Analýza dva pilotní use casy explicitně staví jako A/B test proti sobě.</td></tr>
+        <tr><td class="k"><span class="id">B2</span>Multi-step scénáře s větvením dle reakce</td><td>Use case <em>Welcome série + Cross-Sell</em>, priorita 1</td><td>„Follow-up scénáře podle reakce na předchozí komunikaci.“</td></tr>
+        <tr><td class="k"><span class="id">B3</span>SMS a telefonní kanál</td><td>Souhrn současného CRM řešení — Pros</td><td>SMS a call jsou dnes silná stránka zákaznického centra. Nová platforma je nesmí zhoršit.</td></tr>
+        <tr><td class="k"><span class="id">B4</span>Triggery nad eventy</td><td>Use casy <em>Sebe-identifikace rizika</em>, <em>Follow-up novým kontaktům</em></td><td>Reakce na chování, ne na plánovanou rozesílku.</td></tr>
+        <tr><td class="k"><span class="id">C1</span>Funnel dashboard s drill-downem dle oborů a Y/Y</td><td>Use case <em>Data Dashboard</em>, priorita 1</td><td>Jeden z hlavních požadavků na projekt vůbec — „jednotný analytický aparát“.</td></tr>
+        <tr><td class="k"><span class="id">C2</span>Měřitelnost 12 definovaných KPI</td><td>Kapitola <em>KPI definice pro CDP projekt</em></td><td>Bez měřitelnosti nelze evaluovat pilot ani rozhodnout o rozšíření scope.</td></tr>
+        <tr><td class="k"><span class="id">C3</span>Tagování at-risk studentů</td><td>Use case <em>Identifikace rizikových studentů</em></td><td>Předávka seznamu studijnímu a zákaznickému oddělení k osobnímu kontaktu.</td></tr>
+        <tr><td class="k"><span class="id">D1</span>GDPR a data compliance</td><td>Consenty — dohledová činnost ÚOOÚ</td><td>Vysoká škola zpracovává citlivá studijní data tisíců osob.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">04</div><h2>Souhrnné pokrytí požadavků</h2></div>
+  <div class="col">
+    <p>Počty vycházejí ze sedmnácti kritérií výše a z matic v sekci&nbsp;05. Je to sečtená matice, ne samostatný zdroj — a záměrně ukazuje i to, že varianta&nbsp;3 má devět požadavků splněných jen s podmínkou a jeden nesplněný.</p>
+  </div>
+  <div class="chart">
+    <div class="row">
+      <div class="rl"><b>Varianta 1</b>MailKit + Keboola</div>
+      <div class="bar" role="img" aria-label="Varianta 1: 3 splněno, 8 s podmínkou, 6 nesplněno ze 17">
+        <span class="s-ok" style="flex:3">3</span><span class="s-mid" style="flex:8">8</span><span class="s-no" style="flex:6">6</span>
+      </div>
+      <div class="readout"><span class="ro"><b>3</b> splňuje</span><span class="rm"><b>8</b> s podmínkou</span><span class="rn"><b>6</b> nesplňuje</span></div>
+    </div>
+    <div class="row">
+      <div class="rl"><b>Varianta 2</b>Mailchimp + AutoCRM</div>
+      <div class="bar" role="img" aria-label="Varianta 2: 0 splněno, 6 s podmínkou, 11 nesplněno ze 17">
+        <span class="s-mid" style="flex:6">6</span><span class="s-no" style="flex:11">11</span>
+      </div>
+      <div class="readout"><span class="ro"><b>0</b> splňuje</span><span class="rm"><b>6</b> s podmínkou</span><span class="rn"><b>11</b> nesplňuje</span></div>
+    </div>
+    <div class="row">
+      <div class="rl"><b>Varianta 3</b>ePACE + Targito</div>
+      <div class="bar" role="img" aria-label="Varianta 3: 7 splněno, 9 s podmínkou, 1 nesplněno ze 17">
+        <span class="s-ok" style="flex:7">7</span><span class="s-mid" style="flex:9">9</span><span class="s-no" style="flex:1"></span>
+      </div>
+      <div class="readout"><span class="ro"><b>7</b> splňuje</span><span class="rm"><b>9</b> s podmínkou</span><span class="rn"><b>1</b> nesplňuje</span></div>
+    </div>
+    <div class="row">
+      <div class="rl"><b>Varianta 4</b>ePACE + Bloomreach</div>
+      <div class="bar" role="img" aria-label="Varianta 4: 15 splněno, 2 s podmínkou, 0 nesplněno ze 17">
+        <span class="s-ok" style="flex:15">15</span><span class="s-mid" style="flex:2">2</span>
+      </div>
+      <div class="readout"><span class="ro"><b>15</b> splňuje</span><span class="rm"><b>2</b> s podmínkou</span><span class="rn"><b>0</b> nesplňuje</span></div>
+    </div>
+    <div class="key">
+      <span><i class="s-ok"></i>Splňuje</span>
+      <span><i class="s-mid"></i>S podmínkou</span>
+      <span><i class="s-no"></i>Nesplňuje</span>
+      <span>ze 17 požadavků</span>
+    </div>
+  </div>
+  <p class="hint">Souhrn nenahrazuje matici — váha požadavků není stejná. Kritérium A1 samo nese 83&nbsp;% ekonomiky projektu.</p>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">05</div><h2>Matice po vrstvách</h2></div>
+  <div class="col">
+    <p>Čtyři bloky odpovídají vrstvám navržené architektury: co se o zákazníkovi ví, co se s tím dá udělat, jak se to měří a za jakých provozních podmínek.</p>
+    <p><strong>Doklad ke každému verdiktu je sbalený.</strong> V základním zobrazení matice ukazuje jen verdikt a jeho jednovětou podstatu; kliknutím na verdikt se rozbalí konkrétní doklad z dokumentace. Každou tabulku lze rozbalit i celou najednou.</p>
+  </div>
+
+  <p class="sub">A — Datová vrstva</p>
+  <div class="tbar"><button class="tg" type="button" data-t="tA" aria-expanded="false">Rozbalit všechny detaily</button></div>
+  <div class="scroll" id="tA">
+    <table class="matrix">
+      <thead><tr><th class="k">Požadavek</th>
+        <th>Varianta 1<span>MailKit + Keboola</span></th>
+        <th>Varianta 2<span>Mailchimp + AutoCRM</span></th>
+        <th>Varianta 3<span>ePACE + Targito</span></th>
+        <th>Varianta 4<span>ePACE + Bloomreach</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k"><span class="id">A1</span>Ztotožnění anonymní návštěvnosti<span class="src">83 % ekonomiky projektu</span></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Anonymní event nelze adresovat</span></summary><div class="body"><p>Dokumentace MailKitu sama uvádí, že event bez identifikovatelné e-mailové adresy nelze adresovat kampaní. Funkce <span class="m">viewItem</span> nese pouze <span class="m">product_id</span> — žádné URL, referrer ani session. Keboola nemá klientský tracking skript vůbec.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Pixel jen pro Shopify, Wix a WooCommerce</span></summary><div class="body"><p>Mailchimp site tracking pixel <strong>existuje</strong> včetně anonymního visitor ID a retroaktivního přiřazení historie ke kontaktu — ale je dostupný pouze účtům s připojeným Shopify, Wix nebo WooCommerce. Web ambis.cz běží na Solidpixels, pixel tedy není dostupný. AutoCRM ani EspoCRM tracking anonymních návštěvníků nepodporují.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Anonymní ID v cookie, převoditelné na kontakt</span></summary><div class="body"><p>Anonymní Targito ID uložené v cookie, které se kdykoli může stát kontaktem v databázi. Nativní webové eventy plus vlastní eventy přes webový i server-to-server tracking.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">JS SDK a tracking API</span></summary><div class="body"><p>Přesně model, na kterém je architektura v analýze postavená.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A2a</span>Profil s 32 atributy</td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Strop 25 polí, profil má 32</span></summary><div class="body"><p>Tvrdý strop <strong>25 custom fieldů</strong> (<span class="m">CUSTOM1</span>–<span class="m">CUSTOM25</span>), hodnoty jsou ploché stringy s limitem 2048 resp. 255 znaků. Není to škálovací, ale architektonický limit.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">32 atributů vyžaduje tarif Premium</span></summary><div class="body"><p>30 polí ve tarifu Standard, 80 v Premium. Hodnota pole max 255 bajtů.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Typované sloupce bez dokumentovaného limitu</span></summary><div class="body"><p>Sedm datových typů. Nový sloupec lze přidat v UI, smazat jej ale musí podpora Targita.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">256 atributů v základní licenci</span></summary><div class="body"><p>Analýza to ověřila a modul CDE Premium proto nenaceňuje.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A2b</span>19 eventů v čase<span class="src">historie v řádu semestrů</span></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Košíkové objekty, ne časová řada</span></summary><div class="body"><p>„Eventy“ jsou v MailKitu proměnlivé pending objekty košíkového typu. Nelze se dotázat „prohlédl obor X třikrát za 90 dní“.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Retence 3 měsíce, v Premium 18</span></summary><div class="body"><p>Events API existuje ve všech tarifech, ale <strong>retence pro segmentaci</strong> je 30 dní (Essentials), 3 měsíce (Standard), 18 měsíců (Premium). Semestrální historie kreditů je pod tarifem Premium nedosažitelná.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Vlastní eventy, 100 atributů na event</span></summary><div class="body"><p>Sedm datových typů atributů, segmentace nad eventy s agregačními funkcemi a časovými okny.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativní event store</span></summary><div class="body"><p>Analýza dimenzuje 45 mil. zpracovaných a 20 mil. uložených eventů ročně.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A3</span>Identity resolution, telefon jako hlavní ID</td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Klíčem je e-mail, cookie vzniká klikem</span></summary><div class="body"><p>Primárním klíčem je e-mail a je zároveň jediné povinné pole. Identifikační cookie se zakládá klikem v e-mailu; automatickou detekci adresy vlastní dokumentace označuje jako „not always reliable“.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Bez pixelu a bez deduplikace napříč audiences</span></summary><div class="body"><p>Retroaktivní přiřazení funguje jen s nedostupným pixelem. Duplicitní kontakt napříč audiences se platí dvakrát. AutoCRM identity resolution nedokládá.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Bez deduplikace telefonů, nutná normalizace</span></summary><div class="body"><p>Profil se páruje <strong>prokliknutím z e-mailu nebo napárováním ID</strong>. Pro telefon jako hlavní ID je podstatné, že platforma <strong>nemá centrální automatickou deduplikaci telefonních čísel</strong> — řeší se sloupcem <span class="m">sms_priority</span> ručně. Čísla bude nutné normalizovat v middleware před importem.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Telefon jako primární identifikátor</span></summary><div class="body"><p>Model <span class="m">hard_id</span> / <span class="m">soft_id</span> — tak je profil v analýze navržen.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A4a</span>Napojení CRM Raynet → Daktela</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Konektor na Raynet neexistuje</span></summary><div class="body"><p>Keboola má obousměrné konektory na Salesforce, HubSpot a Dynamics; na Raynet nikoli → zakázková integrace přes API.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Bez konektoru na obou stranách</span></summary><div class="body"><p>AutoCRM by musel Raynet nahradit, ne integrovat — což je jiný projekt než ten, který analýza popisuje.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Bez příchozích webhooků, nutný middleware</span></summary><div class="body"><p>Targito nemá <strong>žádné dokumentované příchozí webhooky</strong> a jeho API pokrývá pouze kontakty a transakční zprávy. Webhook automatizace z Raynetu, se kterou analýza počítá, proto potřebuje middleware, který payload přijme, transformuje a předá přes API nebo SFTP.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Omniconnect přímo na tento vzor</span></summary><div class="body"><p>Integrační vrstva je pro tento scénář určená a analýza ji tak navrhuje.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A4b</span>Napojení IS AMBIS</td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nejlépe vybavená varianta pro exporty z IS</span></summary><div class="body"><p>Silná stránka Keboola — extrakce, transformace v SQL/Python/dbt, orchestrace, katalog.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Bez ETL vrstvy</span></summary><div class="body"><p>Pouze zakázkově přes REST API; u AutoCRM neexistuje reference na studijní informační systém.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">SFTP feed ano, transformace mimo UI</span></summary><div class="body"><p>SFTP je jedním z hlavních kanálů platformy — dávkový import CSV denně nebo hodinově, plus spuštění importu při nahrání souboru. Transformace řeší <strong>SQL tasky psané na míru, které jsou uložené na pozadí a nejsou v UI vidět</strong>, tedy nejsou samoobslužné pro tým AMBIS.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Import module jako URL feed</span></summary><div class="body"><p>Pro předmětová data přes datovou pipeline.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A5</span>Produktový feed oborů</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Feed jako SQL zdroj, ne katalog</span></summary><div class="body"><p>Lze načíst do SQL data source a filtrovat v něm, ale není to katalog s vazbou na profil.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Nedokládá se u žádného z nástrojů</span></summary><div class="body"><p>Ani Mailchimp, ani AutoCRM produktový katalog s vazbou na profil nenabízí.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">XML feed je nosný formát platformy</span></summary><div class="body"><p>Segmentace umí podmínku nad jakýmkoli sloupcem feedu. Navíc entity článků, kategorií a poboček.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Bloomreach katalogy</span></summary><div class="body"><p>Analýza s nimi počítá pro dashboard obsazenosti oborů.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">A6</span>Centrální consent a expirace</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Solidní pro e-mail, web tracking neřeší</span></summary><div class="body"><p>Povinný double opt-in, globální unsubscribe vázaný na adresu, evidence způsobu odhlášení včetně spam reportů, preference po tématech, API pro výmaz. Consent pro webový tracking chybí; Keboola consent neřeší vůbec.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Základní e-mailový, cookie lišta mimo platformu</span></summary><div class="body"><p>Evidenci souhlasů pro web si AMBIS řeší vlastními prostředky.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Expirace ano, cross-kanálově ne</span></summary><div class="body"><p>Pro e-mail nadstandardní: double i single opt-in, <strong>uspané kontakty s automatickou expirací</strong> (přesně mechanika, kterou analýza požaduje), GDPR výmaz, frequency capping bodovým systémem. Není ale cross-kanálový — odhlášení přes odhlašovací stránku ProfiSMS se do Targita nepřenáší.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativně napříč kanály</span></summary><div class="body"><p>Architektura, kterou analýza označuje za provozní nutnost.</p></div></details></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint">Zdroje: dokumentace výrobců, veřejná provozní metodika Targita, Keboola Storage API, dokumentace EspoCRM · září 2026</p>
+
+  <p class="sub">B — Aktivace</p>
+  <div class="tbar"><button class="tg" type="button" data-t="tB" aria-expanded="false">Rozbalit všechny detaily</button></div>
+  <div class="scroll" id="tB">
+    <table class="matrix">
+      <thead><tr><th class="k">Požadavek</th>
+        <th>Varianta 1<span>MailKit + Keboola</span></th>
+        <th>Varianta 2<span>Mailchimp + AutoCRM</span></th>
+        <th>Varianta 3<span>ePACE + Targito</span></th>
+        <th>Varianta 4<span>ePACE + Bloomreach</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k"><span class="id">B1a</span>Weblayery<span class="src">UC FOMO, priorita 1</span></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Jen přihlašovací formulář, bez cílení</span></summary><div class="body"><p>Pop-out, slide-out a lišta s reálnými triggery — prodleva, pozice scrollu v %, počet návštěv webu i stránek. Ale <strong>obsahem může být výhradně přihlašovací formulář do mailing listu</strong>: žádná nabídka, kupón ani banner, žádné cílení na segment, žádná personalizace obsahu.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Pop-upy ano, ale bez vstupních dat</span></summary><div class="body"><p>Triggery (čas na stránce, neaktivita, exit intent) a cílení na zařízení, geolokaci, zdroj návštěvy a URL existují. Bez <span class="m">A1</span> ale nemají čím cílit na chování.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Akviziční widget, ne weblayer engine</span></summary><div class="body"><p>Skript <span class="m">p.js</span> umí exit intent, prodlevu, pravidla zobrazení podle cesty a parametrů, vícekrokové formuláře, GDPR checkbox a volbu odložení. On-site personalizace mimo pop-upy jde přes widgety a GTM.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Tagy v modulu Customer Data Engine</span></summary><div class="body"><p>Analýza weblayery řeší bez dokupování modulu Web Personalization.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">B1b</span>A/B test weblayerů<span class="src">dva pilotní UC proti sobě</span></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Není v dokumentaci</span></summary><div class="body"><p>A/B test je omezen na kampaně — předmět, odesílatel, obsah.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">A/B jen pro e-mail a SMS</span></summary><div class="body"><p>A/B i multivariantní testy jsou explicitně omezené na e-mail a SMS, maximálně 3 varianty.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">V kódu není variantní logika</span></summary><div class="body"><p>Ve zdrojovém kódu pop-up skriptu žádné rozdělení variant není. A/B testování je na úrovni rozesílky (až 4 varianty, rozdělení v %, vyhodnocení podle OR/CR), ne na úrovni weblayeru.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativní A/B split</span></summary><div class="body"><p>Ve scénáři i na weblayeru.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">B2</span>Multi-step scénáře s větvením<span class="src">UC Welcome série, priorita 1</span></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Bohaté journeys, omezení leží v triggerech</span></summary><div class="body"><p>Uzly <span class="m">WAIT</span> s opuštěním na event, <span class="m">CONDITION</span>, <span class="m">REACTION</span> vyhodnocující předchozí e-mail, <span class="m">LIMIT</span>, <span class="m">A/B SPLIT</span> i odchozí <span class="m">WEBHOOK</span>.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Multi-step až od tarifu Standard</span></summary><div class="body"><p>Event-triggered flows jsou ve Free nedostupné, v Essentials jen jednokrokové. Strop 200 flows.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Editor není v dokumentaci doložen</span></summary><div class="body"><p><strong>Nejméně ověřený bod celé varianty.</strong> Web platformy slibuje drag &amp; drop editor s časovými prodlevami, podmínkami a statistikou u každého kroku. Vlastní provozní metodika ale dokumentuje pouze model „seznam kontaktů + šablona + frekvence zpracování (minutově až měsíčně)“ a jedenáct přednastavených automatizací. Před podpisem doporučujeme vidět na demu uzel prodlevy, uzel podmínky a statistiku per krok.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Scenario engine s uzly a splity</span></summary><div class="body"><p>Včetně priorit a kontrolních skupin.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">B3</span>SMS a telefonní kanál</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Nativně, ale jen po–pá 9:00–17:00</span></summary><div class="body"><p>SMS jako vlastní typ kampaně, API pro odeslání. Provozní omezení z dokumentace: netransakční SMS lze odesílat pouze v pracovních dnech od 9 do 17 hodin.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Mailchimp SMS v ČR nepodporuje</span></summary><div class="body"><p>Podporované jsou mj. Slovensko, Polsko, Německo a Rakousko, Česká republika na seznamu není. Hromadné SMS u AutoCRM nejsou doložené.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Přes partnera ProfiSMS, účet zvlášť</span></summary><div class="body"><p>Samostatný účet a samostatná fakturace. U modulu SMS metodika uvádí, že nemá možnost trackování ani segmentace — pravděpodobně zastaralá stránka, ale je to bod na demo.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Modul €12 870 nebo externí brána</span></summary><div class="body"><p>Analýza volí externí bránu a modul nenaceňuje.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">B4</span>Triggery nad eventy</td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Jen Event API košíkového typu</span></summary><div class="body"><p>Na pageview, návštěvu URL či kategorie, start session ani libovolný vlastní event trigger postavit nelze.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Triggery existují, chybí jim vstupní data</span></summary><div class="body"><p>„Viewed a page“ a „Clicked a link“ jsou k dispozici, ale bez dostupného trackingu se nespustí.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Latence 5–10 minut</span></summary><div class="body"><p>Dokumentovaná prodleva mezi zavoláním vlastní události a jejím uložením do databáze. Pro scénář „prohlédl obor a nepodal přihlášku“ to nevadí; pro reakci v rámci téže session ano.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Near-real-time nad celým eventovým streamem</span></summary><div class="body"><p>Bez omezení na typ eventu.</p></div></details></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <span class="why">Poznámka k variantě 1</span>
+    <p>Keboola aktivačním nástrojem není a sama to uvádí — mezi nástroje, s nimiž koexistuje, řadí „your CDP“. Komponenty pro odesílání e-mailů a SMS v jejím katalogu existují, ale jsou ve verzi BETA nebo od třetích stran a jde o dávkové utility bez správy souhlasů, bez odhlašovacích mechanismů a bez doručovací infrastruktury. Poměr <span class="m">211</span> extraktorů ku <span class="m">79</span> writerům v jejím veřejném katalogu je konzistentní s tímto pozicováním.</p>
+  </div>
+
+  <p class="sub">C — Analytika a měření</p>
+  <div class="tbar"><button class="tg" type="button" data-t="tC" aria-expanded="false">Rozbalit všechny detaily</button></div>
+  <div class="scroll" id="tC">
+    <table class="matrix">
+      <thead><tr><th class="k">Požadavek</th>
+        <th>Varianta 1<span>MailKit + Keboola</span></th>
+        <th>Varianta 2<span>Mailchimp + AutoCRM</span></th>
+        <th>Varianta 3<span>ePACE + Targito</span></th>
+        <th>Varianta 4<span>ePACE + Bloomreach</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k"><span class="id">C1</span>Funnel dashboard, drill-down dle oborů, Y/Y<span class="src">UC Data Dashboard, priorita 1</span></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Vlastní build, odděleně od aktivace</span></summary><div class="body"><p>V Keboole postavitelné v SQL a zobrazitelné přes Data Apps nebo vlastní BI. Reporting si ale stavíte celý sami a žije odděleně od aktivační vrstvy.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Kampaňová analytika, ne funnel</span></summary><div class="body"><p>Funnel od session po nástup do studia s drill-downem podle oborů z Metrics Visualizeru nevznikne.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Custom build nad Metabase nebo Snowflake</span></summary><div class="body"><p>Nativní reporting je kampaňový a e-mailový; <strong>funnel, kohortní ani retenční report v platformě neexistuje</strong> a atribuce je pevné 24hodinové okno pro asistované konverze. Cesta k dashboardu z analýzy vede přes přibalený Metabase nebo vlastní BI nad Snowflake, který je backendem platformy. Je to tedy custom build, ne konfigurace.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativní funnely a Y/Y srovnání</span></summary><div class="body"><p>Včetně retenčních a kohortních reportů.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">C2</span>Měřitelnost 12 definovaných KPI</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Většina, ale v oddělené BI vrstvě</span></summary><div class="body"><p>Měření žije odděleně od nástroje, který komunikaci odesílá.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Měřitelná řádově třetina</span></summary><div class="body"><p>E-mailové metriky a základní konverze ano; KPI vázaná na studijní data a funnel nikoli.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Všechny, ale mimo nativní reporting</span></summary><div class="body"><p>Prostřednictvím Metabase nebo BI nad Snowflake.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativně</span></summary><div class="body"><p>Včetně analytického aparátu, který analýza označuje za kritickou infrastrukturu projektu.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="id">C3</span>Tagování at-risk studentů</td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Výpočet ano, zápis zpět dávkově a jen kontakty</span></summary><div class="body"><p>Rizikové skóre je v Keboole snadné spočítat. Problém je zápis zpět: <strong>konektor Keboola → MailKit je BETA, přenáší jen kontakty, jednosměrně a dávkově</strong>. Skóre se do aktivační vrstvy dostane jako jedno z 25 polí, eventy nikdy.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Není z čeho riziko odvodit</span></summary><div class="body"><p>Bez studijních dat a bez eventového modelu chybí vstup.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Segmentace nad eventy s časovými okny</span></summary><div class="body"><p>Agregační funkce, negace, atribut <span class="m">at_risk</span> jako sloupec kontaktu, přepočet segmentů v reálném čase i před rozesílkou.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Nativně, včetně předávky oddělením</span></summary><div class="body"><p>Seznam at-risk studentů lze automaticky předávat zákaznickému a studijnímu oddělení.</p></div></details></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="sub">D — Provoz, riziko, compliance</p>
+  <div class="tbar"><button class="tg" type="button" data-t="tD" aria-expanded="false">Rozbalit všechny detaily</button></div>
+  <div class="scroll" id="tD">
+    <table class="matrix">
+      <thead><tr><th class="k">Aspekt</th>
+        <th>Varianta 1<span>MailKit + Keboola</span></th>
+        <th>Varianta 2<span>Mailchimp + AutoCRM</span></th>
+        <th>Varianta 3<span>ePACE + Targito</span></th>
+        <th>Varianta 4<span>ePACE + Bloomreach</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k"><span class="id">D1</span>GDPR a data compliance</td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Čeští dodavatelé, ISO 27001</span></summary><div class="body"><p>MailKit má certifikaci ISO 27001 a ISO 9001, oba subjekty jsou české.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nesplňuje</span><span class="tl">Data v USA, bez české lokalizace</span></summary><div class="body"><p>Mailchimp uvádí, že sídlo i servery jsou ve Spojených státech; přenos stojí na EU-U.S. Data Privacy Framework se standardními smluvními klauzulemi jako záložním mechanismem. Uživatelské rozhraní ani podpora nejsou v češtině. Pro vysokou školu zpracovávající studijní data to je typicky předmět posouzení vlivu na ochranu osobních údajů.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Splňuje</span><span class="tl">Český subjekt, data v EU</span></summary><div class="body"><p>Podpora i dokumentace v češtině.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>S podmínkou</span><span class="tl">Hosting v EU, dodavatel mimo EU</span></summary><div class="body"><p>Řešitelné smluvně, není to blokující bod.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Počet systémů v cestě dat<span class="src">Cons v analýze: „roztříštěný profil“</span></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Nejvyšší</span><span class="tl">Tři vrstvy a eventy mezi nimi neprotečou</span></summary><div class="body"><p>ESP, datová platforma a integrační vrstva mezi nimi. Eventy zůstanou v datové vrstvě, protože oficiální konektor je přenést neumí.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Vysoký</span><span class="tl">Profil zůstane na dvou místech</span></summary><div class="body"><p>Dva nástroje bez společné datové vrstvy — přesně stav, který analýza označuje za hlavní problém současné architektury.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Nejnižší</span><span class="tl">Jedna aktivační platforma</span></summary><div class="body"><p>Middleware zůstává pro Raynet a pro transformaci exportů z IS.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Nízký</span><span class="tl">Jedna platforma plus datová pipeline</span></summary><div class="body"><p>Pipeline pro předmětová data z IS.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Nároky na interní tým AMBIS</td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Vysoké</span><span class="tl">Předpokládá kompetenci v SQL</span></summary><div class="body"><p>Případně v dbt nebo Pythonu. Bez ní projekt stojí na externí kapacitě natrvalo.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>Střední</span><span class="tl">Obsluhu zvládne, nedoručí A1 a C1</span></summary><div class="body"><p>Oba hlavní požadavky na projekt zůstanou nesplněné.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>Vyšší</span><span class="tl">Opírá se o seniorní specialisty</span></summary><div class="body"><p>Ať už z ePACE, nebo zkušené in-house. Platforma uživatele méně vede za ruku a část logiky (SQL tasky) není v UI dostupná.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Nejnižší</span><span class="tl">Po zaškolení převezme interní tým</span></summary><div class="body"><p>Rozsáhlá dokumentace, Academy, velký partnerský trh.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Možnost odstoupit</td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Vysoká</span><span class="tl">Export dat i kódu jedním tlačítkem</span></summary><div class="body"><p>Keboola má nízký lock-in. MailKit je bez veřejných smluvních podmínek.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Vysoká</span><span class="tl">Měsíční tarify u obou nástrojů</span></summary><div class="body"><p>Bez závazku na období.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Vysoká</span><span class="tl">Měsíční závazek</span></summary><div class="body"><p>Flexibilnější než licenční smlouva na období.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-mid"><i>◐</i>Podmíněná</span><span class="tl">Break-up klauzule po 6 měsících</span></summary><div class="body"><p>Dvouletý kontrakt s roční fakturací, ale s možností odejít po šesti měsících bez předčasného ukončení smlouvy. Analýza doporučuje svázat ji s evaluací pilotu.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Reference ve školství</td>
+          <td><details class="d"><summary><span class="p p-na"><i>?</i>Nezjištěno</span><span class="tl">Ze školství nedohledána</span></summary><div class="body"><p>MailKit uvádí mj. ČSOB Pojišťovnu a Stoklasu, Keboola Rohlík, Publicis, Deloitte a Erste Group.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-na"><i>?</i>Nezjištěno</span><span class="tl">ČZU jen v logu, bez případové studie</span></summary><div class="body"><p>AutoCRM uvádí ČZU pouze v přehledu log, bez nezávisle dohledatelného potvrzení. Všech 27 publikovaných případových studií je anonymizovaných.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-no"><i>✕</i>Žádná</span><span class="tl">Portfolio je e-commerce a retail</span></summary><div class="body"><p>Referenci ze školství ani ze vzdělávání jsme nedohledali, stejně jako profil na nezávislých recenzních portálech. Portfolio tvoří e-commerce, retail, B2B distribuce a jedna banka.</p></div></details></td>
+          <td><details class="d"><summary><span class="p p-ok"><i>✓</i>Rozsáhlé</span><span class="tl">Včetně vzdělávacího sektoru</span></summary><div class="body"><p>Globální ekosystém partnerů i referencí.</p></div></details></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">06</div><h2>Ekonomika</h2></div>
+  <div class="col">
+    <p>Cena služeb ePACE — integrace, datový profil, spuštění pěti prioritních use casů, projektové řízení a dokumentace — je u variant&nbsp;3 a&nbsp;4 stejná: <strong>740&nbsp;hodin, 1&nbsp;929&nbsp;000&nbsp;Kč</strong>. Liší se pouze cena technologie a rozsah custom práce nad ní.</p>
+    <p>U variant&nbsp;1 a&nbsp;2 nelze celkovou cenu doplnit: MailKit ani Keboola nemají zveřejněný ceník pro tento rozsah a implementační pracnost by závisela na nabídce jejich dodavatele nebo na interní kapacitě AMBIS. Uvádíme proto jen to, co je veřejně dohledatelné.</p>
+  </div>
+  <div class="tbar"><button class="tg" type="button" data-t="tE" aria-expanded="false">Rozbalit všechny detaily</button></div>
+  <div class="scroll" id="tE">
+    <table class="money">
+      <thead><tr><th class="k">Položka</th>
+        <th>Varianta 1<span>MailKit + Keboola</span></th>
+        <th>Varianta 2<span>Mailchimp + AutoCRM</span></th>
+        <th>Varianta 3<span>ePACE + Targito</span></th>
+        <th>Varianta 4<span>ePACE + Bloomreach</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k">Licence — rok 1</td>
+          <td><div class="fig q"><span class="p p-na"><i>?</i>Neveřejné</span></div><details class="d"><summary><span class="tl">Proč to nelze doplnit</span></summary><div class="body"><p>MailKit nemá veřejný ceník, cena se stanovuje individuálně podle objemu odeslání. Keboola má pouze tarif Free a Enterprise „na dotaz“; účtuje se za výpočetní čas, takže vysokofrekvenční pipeline je strukturálně dražší.</p></div></details></td>
+          <td><div class="fig">≈&nbsp;307&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Z čeho se skládá</span></summary><div class="body"><p>Mailchimp Premium na 50&nbsp;tis. kontaktů ≈ 815&nbsp;USD/měs — Premium je nutný kvůli 80 polím a 18měsíční retenci — plus AutoCRM Maxi 8&nbsp;450&nbsp;Kč/měs. Účtuje se za kontakt napříč všemi audiences včetně odhlášených.</p></div></details></td>
+          <td><div class="fig">100&nbsp;800&nbsp;Kč</div><details class="d"><summary><span class="tl">Rozsah a potvrzení ceny</span></summary><div class="body"><p>8&nbsp;400&nbsp;Kč/měs, potvrzeno zástupci Targita pro rozsah 50&nbsp;tis. kontaktů a cca 100&nbsp;tis. e-mailů měsíčně.</p></div></details></td>
+          <td><div class="fig">735&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Podmínky partnerské ceny</span></summary><div class="body"><p>€30&nbsp;244 při dvouletém kontraktu, partnerská cena. Nejnižší standardní cena pro ne-partnery je €57&nbsp;000.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Licence — rok 2</td>
+          <td><div class="fig q"><span class="p p-na"><i>?</i>Neveřejné</span></div></td>
+          <td><div class="fig">≈&nbsp;307&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Roste s počtem kontaktů</span></summary><div class="body"><p>Cena se přepočítává podle velikosti báze, která u kumulativní báze studentů a absolventů roste.</p></div></details></td>
+          <td><div class="fig q">roste s objemem</div><details class="d"><summary><span class="tl">Řádově</span></summary><div class="body"><p>Zůstává zlomkem ceny varianty 4. Tempo navýšení nelze přesně predikovat.</p></div></details></td>
+          <td><div class="fig">1&nbsp;216&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Co je v ceně navíc</span></summary><div class="body"><p>€50&nbsp;048 — zahrnuje moduly Web Personalization a Mobile Messaging. SMS lze řešit externí bránou a licenci snížit odhadem na €35–40&nbsp;tis.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Integrace a implementace</td>
+          <td><div class="fig q">Dle nabídky dodavatele</div><details class="d"><summary><span class="tl">Kde bude pracnost</span></summary><div class="body"><p>Nižší na aktivační vrstvě, vyšší na datové — celý reporting i identity model se staví od nuly.</p></div></details></td>
+          <td><div class="fig q">Interní kapacita</div><details class="d"><summary><span class="tl">Skutečný náklad</span></summary><div class="body"><p>Formálně nulový externí náklad. Reálně kapacita marketingu a IT AMBIS, kterou analýza označuje za riziko časového plánu.</p></div></details></td>
+          <td><div class="fig">1&nbsp;929&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Co je v rozsahu</span></summary><div class="body"><p>740 h — integrace, datový profil, 5 use casů, projektové řízení a dokumentace.</p></div></details></td>
+          <td><div class="fig">1&nbsp;929&nbsp;000&nbsp;Kč</div><details class="d"><summary><span class="tl">Co je v rozsahu</span></summary><div class="body"><p>Stejný rozsah a stejná pracnost jako u varianty 3.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Náklady rok 1 celkem</td>
+          <td><div class="fig q"><span class="p p-na"><i>?</i>Nelze doplnit</span></div></td>
+          <td><div class="fig q"><span class="p p-na"><i>?</i>Nelze doplnit</span></div></td>
+          <td><div class="fig">≈&nbsp;2&nbsp;030&nbsp;000&nbsp;Kč</div></td>
+          <td><div class="fig">≈&nbsp;2&nbsp;664&nbsp;000&nbsp;Kč</div></td>
+        </tr>
+        <tr>
+          <td class="k">Návratnost při realistickém scénáři<span class="src">5,41 mil. Kč inkrementální marže</span></td>
+          <td><div class="fig q">—</div><details class="d"><summary><span class="tl">Proč nelze modelovat</span></summary><div class="body"><p>Bez <span class="m">A1</span> chybí 83 % předpokládaného přínosu.</p></div></details></td>
+          <td><div class="fig q">—</div><details class="d"><summary><span class="tl">Proč nelze modelovat</span></summary><div class="body"><p>Totéž — bez <span class="m">A1</span> chybí většina ekonomiky.</p></div></details></td>
+          <td><div class="fig">≈&nbsp;4,5 měsíce</div><details class="d"><summary><span class="tl">Od kdy se počítá</span></summary><div class="body"><p>Od spuštění všech use casů a plné integrace, ne od podpisu.</p></div></details></td>
+          <td><div class="fig">≈&nbsp;5,9 měsíce</div><details class="d"><summary><span class="tl">Rozdíl proti variantě 3</span></summary><div class="body"><p>Stejná výnosová báze, vyšší licenční náklad.</p></div></details></td>
+        </tr>
+        <tr>
+          <td class="k">Skryté nebo dodatečné náklady</td>
+          <td><details class="d"><summary><span class="tl">Tři položky</span></summary><div class="body"><p>Výpočetní čas Keboola, zakázkový konektor na Raynet, celý reporting jako custom build.</p></div></details></td>
+          <td><details class="d"><summary><span class="tl">Tři položky</span></summary><div class="body"><p>Vlastní řešení webového trackingu mimo platformu, posouzení vlivu na ochranu osobních údajů, samostatná SMS platforma pro ČR.</p></div></details></td>
+          <td><details class="d"><summary><span class="tl">Čtyři položky</span></summary><div class="body"><p>Custom A/B mechanika weblayerů, dashboard nad Metabase nebo Snowflake, middleware pro Raynet, účet u ProfiSMS zvlášť.</p></div></details></td>
+          <td><details class="d"><summary><span class="tl">Jedna položka</span></summary><div class="body"><p>Externí SMS brána, pokud se modul nedokoupí.</p></div></details></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <span class="why">K výnosové straně</span>
+    <p>Výnosový potenciál je u variant, které splní <span class="m">A1</span>, stejný — analýza pracuje s realistickým scénářem <strong>36,8&nbsp;mil.&nbsp;Kč</strong> v tržbách a <strong>5,41&nbsp;mil.&nbsp;Kč</strong> v inkrementální marži, tedy zhruba 460 získanými nebo zachráněnými studenty ročně. Použitá marže <strong>14,7&nbsp;% je předdaňová</strong> (podíl výsledku hospodaření před zdaněním na tržbách za rok 2024) — pro měření inkrementálního přínosu projektu je to obhajitelná volba, ale je správné to takto pojmenovat. Rozdíl mezi variantami leží na nákladové, ne na výnosové straně.</p>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">07</div><h2>Kde varianta nesplní požadavek z analýzy</h2></div>
+  <div class="col"><p>Tři body níže nejsou hodnocením kvality nástrojů. Jsou to konfigurační a architektonická fakta doložená dokumentací výrobce, která znamenají, že daná varianta určitý požadavek z analýzy nesplní bez dalšího nástroje nebo zakázkového vývoje.</p></div>
+  <div class="stack">
+    <div class="note stop">
+      <span class="why">Varianta 2 · požadavek A1</span>
+      <h3>Mailchimp site tracking pixel není na webu AMBIS dostupný</h3>
+      <p>Podle dokumentace Mailchimpu je pixel dostupný <strong>pouze účtům s připojeným Shopify, Wix nebo WooCommerce</strong>. Web ambis.cz běží na CMS Solidpixels. Bez pixelu neexistuje identifikace anonymní návštěvnosti, a tím ani <span class="m">A1</span> — požadavek, který nese 83&nbsp;% ekonomiky projektu. Není to argument o kvalitě Mailchimpu; je to vlastnost jeho podmínek dostupnosti.</p>
+    </div>
+    <div class="note stop">
+      <span class="why">Varianta 2 · požadavky C1, C2, C3</span>
+      <h3>AutoCRM není zákaznická datová platforma</h3>
+      <p>Vlastní srovnávací tabulka AutoCRM proti Pipedrive, Salesforce a Raynetu uvádí jako diferenciátory české prostředí, open source, cenu nezávislou na počtu uživatelů, API, on-premises a no-code úpravy. <strong>Marketingová automatizace ani webový tracking v ní nejsou.</strong> Podkladové open-source EspoCRM nepodporuje weblayery ani A/B testování kampaní, hromadný e-mail odesílá dávkově přes cron a měření otevření je podle jeho dokumentace „not working reliably“ a vypnuté ve výchozím nastavení — KPI z analýzy tedy nejsou měřitelná.</p>
+    </div>
+    <div class="note stop">
+      <span class="why">Varianta 1 · požadavky A2a, A2b, C3</span>
+      <h3>MailKit má tvrdý strop 25 atributů a eventy z Keboola nepřijme</h3>
+      <p>Datový profil studenta z analýzy má <strong>32 properties</strong>; MailKit nabízí 25 plochých custom fieldů. Vedle toho jeho segmentace nemá krok nad webovými behaviorálními daty — filtrování pracuje s atributy, seznamy, e-mailovými interakcemi za maximálně 365 dní a externím SQL feedem.</p>
+      <p>Klíčové ale je propojení: <strong>oficiální konektor Keboola → MailKit je ve verzi BETA, přenáší výhradně kontakty do mailing listu, jednosměrně a dávkově.</strong> Devatenáct eventů, které analýza navrhla, se do aktivační vrstvy nedostane. Datová platforma je odvede, spočítá a uloží — a aktivace je nikdy neuvidí.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">08</div><h2>Mezery varianty 3 a jejich potenciální krytí</h2></div>
+  <div class="col">
+    <p>Varianta, kterou nabízíme, nemá žádný z výše uvedených blokujících bodů — má ale čtyři ověřené mezery. Uvádíme je, protože mají dopad do pracnosti nebo do rizika a rozhodnutí by na nich mělo stát informovaně, ne až na jejich objevení po podpisu.</p>
+    <p>U funkčních mezer navíc nejsme odkázaní jen na vlastní custom build: <strong>s vývojovým týmem Targita jsme v přímém kontaktu a dokážeme tlačit na to, aby chybějící funkce vznikly nativně v platformě.</strong> Termín ani závaznost takového vývoje ale v tuto chvíli garantovat nelze — krytí popsané níže proto počítá s vlastním řešením a případná nativní podpora je zlepšení, ne předpoklad.</p>
+  </div>
+  <div class="stack">
+    <div class="note gap">
+      <span class="why">Mezera 1 · požadavek B1b</span>
+      <h3>A/B test weblayerů platforma nativně neumí</h3>
+      <p>Ve zdrojovém kódu pop-up skriptu není variantní logika a A/B testování je implementované na úrovni rozesílky. Dva z pěti pilotních use casů — FOMO nabídka proti nezávazné konzultaci — jsou v analýze postavené právě jako A/B test proti sobě.</p>
+      <div class="fix"><b>Potenciální krytí</b>Rozdělení na dvě varianty postavíme přes segmenty nad anonymním Targito ID — platforma segmentaci nad eventy s časovými okny umí a segmenty přepočítává v reálném čase. Vyhodnocení půjde přes stejný datový aparát jako dashboard. Pracnost je zahrnuta v rozsahu 740 hodin; přesná mechanika a stabilita rozdělení jsou předmětem technického ověření v prvních dvou týdnech fáze Delivery. Paralelně budeme na nativní A/B na weblayeru tlačit u vývojového týmu Targita.</div>
+    </div>
+    <div class="note gap">
+      <span class="why">Mezera 2 · požadavky C1, C2</span>
+      <h3>Funnel, kohortní a retenční reporting v platformě neexistuje</h3>
+      <p>Nativní reporting je kampaňový a e-mailový, atribuce má pevné 24hodinové okno pro asistované konverze. Use case Data Dashboard s drill-downem podle oborů a srovnáním rok na rok je proto custom build, ne konfigurace.</p>
+      <div class="fix"><b>Potenciální krytí</b>Datovým backendem Targita je Snowflake a platforma umožňuje napojit na něj vlastní BI i přibalený Metabase. Dashboard postavíme tam — dostanete tím zároveň volnost v definici metrik a nezávislost reportingu na aktivační platformě. Je to práce, kterou u varianty 4 dělat nemusíme; v našem rozsahu 740 hodin je zahrnutá.</div>
+    </div>
+    <div class="note gap">
+      <span class="why">Mezera 3 · požadavek B2</span>
+      <h3>Vizuální editor scénářů není v provozní dokumentaci doložený</h3>
+      <p>Toto je nejméně ověřený bod celého srovnání. Marketingový web platformy popisuje drag &amp; drop editor s prodlevami, podmínkami a statistikou u každého kroku; její vlastní veřejná provozní metodika dokumentuje pouze model „seznam kontaktů + šablona + frekvence zpracování“ a jedenáct přednastavených automatizací. Buď je editor novou, ještě nedokumentovanou funkcí, nebo je popis nadsazený.</p>
+      <div class="fix"><b>Jak to řešíme</b>Nebudeme to odhadovat. Na společném demu si vyžádáme, aby platforma ukázala tři konkrétní věci: uzel časové prodlevy, uzel podmínky s dvěma výstupy a statistiku průchodů u jednotlivého kroku. Pokud editor v tvrzeném rozsahu neexistuje, welcome série s follow-upy podle reakce se dá postavit i na dávkovém modelu s hodinovou frekvencí a segmentech — s vyšší pracností na naší straně, kterou pak vyčíslíme, ne přeneseme.</div>
+    </div>
+    <div class="note gap">
+      <span class="why">Mezera 4 · dodavatelské riziko</span>
+      <h3>Žádná reference ze školství a žádné nezávislé recenze</h3>
+      <p>Referenční portfolio platformy je e-commerce, retail, B2B distribuce a jedna banka. Referenci z vysokoškolského nebo vzdělávacího prostředí jsme nedohledali, stejně jako profil na nezávislých recenzních portálech. Dodavatel technologie je malý český tým.</p>
+      <div class="fix"><b>Co to znamená v praxi</b>Vzdělávací sektor pro platformu není doménou, kterou by měla předpřipravenou — vzory pro studentský lifecycle vzniknou v tomto projektu poprvé. To je práce na straně ePACE a je to přesně obsah fáze Delivery, kterou analýza popisuje. Malý tým má ale i druhou stranu: přímý přístup k vývoji, který u globálního vendora nemáme. Riziko dále snižuje měsíční závazek u licence a evaluace pilotu po šesti měsících — viz následující sekce.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">09</div><h2>Bloomreach jako cílový stav — nebo jako start</h2></div>
+  <div class="col">
+    <p>Varianta&nbsp;4 je původní návrh business analýzy a v matici vychází nejsilněji: patnáct ze sedmnácti požadavků splňuje bez podmínky, zbylé dva jsou řešitelné smluvně a externí SMS bránou. Celá navržená architektura — datový profil, eventový model, integrační vzory, konsentní vrstva — je napsaná na ni. Rozdíl proti variantě&nbsp;3 není v tom, co projekt doručí, ale <strong>za kolik a s jakým podílem custom práce</strong>.</p>
+    <p>Jsou dvě legitimní cesty a obě jsou z hlediska dodání proveditelné:</p>
+    <ul>
+      <li><strong>Rovnou cílové řešení.</strong> Licence v roce 1 je o cca 634&nbsp;tis.&nbsp;Kč vyšší a návratnost se posouvá z 4,5 na 5,9 měsíce, ale ušetříte tři ze čtyř výše popsaných custom mezer, tým AMBIS převezme základní obsluhu dřív a analytický aparát je nativní. Break-up klauzule po šesti měsících riziko dvouletého kontraktu podstatně snižuje.</li>
+      <li><strong>Start na Targitu s otevřenou cestou dál.</strong> Nižší licence a měsíční závazek zkracují návratnost a nechávají rozhodnutí otevřené. Datový profil, mapa eventů, definice KPI a use case backlog jsou platformově nezávislé — vznikají v tomto projektu jednou a při případném přechodu se nezahazují. Migruje se integrační vrstva a scénáře, ne návrh.</li>
+    </ul>
+    <p>Ideální řešení se v čase s rostoucí komplexitou projektu může změnit. Naše doporučení je proto pouze procesní: rozhodnutí o cílové platformě navázat na evaluaci pilotu po šesti měsících, kdy budou k dispozici naměřená data o skutečné konverzi Web&nbsp;→&nbsp;Lead a o dostupnosti studijních signálů z IS — tedy obě klíčové neznámé, které analýza sama pojmenovala.</p>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">10</div><h2>Rozhodovací kritéria</h2></div>
+  <div class="col">
+    <p>Tento dokument nekončí doporučením varianty, protože volba závisí na tom, čemu dá vedení AMBIS přednost. Následující kritéria jsou formulovaná tak, aby se dala použít jako hlasovací otázky.</p>
+  </div>
+  <div class="crit">
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Doručit hlavní pilíř analýzy — zvýšení konverze Web&nbsp;→&nbsp;Lead — v tomto akademickém roce.</div>
+      <div class="then"><b>Pak zbývají</b>Varianty 3 a 4. Varianty 1 a 2 ztotožnění anonymní návštěvnosti na webu Solidpixels nedoručí bez dalšího nástroje, který v žádné z nabídek není.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Nejnižší celkový náklad prvního roku a nejkratší návratnost při flexibilním závazku.</div>
+      <div class="then"><b>Pak vede</b>Varianta 3. Licence 100,8 tis. Kč proti 735 tis. Kč, návratnost 4,5 proti 5,9 měsíce, měsíční závazek. Cenou je custom build A/B mechaniky a dashboardu a vyšší nároky na seniorní kapacitu.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Aby marketingový tým AMBIS převzal běžnou obsluhu do vlastních rukou co nejdřív a nezůstal na externí kapacitě.</div>
+      <div class="then"><b>Pak vede</b>Varianta 4. Prostředí uživatele lépe vede, dokumentace a Academy jsou rozsáhlé, komplexní use casy mají nižší pracnost. Platí se za to vyšší licencí a dvouletým kontraktem s break-up klauzulí.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Analytický aparát a měřitelnost dvanácti definovaných KPI jako první doručený výstup, ne až jako nadstavba.</div>
+      <div class="then"><b>Pak vede</b>Varianta 4 nativně. Varianta 3 to doručí přes Metabase nebo BI nad Snowflake jako custom build. Varianta 1 to doručí v BI vrstvě, ale odděleně od aktivace. Varianta 2 nikoli.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Datová konsolidace — jeden profil na jednom místě, ne další systém do už tak roztříštěného prostředí.</div>
+      <div class="then"><b>Pak zbývají</b>Varianty 3 a 4, obě s jednou aktivační platformou. Varianta 1 přidává tři vrstvy a eventy mezi nimi neprotečou; varianta 2 ponechává profil na dvou místech s jiným rozsahem informací.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Minimální nároky na interní IT kapacitu AMBIS v průběhu integrace.</div>
+      <div class="then"><b>Pak zbývají</b>Varianty 3 a 4, kde integraci dodává ePACE se seniorním projektovým řízením. Varianta 2 stojí celá na interní kapacitě, kterou analýza označuje za hlavní riziko časového plánu.</div>
+    </div>
+    <div>
+      <div class="if"><b>Pokud je prioritou</b>Umístění dat v EU a české uživatelské prostředí i podpora.</div>
+      <div class="then"><b>Pak zbývají</b>Varianty 1 a 3. Varianta 2 zpracovává data ve Spojených státech a nemá české rozhraní ani podporu; varianta 4 hostuje v EU při dodavateli mimo EU.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">11</div><h2>Poznámky k datům</h2></div>
+  <div class="col">
+    <p>Business analýza vznikala v první polovině roku 2026. Několik jejích vstupů se od té doby dá doplnit z veřejných zdrojů. Uvádíme je, aby bylo zřejmé, které údaje v matici a ve finančním modelu jsou původní a které aktualizované.</p>
+  </div>
+  <div class="stack">
+    <div class="note">
+      <span class="why">Marže · beze změny modelu</span>
+      <p>Marže <strong>14,7&nbsp;% je předdaňová</strong> — vznikla podílem výsledku hospodaření před zdaněním (58,4&nbsp;mil.&nbsp;Kč) na tržbách z prodeje výrobků a služeb za rok 2024 (397,6&nbsp;mil.&nbsp;Kč). Výsledek hospodaření po zdanění byl 44,3&nbsp;mil.&nbsp;Kč. Model v analýze ponecháváme bez přepočtu; údaj je nyní explicitně označen jako předdaňový.</p>
+    </div>
+    <div class="note ok">
+      <span class="why">Churn · potenciál vyšší než v modelu</span>
+      <p>Analýza pracovala s baseline churn rate odhadnutou z jednoho rozhovoru (přibližně 20,6&nbsp;% ročně) a označila ji za klíčovou nejistotu celé predikce. <strong>Podle nejnovějších dostupných zdrojů je studijní neúspěšnost prvního ročníku vyšší</strong> a je segmentovaná podle formy studia, přičemž nejvyšší je u kombinované a distanční formy. Potenciál churn use casů je tedy podle novějších dat vyšší, než s jakým analýza ve své době počítala, a zároveň se dá lépe zacílit. Výnosovou tabulku i ROI ponecháváme v původní, konzervativnější podobě.</p>
+    </div>
+    <div class="note">
+      <span class="why">Licence Bloomreach · sjednoceno</span>
+      <p>Analýza uváděla licenční náklad prvního roku €42&nbsp;220. Údaj v tomto dokumentu — <strong>€30&nbsp;244 v roce 1 a €50&nbsp;048 v roce 2</strong> — je platná partnerská cena <strong>při dvouletém kontraktu</strong> a nahrazuje původní kalkulaci. Návratnost u varianty 4 se tím zkracuje z 6,6 na 5,9 měsíce.</p>
+    </div>
+    <div class="note">
+      <span class="why">Rozsah báze</span>
+      <p>Matice a dimenzování licencí vycházejí z celkové adresovatelné báze <strong>přibližně 50&nbsp;tis. profilů</strong> — studenti, absolventi a leady kumulativně. Výnosový model analýzy pracuje s aktivní bází 8&nbsp;tis. studentů a průměrnou roční hodnotou 80&nbsp;tis.&nbsp;Kč. Tato dvě čísla se nevylučují, měří jiné věci: první dimenzuje náklad na licenci, druhé přínos.</p>
+    </div>
+    <div class="note">
+      <span class="why">Stávající nástroje v AMBIS</span>
+      <p>Mailchimp je na webu AMBIS nasazený a AutoCRM je zavedené s desítkami studentů. Varianta 2 tedy není akvizicí nových nástrojů, ale rozšířením existujících — což mění náklad, ne funkční strop popsaný v sekci&nbsp;07.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><div class="snum">—</div><h2>Zdroje</h2></div>
+  <div class="col"><p>Funkční tvrzení v matici vycházejí z následujících zdrojů. Marketingové stránky výrobců jsme jako zdroj funkčních tvrzení nepoužili.</p></div>
+  <div class="srcs">
+    <p><strong>Targito</strong> — veřejná provozní metodika k platformě (Confluence, prostor DT), veřejný ceník, zdrojový kód produkčního pop-up skriptu, oficiální PHP knihovna, ARES</p>
+    <p><strong>MailKit</strong> — Knowledge Base a API dokumentace (Event API, Journeys – Nodes, Recipient filtering, Data sources, Event Reports, Subscribe form generator, Cookies), ARES</p>
+    <p><strong>Keboola</strong> — help.keboola.com (Overview, Data Streams, Flows), Storage API jako autoritativní seznam komponent, veřejný ceník, changelog konektoru MailKit</p>
+    <p><strong>Mailchimp</strong> — mailchimp.com/help (Site Tracking Pixel, Events for Behavioral Targeting, Audience &amp; Signup Form Fields, All the Starting Points, Advanced Segmentation, About A/B Tests, Popup Forms, SMS Marketing, European Data Transfers, Language Settings), Marketing API reference</p>
+    <p><strong>AutoCRM</strong> — autocrm.cz (ceník, porovnání CRM, případové studie), dokumentace EspoCRM (Campaigns, Mass Email), obchodní rejstřík</p>
+    <p><strong>Bloomreach</strong> — partnerská kalkulace ePACE, kapitola <em>Kalibrace CDP licence Bloomreach</em> v business analýze</p>
+    <p><strong>Ambis Univerzita</strong> — obchodní rejstřík (MS v Praze, B 2695), výroční zpráva o činnosti za rok 2025, tabulková příloha výroční zprávy o hospodaření 2024, statistická ročenka školství MŠMT, zdrojový kód ambis.cz</p>
+  </div>
+</section>
+
+<footer>
+  <span>ePACE, s. r. o. · Podklad k rozhodnutí</span>
+  <span>Navazuje na Business analýzu — Projekt CDP</span>
+  <span>Září 2026 · Důvěrné</span>
+</footer>
+
+</div>
+
+<script>
+document.querySelectorAll("button.tg").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var box=document.getElementById(btn.getAttribute("data-t"));
+    if(!box)return;
+    var willOpen=btn.getAttribute("aria-expanded")!=="true";
+    box.querySelectorAll("details.d").forEach(function(d){d.open=willOpen;});
+    btn.setAttribute("aria-expanded",String(willOpen));
+    btn.textContent=willOpen?"Sbalit všechny detaily":"Rozbalit všechny detaily";
+  });
+});
+</script>
+
+</body></html>
